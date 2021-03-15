@@ -1,18 +1,22 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import _ from "../parseData";
-import filesize from "filesize";
+import Files from "./Files";
 
 interface dataContainerProps {
   data: { children: object[] };
   location: string;
   sshData?: object;
+  drives?: any[];
 }
-
-const order = ["directory", "file"];
 
 const DataContainer = (props: dataContainerProps) => {
   const [path, setPath] = useState<string>("/");
+  const [loading, setLoading] = useState<boolean>(false);
+  const [pathChanged, setPathChanged] = useState<boolean>(false);
+  const [activeDrive, setActiveDrive] = useState<any | undefined>(
+    props.drives?.[0]._mounted || ""
+  );
   const [data, setData] = useState<object[]>([]);
 
   useEffect(() => {
@@ -20,16 +24,24 @@ const DataContainer = (props: dataContainerProps) => {
   }, [props.data.children]);
 
   useEffect(() => {
-    if (path === "/") return setData(props.data.children);
+    if (
+      path === "/" &&
+      props.drives &&
+      activeDrive === props.drives?.[0]._mounted
+    )
+      return setData(props.data.children);
+
+    setLoading(true);
     axios({
       method: "POST",
       url: "http://localhost:3001/data",
       data: {
-        path,
+        path: activeDrive + path,
         location: props.location,
         sshData: props.sshData || undefined,
       },
     }).then((res) => {
+      setLoading(false);
       if (res.data.err) return alert(res.data.data);
 
       if (props.location === "local")
@@ -46,9 +58,48 @@ const DataContainer = (props: dataContainerProps) => {
     setData(child.children);
   };
 
+  useEffect(() => {
+    if (!pathChanged) {
+      setActiveDrive(props.drives?.[0]._mounted || "");
+      return setPathChanged(true);
+    }
+    setPath("/");
+    setLoading(true);
+
+    axios({
+      method: "POST",
+      url: "http://localhost:3001/data",
+      data: {
+        path: `${activeDrive}/`,
+        location: props.location,
+        sshData: props.sshData || undefined,
+      },
+    }).then((res) => {
+      setLoading(false);
+      if (res.data.err) return alert(res.data.data);
+
+      if (props.location === "local")
+        setData(_.parseLocalData(res.data.data.children));
+
+      if (props.location === "remote")
+        setData(_.parseRemoteData(res.data.data[0].contents));
+    });
+  }, [activeDrive]);
+
   return (
     <div>
       <div style={{ display: "flex" }}>
+        {props.drives && (
+          <div>
+            <select onChange={(e) => setActiveDrive(e.target.value)}>
+              {props.drives.map((x: any, i: number) => (
+                <option key={i} value={x._mounted}>
+                  {x._mounted}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
         <div onClick={() => setPath("/")}>Root</div>
         {path.split("/").map((folder: any, i: number) => (
           <div
@@ -65,13 +116,16 @@ const DataContainer = (props: dataContainerProps) => {
           </div>
         ))}
       </div>
-      {data
-        .sort((a: any, b: any) => order.indexOf(a.type) - order.indexOf(b.type))
-        .map((child: any, i: number) => (
-          <div onDoubleClick={() => updatePath(child)} key={i}>
-            {child.name} {filesize(child.size)}
-          </div>
-        ))}
+      {loading ? (
+        <div>Loading...</div>
+      ) : (
+        <Files
+          data={data}
+          loc={{ path, location: props.location, sshData: props.sshData }}
+          drive={activeDrive}
+          update={updatePath}
+        />
+      )}
     </div>
   );
 };

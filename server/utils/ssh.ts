@@ -17,7 +17,10 @@ const connect = async (host: string, username: string, password: string) => {
 const timeout = (cb: any, interval: number) => () =>
   new Promise((resolve) => setTimeout(() => cb(resolve), interval));
 
-const onTimeout = timeout((resolve) => resolve({ connection: false }), 1000);
+const onTimeout = timeout(
+  (resolve: any) => resolve({ connection: false }),
+  1000
+);
 
 export default {
   connect: (host: any, username: any, password: any) =>

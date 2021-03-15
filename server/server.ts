@@ -4,7 +4,6 @@ import express, { Application, Request, Response } from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
 import indexRouter from "./indexRouter";
-// const nodeDiskInfo = require("node-disk-info");
 
 // import fs from "fs";
 // import FileType from "file-type";
@@ -22,9 +21,6 @@ app
     server.use(bodyParser());
 
     server.use("/", indexRouter);
-
-    // const disks = await nodeDiskInfo.getDiskInfo();
-    // console.log(disks[0]._mounted);
 
     server.get("*", (req: Request, res: Response) => {
       return handle(req, res);

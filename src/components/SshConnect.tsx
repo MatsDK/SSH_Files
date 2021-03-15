@@ -4,6 +4,7 @@ import _ from "../parseData";
 import DataContainer from "./DataContainer";
 
 const SshConnect = () => {
+  const [loading, setLoading] = useState<boolean>(false);
   const [isConnected, setIsConnected] = useState<boolean>(false);
   const [sshData, setSshData] = useState<object[]>([]);
   const [sshConnectionData, setSshConnectionData] = useState<
@@ -29,14 +30,16 @@ const SshConnect = () => {
         password: passwordInput,
         username: usernameInput,
       };
+
+      setLoading(true);
       axios({
         method: "POST",
         url: "http://localhost:3001/connectSSH",
         data: connectionData,
       }).then((res) => {
+        setLoading(false);
         if (res.data.err) return alert(res.data.data);
         setIsConnected(res.data.connected);
-
         if (res.data.connected) {
           setSshConnectionData(connectionData);
           setSshData(_.parseRemoteData(JSON.parse(res.data.data)[0].contents));
@@ -50,27 +53,31 @@ const SshConnect = () => {
   return (
     <div>
       {!isConnected ? (
-        <form onSubmit={connect}>
-          <input
-            type="text"
-            placeholder="host"
-            defaultValue={hostInput}
-            onChange={(e: any) => setHostInput(e.target.value)}
-          />
-          <input
-            type="text"
-            placeholder="username"
-            defaultValue={usernameInput}
-            onChange={(e: any) => setUsernameInput(e.target.value)}
-          />
-          <input
-            type="text"
-            placeholder="password"
-            defaultValue={passwordInput}
-            onChange={(e: any) => setPasswordInput(e.target.value)}
-          />
-          <button type="submit">Connect</button>
-        </form>
+        loading ? (
+          <div>Loading...</div>
+        ) : (
+          <form onSubmit={connect}>
+            <input
+              type="text"
+              placeholder="host"
+              defaultValue={hostInput}
+              onChange={(e: any) => setHostInput(e.target.value)}
+            />
+            <input
+              type="text"
+              placeholder="username"
+              defaultValue={usernameInput}
+              onChange={(e: any) => setUsernameInput(e.target.value)}
+            />
+            <input
+              type="text"
+              placeholder="password"
+              defaultValue={passwordInput}
+              onChange={(e: any) => setPasswordInput(e.target.value)}
+            />
+            <button type="submit">Connect</button>
+          </form>
+        )
       ) : (
         <DataContainer
           data={{ children: sshData }}
