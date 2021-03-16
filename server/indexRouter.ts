@@ -1,5 +1,8 @@
 import express, { Request, Response } from "express";
 import ssh from "./utils/ssh";
+import copyData from "./utils/copyData";
+// import fs from "fs-extra";
+// import path from "path";
 const dree = require("dree");
 const nodeDiskInfo = require("node-disk-info");
 
@@ -97,6 +100,30 @@ router.post("/connectSSH", async (req: Request, res: Response) => {
     res.json({ connect: false, err: true, data: sshRes.stderr });
 
   res.json({ connected: true, err: false, data: sshRes.stdout });
+});
+
+interface CopyDataPath {
+  from: string;
+  fromType: string;
+  to: string;
+  toType: string;
+}
+
+interface CopyDataProps {
+  from: string;
+  to: string;
+  paths: CopyDataPath[];
+}
+
+router.post("/copyData", async (req: Request, res: Response) => {
+  const {
+    sshData,
+    copyQuery,
+  }: { sshData: any | undefined; copyQuery: CopyDataProps } = req.body;
+
+  const copyRes = await copyData(copyQuery, sshData, connect, sshConn, ssh);
+  console.log(copyRes);
+  res.json({ err: false });
 });
 
 export default router;

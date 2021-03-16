@@ -22,37 +22,35 @@ const validatecopyDataData = (
 
   if (copyData.from === "local") {
     if (copyData.to === "local") {
-      for (let path of copyData.paths) {
-        if (
-          path.toType === "directory" &&
-          path.fromType === "directory" &&
-          path.to === path.from
-        )
-          return { err: "can't move inside itself" };
-
-        const fromPath: string = path.from
-          .split("/")
-          .slice(0, path.from.split("/").length - 1)
-          .join("/");
-
-        if (checkLocalPaths(path.to, fromPath, path))
-          return { err: "can't move to the same folder" };
-      }
-    } else if (copyData.to === "remore") {
+      //   for (let path of copyData.paths) {
+      //     if (
+      //       path.toType === "directory" &&
+      //       path.fromType === "directory" &&
+      //       path.to === path.from
+      //     )
+      //       return { err: "can't move inside itself" };
+      //     const fromPath: string = path.from
+      //       .split("/")
+      //       .slice(0, path.from.split("/").length - 1)
+      //       .join("/");
+      //     if (checkLocalPaths(path.to, fromPath, path))
+      //       return { err: "can't move to the same folder" };
+      //   }
+    } else if (copyData.to === "remote") {
       console.log("download to remote");
     }
   } else if (copyData.from === "remote") {
     console.log("download from remote");
   }
-
   copyData.paths.forEach((x: moveToPath) => {
+    const toPathArr = x.to.split("/");
     if (x.toType === "file")
-      if (x.to.split("/")[0] === drive && x.to.split(":").length === 2)
+      if (toPathArr[0] === drive && x.to.split(":").length === 2)
         x.to = drive + "/";
       else
         x.to = x.to
           .split("/")
-          .slice(0, x.to.split("/").length - 1)
+          .slice(0, toPathArr.length - 1)
           .join("/");
 
     x.toType = "directory";
@@ -61,30 +59,30 @@ const validatecopyDataData = (
   return copyData;
 };
 
-const checkLocalPaths = (
-  toPath: string,
-  fromPath: string,
-  path: moveToPath
-) => {
-  return (
-    (path.toType === "file" &&
-      path.fromType === "file" &&
-      toPath === fromPath) ||
-    (toPath === fromPath &&
-      path.fromType === "directory" &&
-      path.toType === "file") ||
-    (path.fromType === "file" &&
-      path.toType === "directory" &&
-      toPath === fromPath &&
-      path.to === fromPath) ||
-    (fromPath === path.to &&
-      path.fromType === "directory" &&
-      path.toType === "directory") ||
-    path.from === toPath ||
-    (fromPath === path.to &&
-      path.fromType === "file" &&
-      path.toType !== "directory")
-  );
-};
+// const checkLocalPaths = (
+//   toPath: string,
+//   fromPath: string,
+//   path: moveToPath
+// ) => {
+//   return (
+//     (path.toType === "file" &&
+//       path.fromType === "file" &&
+//       toPath === fromPath) ||
+//     (toPath === fromPath &&
+//       path.fromType === "directory" &&
+//       path.toType === "file") ||
+//     (path.fromType === "file" &&
+//       path.toType === "directory" &&
+//       toPath === fromPath &&
+//       path.to === fromPath) ||
+//     (fromPath === path.to &&
+//       path.fromType === "directory" &&
+//       path.toType === "directory") ||
+//     path.from === toPath ||
+//     (fromPath === path.to &&
+//       path.fromType === "file" &&
+//       path.toType !== "directory")
+//   );
+// };
 
 export default { validatecopyDataData };

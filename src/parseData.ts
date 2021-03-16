@@ -3,9 +3,13 @@ const parseRemoteData = (remoteData: any[]) => {
   if (!remoteData) return [];
   remoteData.forEach((child: any) => {
     if (child.type === "link" || child.error) return;
+
+    let newName = child.name;
+    if (child.name.charAt(0) === ".") newName = newName.replace(".", "");
+
     let newObject: any = {
       name: child.name.split("/")[child.name.split("/").length - 1],
-      path: child?.name?.replace(".", ""),
+      path: newName,
       type: child.type,
       size: child.size,
     };
@@ -15,7 +19,6 @@ const parseRemoteData = (remoteData: any[]) => {
 
     arr.push(newObject);
   });
-
   return arr;
 };
 

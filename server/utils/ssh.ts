@@ -30,5 +30,8 @@ export default {
       return res;
     }),
   sshConn,
+  getSSHConn: () => {
+    return sshConn;
+  },
   execCommand: (text: string, params: any) => sshConn.execCommand(text, params),
 };

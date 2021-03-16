@@ -17,11 +17,7 @@ const Index = (props: indexProps): JSX.Element => {
         drives={props.drives}
         location="local"
       />
-      <DataContainer
-        data={props.localData}
-        drives={props.drives}
-        location="local"
-      />
+
       <SshConnect />
     </div>
   );

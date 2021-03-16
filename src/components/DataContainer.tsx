@@ -31,6 +31,9 @@ const DataContainer = (props: dataContainerProps) => {
     )
       return setData(props.data.children);
 
+    if (!pathChanged) {
+      return setPathChanged(true);
+    }
     setLoading(true);
     axios({
       method: "POST",
