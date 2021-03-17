@@ -5,10 +5,6 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import indexRouter from "./indexRouter";
 
-// import fs from "fs";
-// import FileType from "file-type";
-// import path from "path";
-
 const dev = process.env.NODE_ENV !== "production";
 const app = next({ dev });
 const handle = app.getRequestHandler();

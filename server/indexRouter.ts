@@ -1,10 +1,8 @@
 import express, { Request, Response } from "express";
 import ssh from "./utils/ssh";
 import copyData from "./utils/copyData";
-// import fs from "fs-extra";
-// import path from "path";
+import si from "systeminformation";
 const dree = require("dree");
-const nodeDiskInfo = require("node-disk-info");
 
 const router = express.Router();
 let sshConn = ssh.sshConn;
@@ -29,9 +27,9 @@ const options = {
 };
 
 router.get("/data", async (req: Request, res: Response) => {
-  const disks = await nodeDiskInfo.getDiskInfo();
+  const disks = await si.blockDevices();
 
-  const fileTree = dree.scan(`${disks[0]._mounted}/`, options);
+  const fileTree = dree.scan(`${disks[0].name}/`, options);
   res.json({ localData: fileTree, drives: disks });
 });
 

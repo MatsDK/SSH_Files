@@ -15,7 +15,7 @@ const DataContainer = (props: dataContainerProps) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [pathChanged, setPathChanged] = useState<boolean>(false);
   const [activeDrive, setActiveDrive] = useState<any | undefined>(
-    props.drives?.[0]._mounted || ""
+    props.drives?.[0].name || ""
   );
   const [data, setData] = useState<object[]>([]);
 
@@ -24,11 +24,7 @@ const DataContainer = (props: dataContainerProps) => {
   }, [props.data.children]);
 
   useEffect(() => {
-    if (
-      path === "/" &&
-      props.drives &&
-      activeDrive === props.drives?.[0]._mounted
-    )
+    if (path === "/" && props.drives && activeDrive === props.drives?.[0].name)
       return setData(props.data.children);
 
     if (!pathChanged) {
@@ -63,7 +59,7 @@ const DataContainer = (props: dataContainerProps) => {
 
   useEffect(() => {
     if (!pathChanged) {
-      setActiveDrive(props.drives?.[0]._mounted || "");
+      setActiveDrive(props.drives?.[0].name || "");
       return setPathChanged(true);
     }
     setPath("/");
@@ -94,10 +90,12 @@ const DataContainer = (props: dataContainerProps) => {
       <div style={{ display: "flex" }}>
         {props.drives && (
           <div>
-            <select onChange={(e) => setActiveDrive(e.target.value)}>
+            <select
+              onChange={(e) => setActiveDrive(e.target.value.split(" ")[0])}
+            >
               {props.drives.map((x: any, i: number) => (
                 <option key={i} value={x._mounted}>
-                  {x._mounted}
+                  {x.name} {x.label || x.physical}
                 </option>
               ))}
             </select>

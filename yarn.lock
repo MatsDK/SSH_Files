@@ -1712,11 +1712,6 @@ next@^10.0.8:
     vm-browserify "1.1.2"
     watchpack "2.1.1"
 
-node-disk-info@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/node-disk-info/-/node-disk-info-1.1.0.tgz#e00482c6ce62019bfc96a43c356e0b70f92d65f5"
-  integrity sha512-ZVuZuWBJvogO4i5ABHmFzKPMHaypCWn6RqwK5xeyU3wFUtv9yUNJi2fZRQ4Mreplf81PK+sONdWLHVdzVJ64wg==
-
 node-fetch@2.6.1:
   version "2.6.1"
   resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.1.tgz#045bd323631f76ed2e2b55573394416b639a0052"
@@ -2548,6 +2543,11 @@ supports-color@^7.1.0:
   integrity sha512-qpCAvRl9stuOHveKsn7HncJRvv501qIacKzQlO/+Lwxc9+0q2wLyv4Dfvt80/DPn2pqOBsJdDiogXGR9+OvwRw==
   dependencies:
     has-flag "^4.0.0"
+
+systeminformation@^5.6.7:
+  version "5.6.7"
+  resolved "https://registry.yarnpkg.com/systeminformation/-/systeminformation-5.6.7.tgz#f56bbc89cac2de4bcb085b96a93b9d627bd6aba8"
+  integrity sha512-NTgaL6AsRoXKbfZs6t+BkCUwLZjqIiT4IwqGUV2f7PgvDz8359HzOF0xYgDlTHCBR2GeWhFQAfo2wmoYTpz/og==
 
 term-size@^2.1.0:
   version "2.2.1"
