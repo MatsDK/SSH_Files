@@ -1,27 +1,28 @@
 import fs from "fs-extra";
 import path from "path";
+import { findValidNewPath, findValidNewRemotePath } from "./findNewPaths";
 
-// interface CopyDataPath {
-//   from: string;
-//   fromType: string;
-//   to: string;
-//   toType: string;
-// }
+interface CopyDataProps {
+  copyQuery: any;
+  sshData: any;
+  connect: any;
+  sshConn: any;
+  ssh: any;
+}
 
-const copyData = async (
-  copyQuery: any,
-  sshData: any,
-  connect: any,
-  sshConn: any,
-  ssh: any
-) => {
+const copyData = async ({
+  copyQuery,
+  sshData,
+  connect,
+  sshConn,
+  ssh,
+}: CopyDataProps) => {
   if (copyQuery.from === "remote") {
     if (copyQuery.to === "local") {
-      for (let dataItem of copyQuery.paths) {
-        await connect(sshData!.host, sshData!.username, sshData!.password);
-        if (!sshConn.connection)
-          return { err: true, data: "failed to connect" };
+      await connect(sshData!.host, sshData!.username, sshData!.password);
+      if (!sshConn.connection) return { err: true, data: "failed to connect" };
 
+      for (let dataItem of copyQuery.paths) {
         if (dataItem.fromType === "directory") {
           let dataPathName: string =
             dataItem.to + "/" + dataItem.from.split("/").pop();
@@ -72,42 +73,59 @@ const copyData = async (
         }
       }
       return { err: false };
+    } else if (copyQuery.to === "remote") {
+      await connect(sshData!.host, sshData!.username, sshData!.password);
+      if (!sshConn.connection) return { err: true, data: "failed to connect" };
+
+      for (let dataItem of copyQuery.paths) {
+        if (dataItem.fromType === "directory") {
+          let dataItemName: string =
+            dataItem.to + "/" + dataItem.from.split("/").pop();
+
+          let copyCommand = `cp -a ${dataItem.from} ${dataItem.to}`;
+
+          const newNameObj: any = await findValidNewRemotePath(
+            dataItemName,
+            "dir",
+            ssh
+          );
+
+          if (newNameObj.err) return { err: true, data: newNameObj.data };
+          else if (newNameObj.changed) {
+            dataItemName = newNameObj.newName;
+            copyCommand = `cp -a ${dataItem.from}/* ${newNameObj.newName}`;
+
+            const sshMkdirSshRes = await ssh
+              .getSSHConn()
+              .execCommand(`mkdir ${newNameObj.newName}`, {
+                cwd: "/",
+              });
+
+            if (sshMkdirSshRes.stderr)
+              return { err: true, data: sshMkdirSshRes.stderr };
+          }
+
+          const copySshRes = await ssh.getSSHConn().execCommand(copyCommand, {
+            cwd: "/",
+          });
+
+          if (copySshRes.stderr) return { err: true, data: copySshRes.stderr };
+        } else if (dataItem.fromType === "file") {
+          console.log("copy file");
+        }
+        console.log(dataItem);
+      }
+      return { err: false };
     }
   } else if (copyQuery.from === "local") {
-    console.log("local");
-  }
-};
-
-const findValidNewPath = (newPath: string, type: string): string => {
-  let isValid = false,
-    newExtension = 0;
-
-  if (type === "dir") {
-    while (!isValid) {
-      if (fs.existsSync(newPath)) {
-        newPath = newPath + `(${newExtension})`;
-        newExtension++;
-      } else {
-        isValid = true;
-        return newPath;
-      }
-    }
-  } else if (type === "file") {
-    if (!fs.existsSync(newPath)) return newPath;
-
-    const ext = path.extname(newPath);
-    let pathWithoutExt = newPath.replace(new RegExp(ext, "m"), "");
-
-    while (!isValid) {
-      let currentPath: string = pathWithoutExt + `(${newExtension})` + ext;
-      if (fs.existsSync(currentPath)) newExtension++;
-      else {
-        isValid = true;
-        return currentPath;
-      }
+    if (copyQuery.to === "remote") {
+      console.log("copy to remote");
+      return { err: false };
+    } else if (copyQuery.to === "local") {
+      console.log("copy local");
+      return { err: false };
     }
   }
-  return newPath;
 };
 
 export default copyData;

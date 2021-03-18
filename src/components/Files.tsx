@@ -1,6 +1,6 @@
 import axios from "axios";
 import filesize from "filesize";
-// import validate from "src/validateCopyData";
+import mime from "mime";
 const order = ["directory", "file"];
 
 interface DateItem {
@@ -59,7 +59,7 @@ const Files = ({ data, update, loc: { path, location, sshData }, drive }) => {
   const dragLeave = (e: any) => {};
 
   return (
-    <div>
+    <div style={{ width: "35vw", marginRight: "20px" }}>
       {data
         .sort((a: any, b: any) => order.indexOf(a.type) - order.indexOf(b.type))
         .map((child: any, i: number) => (
@@ -71,8 +71,15 @@ const Files = ({ data, update, loc: { path, location, sshData }, drive }) => {
             onDrop={(e) => drop(e, child)}
             onDoubleClick={() => update(child)}
             key={i}
+            style={{ display: "flex", justifyContent: "space-between" }}
           >
-            {child.name} {filesize(child.size)}
+            {child.name}
+            <div>
+              {filesize(child.size)}{" "}
+              {child.type === "file"
+                ? mime.getType(child.name) || "file"
+                : "directory"}
+            </div>
           </div>
         ))}
     </div>

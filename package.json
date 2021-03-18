@@ -12,7 +12,9 @@
     "express": "^4.17.1",
     "file-type": "^16.3.0",
     "filesize": "^6.1.0",
+    "fs": "^0.0.1-security",
     "fs-extra": "^9.1.0",
+    "mime": "^2.5.2",
     "next": "^10.0.8",
     "node-ssh": "^11.1.1",
     "react": "^17.0.1",
@@ -22,6 +24,7 @@
   "devDependencies": {
     "@types/express": "^4.17.11",
     "@types/fs-extra": "^9.0.8",
+    "@types/mime": "^2.0.3",
     "@types/node": "^14.14.34",
     "@types/node-ssh": "^7.0.0",
     "@types/react": "^17.0.3",
