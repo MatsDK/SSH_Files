@@ -44,9 +44,6 @@ const copyData = async ({
               tick: (localPath: string, remotePath: string, error: any) => {
                 if (error) return { err: true, data: error.message };
               },
-            })
-            .then(() => {
-              return { err: false };
             });
 
           if (sshRes.error) return { err: true, data: sshRes.data };
@@ -111,9 +108,29 @@ const copyData = async ({
 
           if (copySshRes.stderr) return { err: true, data: copySshRes.stderr };
         } else if (dataItem.fromType === "file") {
-          console.log("copy file");
+          let newDataPathName: string =
+            dataItem.to + "/" + dataItem.from.split("/").pop();
+
+          let copyCommand = `cp -a ${dataItem.from} ${dataItem.to}`;
+
+          const newNameObj: any = await findValidNewRemotePath(
+            newDataPathName,
+            "file",
+            ssh
+          );
+
+          if (newNameObj.err) return { err: true, data: newNameObj.data };
+          else if (newNameObj.changed) {
+            newDataPathName = newNameObj.newName;
+            copyCommand = `cp ${dataItem.from} ${newNameObj.newName}`;
+          }
+
+          const copySshRes = await ssh
+            .getSSHConn()
+            .execCommand(copyCommand, { cwd: "/" });
+
+          if (copySshRes.stderr) return { err: true, data: copySshRes.stderr };
         }
-        console.log(dataItem);
       }
       return { err: false };
     }

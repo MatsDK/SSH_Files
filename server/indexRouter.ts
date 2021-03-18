@@ -121,7 +121,7 @@ router.post("/copyData", async (req: Request, res: Response) => {
 
   const props = { copyQuery, sshData, connect, sshConn, ssh };
   const copyRes: any = await copyData(props);
-  if (copyRes.err) return res.json({ err: true, data: copyRes.err });
+  if (copyRes.err) return res.json({ err: true, data: copyRes.data });
 
   console.log(copyRes);
   res.json({ err: false });

@@ -28,8 +28,28 @@ export const findValidNewRemotePath = async (
         return { changed: true, newName: currentPath };
       }
     }
-  } else {
-    return { changed: false, newName: newPath };
+  } else if (type === "file") {
+    const remotePathExists = await checkIfRemotePathExists(newPath, ssh);
+
+    if (remotePathExists.err) return { err: true, data: remotePathExists.data };
+    if (!remotePathExists.exists) return { changed: false, newName: newPath };
+
+    const ext = path.extname(newPath),
+      pathWithoutExt = newPath.slice(0, newPath.lastIndexOf(ext));
+
+    while (!isValid) {
+      const currentPath: string = pathWithoutExt + `${newExtension}` + ext,
+        remotePathExists = await checkIfRemotePathExists(currentPath, ssh);
+
+      if (remotePathExists.err)
+        return { err: true, data: remotePathExists.data };
+
+      if (remotePathExists.exists) newExtension++;
+      else {
+        isValid = true;
+        return { changed: true, newName: currentPath };
+      }
+    }
   }
 };
 
@@ -50,11 +70,12 @@ export const findValidNewPath = (newPath: string, type: string): string => {
   } else if (type === "file") {
     if (!fs.existsSync(newPath)) return newPath;
 
-    const ext = path.extname(newPath);
-    let pathWithoutExt = newPath.replace(new RegExp(ext, "m"), "");
+    const ext = path.extname(newPath),
+      pathWithoutExt = newPath.replace(new RegExp(ext, "m"), "");
 
     while (!isValid) {
       let currentPath: string = pathWithoutExt + `${newExtension}` + ext;
+
       if (fs.existsSync(currentPath)) newExtension++;
       else {
         isValid = true;
