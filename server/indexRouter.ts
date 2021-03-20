@@ -1,7 +1,8 @@
 import express, { Request, Response } from "express";
 import ssh from "./utils/ssh";
-import copyData from "./utils/copyData";
+import { copyData } from "./utils/copyData";
 import si from "systeminformation";
+import { copyDataProps } from "./utils/copyDataInterfaces";
 const dree = require("dree");
 
 const router = express.Router();
@@ -100,31 +101,18 @@ router.post("/connectSSH", async (req: Request, res: Response) => {
   res.json({ connected: true, err: false, data: sshRes.stdout });
 });
 
-interface CopyDataPath {
-  from: string;
-  fromType: string;
-  to: string;
-  toType: string;
-}
-
-interface CopyDataProps {
-  from: string;
-  to: string;
-  paths: CopyDataPath[];
-}
-
 router.post("/copyData", async (req: Request, res: Response) => {
   const {
     sshData,
     copyQuery,
-  }: { sshData: any | undefined; copyQuery: CopyDataProps } = req.body;
+  }: { sshData: any | undefined; copyQuery: any } = req.body;
 
-  const props = { copyQuery, sshData, connect, sshConn, ssh };
+  const props: copyDataProps = { copyQuery, sshData, connect, sshConn, ssh };
   const copyRes: any = await copyData(props);
   if (copyRes.err) return res.json({ err: true, data: copyRes.data });
 
   console.log(copyRes);
-  res.json({ err: false });
+  res.json(copyRes);
 });
 
 export default router;
