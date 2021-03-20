@@ -1,6 +1,9 @@
 import axios from "axios";
 import filesize from "filesize";
 import mime from "mime";
+import { useEffect, useState } from "react";
+import _ from "../parseData";
+
 const order = ["directory", "file"];
 
 interface DateItem {
@@ -12,6 +15,12 @@ interface DateItem {
 }
 
 const Files = ({ data, update, loc: { path, location, sshData }, drive }) => {
+  const [items, setItems] = useState<DateItem[]>(data);
+
+  useEffect(() => {
+    setItems(data);
+  }, [data]);
+
   const dragStart = (e: any, child: DateItem) => {
     const dataObj: any = {
       from: location,
@@ -20,6 +29,7 @@ const Files = ({ data, update, loc: { path, location, sshData }, drive }) => {
     if (location === "remote") dataObj.sshData = sshData;
     e.dataTransfer.setData("path", JSON.stringify(dataObj));
   };
+
   const drop = (e: any, child: DateItem) => {
     e.preventDefault();
     let data = e.dataTransfer.getData("path"),
@@ -44,10 +54,19 @@ const Files = ({ data, update, loc: { path, location, sshData }, drive }) => {
     axios({
       method: "POST",
       url: "http://localhost:3001/copyData",
-      data: { sshData: sshData || copy.sshData, copyQuery: copy },
+      data: {
+        sshData: sshData || copy.sshData,
+        copyQuery: copy,
+        currDirPath: { path: `${drive}${path}`, location },
+      },
     }).then((res) => {
-      console.log(res.data);
       if (res.data.err) return alert(res.data.data);
+      if (res.data.data) {
+        if (location === "local")
+          setItems(_.parseLocalData(res.data.data.children));
+        if (location === "remote")
+          setItems(_.parseRemoteData(res.data.data[0].contents));
+      }
     });
   };
 
@@ -59,8 +78,8 @@ const Files = ({ data, update, loc: { path, location, sshData }, drive }) => {
   const dragLeave = (e: any) => {};
 
   return (
-    <div style={{ width: "35vw", marginRight: "20px" }}>
-      {data
+    <div style={{ width: "45vw", marginRight: "20px" }}>
+      {items
         .sort((a: any, b: any) => order.indexOf(a.type) - order.indexOf(b.type))
         .map((child: any, i: number) => (
           <div

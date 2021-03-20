@@ -13,10 +13,16 @@ interface copyQueryType {
   paths: dataPath[];
 }
 
+export interface currDirPathProp {
+  location: string;
+  path: string;
+}
+
 export interface copyDataProps {
   sshData: any;
   connect: any;
   sshConn: any;
   copyQuery: copyQueryType;
   ssh: any;
+  currDirPath: currDirPathProp;
 }

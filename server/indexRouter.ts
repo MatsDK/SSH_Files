@@ -2,7 +2,7 @@ import express, { Request, Response } from "express";
 import ssh from "./utils/ssh";
 import { copyData } from "./utils/copyData";
 import si from "systeminformation";
-import { copyDataProps } from "./utils/copyDataInterfaces";
+import { copyDataProps, currDirPathProp } from "./utils/copyDataInterfaces";
 const dree = require("dree");
 
 const router = express.Router();
@@ -105,13 +105,24 @@ router.post("/copyData", async (req: Request, res: Response) => {
   const {
     sshData,
     copyQuery,
-  }: { sshData: any | undefined; copyQuery: any } = req.body;
+    currDirPath,
+  }: {
+    sshData: any | undefined;
+    copyQuery: any;
+    currDirPath: currDirPathProp;
+  } = req.body;
 
-  const props: copyDataProps = { copyQuery, sshData, connect, sshConn, ssh };
+  const props: copyDataProps = {
+    copyQuery,
+    sshData,
+    connect,
+    sshConn,
+    ssh,
+    currDirPath,
+  };
   const copyRes: any = await copyData(props);
   if (copyRes.err) return res.json({ err: true, data: copyRes.data });
 
-  console.log(copyRes);
   res.json(copyRes);
 });
 
