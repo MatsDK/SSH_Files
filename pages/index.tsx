@@ -1,8 +1,7 @@
 import axios from "axios";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
-import DataContainer from "../src/components/DataContainer";
-import SshConnect from "../src/components/SshConnect";
 import _ from "../src/parseData";
+import Container from "../src/components/Container";
 
 interface indexProps {
   drives: object[];
@@ -12,13 +11,24 @@ interface indexProps {
 const Index = (props: indexProps): JSX.Element => {
   return (
     <div style={{ display: "flex" }}>
-      <DataContainer
+      <Container
+        tabs={[
+          { name: "local1", location: "local" },
+          { name: "local2", location: "local" },
+        ]}
         data={props.localData}
         drives={props.drives}
         location="local"
       />
-
-      <SshConnect />
+      <Container
+        tabs={[
+          { name: "remote1", location: "remote" },
+          { name: "remote2", location: "remote" },
+        ]}
+        data={props.localData}
+        drives={props.drives}
+        location="local"
+      />
     </div>
   );
 };

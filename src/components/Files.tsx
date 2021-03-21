@@ -6,7 +6,7 @@ import _ from "../parseData";
 
 const order = ["directory", "file"];
 
-interface DateItem {
+interface DataItem {
   name: string;
   path: string;
   type: string;
@@ -14,14 +14,26 @@ interface DateItem {
   children?: any[];
 }
 
-const Files = ({ data, update, loc: { path, location, sshData }, drive }) => {
-  const [items, setItems] = useState<DateItem[]>(data);
+interface FilesProps {
+  data: object[];
+  update: any;
+  loc: any;
+  drive: string;
+}
+
+const Files = ({
+  data,
+  update,
+  loc: { path, location, sshData, setPath },
+  drive,
+}: FilesProps) => {
+  const [items, setItems] = useState<object[]>(data);
 
   useEffect(() => {
     setItems(data);
   }, [data]);
 
-  const dragStart = (e: any, child: DateItem) => {
+  const dragStart = (e: any, child: DataItem) => {
     const dataObj: any = {
       from: location,
       paths: [{ from: `${drive || ""}${child.path}`, fromType: child.type }],
@@ -30,7 +42,7 @@ const Files = ({ data, update, loc: { path, location, sshData }, drive }) => {
     e.dataTransfer.setData("path", JSON.stringify(dataObj));
   };
 
-  const drop = (e: any, child: DateItem) => {
+  const drop = (e: any, child: DataItem) => {
     e.preventDefault();
     let data = e.dataTransfer.getData("path"),
       copy = JSON.parse(data);
@@ -79,6 +91,45 @@ const Files = ({ data, update, loc: { path, location, sshData }, drive }) => {
 
   return (
     <div style={{ width: "45vw", marginRight: "20px" }}>
+      <div style={{ display: "flex" }}>
+        <div
+          onDrop={(e) =>
+            drop(e, { name: "/", size: 0, path: "/", type: "directory" })
+          }
+          onClick={() => setPath("/")}
+          onDragOver={dragOver}
+        >
+          Root
+        </div>
+        {path.split("/").map((folder: any, i: number) => (
+          <div
+            onClick={() => {
+              if (path.split("/").length - 1 === i) return;
+              const thisPath = path.split("/"),
+                idx = path.split("/").indexOf(folder);
+              thisPath.length = idx + 1;
+              setPath(thisPath.join("/"));
+            }}
+            key={i}
+            onDragOver={dragOver}
+            onDrop={(e) => {
+              drop(e, {
+                name: folder,
+                size: 0,
+                path: path
+                  .split("/")
+                  .slice(0, path.split("/").lastIndexOf(folder) + 1)
+                  .join("/"),
+                type: "directory",
+              });
+            }}
+          >
+            {folder}
+
+            {path.split("/").length - 1 !== i && "/"}
+          </div>
+        ))}
+      </div>
       {items
         .sort((a: any, b: any) => order.indexOf(a.type) - order.indexOf(b.type))
         .map((child: any, i: number) => (

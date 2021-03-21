@@ -101,21 +101,6 @@ const DataContainer = (props: dataContainerProps) => {
             </select>
           </div>
         )}
-        <div onClick={() => setPath("/")}>Root</div>
-        {path.split("/").map((folder: any, i: number) => (
-          <div
-            onClick={() => {
-              if (path.split("/").length - 1 === i) return;
-              const thisPath = path.split("/"),
-                idx = path.split("/").indexOf(folder);
-              thisPath.length = idx + 1;
-              setPath(thisPath.join("/"));
-            }}
-            key={i}
-          >
-            {folder}
-          </div>
-        ))}
       </div>
       {loading ? (
         <div style={{ width: "45vw", marginRight: "20px" }}>Loading...</div>
@@ -123,7 +108,12 @@ const DataContainer = (props: dataContainerProps) => {
         <div style={{ width: "45vw", marginRight: "20px" }}>
           <Files
             data={data}
-            loc={{ path, location: props.location, sshData: props.sshData }}
+            loc={{
+              path,
+              location: props.location,
+              sshData: props.sshData,
+              setPath,
+            }}
             drive={activeDrive}
             update={updatePath}
           />

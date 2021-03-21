@@ -70,7 +70,7 @@ const SshConnect = () => {
               onChange={(e: any) => setUsernameInput(e.target.value)}
             />
             <input
-              type="text"
+              type="password"
               placeholder="password"
               defaultValue={passwordInput}
               onChange={(e: any) => setPasswordInput(e.target.value)}
