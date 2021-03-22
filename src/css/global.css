@@ -7,4 +7,73 @@ body,
   margin: 0;
   height: 100%;
   width: 100%;
+  overflow: hidden;
+}
+
+.selection-area {
+  background-color: rgba(0, 0, 0, 0.151);
+  border: 1px solid black;
+}
+
+.selected {
+  background-color: #f1f1f1 !important;
+}
+
+.dragIconTemplate {
+  display: flex;
+  width: fit-content;
+  padding: 0 30px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.322);
+  background-color: #f1f1f1;
+  height: 30px;
+  position: absolute;
+}
+
+.dragIconTemplate p {
+  margin: 0 5px;
+}
+
+.Container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: scroll;
+  margin-right: 2px;
+}
+.PageWrapper {
+  height: 100%;
+}
+
+.PageWrapper .inActivePage {
+  /* display: none; */
+  height: 0;
+  overflow: hidden;
+  position: absolute;
+  top: 20px;
+  opacity: 0;
+  display: none;
+  pointer-events: none;
+}
+
+.PageWrapper .ActivePage {
+  height: 100% !important;
+
+  pointer-events: all;
+  opacity: 1;
+  display: block;
+  position: absolute;
+  top: 20px;
+}
+.PageWrapper .ActivePage .Page {
+  height: 100% !important;
+}
+.item {
+  height: 22px;
+  background-color: #fff;
+}
+
+.ContainerPlaceHolder {
+  flex: 1;
+  min-height: 100px;
+  /* width: 100%; */
 }

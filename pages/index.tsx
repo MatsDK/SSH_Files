@@ -10,7 +10,7 @@ interface indexProps {
 
 const Index = (props: indexProps): JSX.Element => {
   return (
-    <div style={{ display: "flex" }}>
+    <div className="Page" style={{ display: "flex" }}>
       <Container
         tabs={[
           { name: "local1", location: "local" },

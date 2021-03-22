@@ -4,6 +4,7 @@
   "description": "",
   "main": "tcpServer.js",
   "dependencies": {
+    "@simonwep/selection-js": "^2.0.2",
     "axios": "^0.21.1",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",

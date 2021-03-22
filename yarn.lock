@@ -103,6 +103,11 @@
   resolved "https://registry.yarnpkg.com/@opentelemetry/context-base/-/context-base-0.14.0.tgz#c67fc20a4d891447ca1a855d7d70fa79a3533001"
   integrity sha512-sDOAZcYwynHFTbLo6n8kIbLiVF3a3BLkrmehJUyEbT9F+Smbi47kLGS2gG2g0fjBLR/Lr1InPD7kXL7FaTqEkw==
 
+"@simonwep/selection-js@^2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@simonwep/selection-js/-/selection-js-2.0.2.tgz#404cf7884560c9879216eb3efefe5112492a948d"
+  integrity sha512-DEm7bkatCsPEwO192A0ocMZy5f5egxRoNYiRyTDxRHU3ZlZcx+LQpxXqWvolLzYNtGMBP3uiz3Lwyys6WAuWcg==
+
 "@sindresorhus/is@^0.14.0":
   version "0.14.0"
   resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-0.14.0.tgz#9fb3a3cf3132328151f353de4632e01e52102bea"

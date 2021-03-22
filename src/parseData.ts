@@ -1,7 +1,7 @@
 const parseRemoteData = (remoteData: any[]) => {
   let arr: any[] = [];
   if (!remoteData) return [];
-  remoteData.forEach((child: any) => {
+  remoteData.forEach((child: any, i: number) => {
     if (child.type === "link" || child.error) return;
 
     let newName = child.name;
@@ -12,6 +12,7 @@ const parseRemoteData = (remoteData: any[]) => {
       path: newName,
       type: child.type,
       size: child.size,
+      id: i,
     };
 
     if (child.type === "directory")
@@ -26,13 +27,14 @@ const parseLocalData = (localData: any[]) => {
   let arr: any[] = [];
   if (!localData) return [];
 
-  localData.forEach((child: any) => {
+  localData.forEach((child: any, i: number) => {
     if (child.type === "link" || child.error) return;
     let newObject: any = {
       name: child.name,
       path: child.path.split(":").slice(1).join(""),
       type: child.type,
       size: child.sizeInBytes,
+      id: i,
     };
 
     if (child.type === "directory")

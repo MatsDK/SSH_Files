@@ -19,7 +19,7 @@ const timeout = (cb: any, interval: number) => () =>
 
 const onTimeout = timeout(
   (resolve: any) => resolve({ connection: false }),
-  1000
+  3000
 );
 
 export default {

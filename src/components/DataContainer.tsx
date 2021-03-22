@@ -86,7 +86,7 @@ const DataContainer = (props: dataContainerProps) => {
   }, [activeDrive]);
 
   return (
-    <div>
+    <div className="Page" style={{ flex: 1 }}>
       <div style={{ display: "flex" }}>
         {props.drives && (
           <div>
@@ -105,7 +105,7 @@ const DataContainer = (props: dataContainerProps) => {
       {loading ? (
         <div style={{ width: "45vw", marginRight: "20px" }}>Loading...</div>
       ) : (
-        <div style={{ width: "45vw", marginRight: "20px" }}>
+        <div className="Page" style={{ width: "45vw", marginRight: "20px" }}>
           <Files
             data={data}
             loc={{

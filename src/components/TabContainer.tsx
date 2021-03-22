@@ -7,7 +7,14 @@ interface TabContainerProps {
 
 const TabContainer = (props: TabContainerProps) => {
   return (
-    <div style={{ width: "45vw" }}>
+    <div
+      style={{
+        width: "50vw",
+        height: "100vh",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
       <div style={{ display: "flex", height: "20px" }}>
         {props.tabs.map((tab: any, i: number) => {
           const active = i === props.selected ? "active" : "";
@@ -29,7 +36,7 @@ const TabContainer = (props: TabContainerProps) => {
           );
         })}
       </div>
-      {props.children}
+      <div className="PageWrapper">{props.children}</div>
     </div>
   );
 };
