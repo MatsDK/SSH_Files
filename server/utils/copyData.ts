@@ -45,7 +45,6 @@ export const copyData = async ({
     }
 
     if (copyRes?.err) return { err: true, data: copyRes.data };
-
     if (currDirPath.location === "local")
       fileTree = dree.scan(currDirPath.path, options);
     else if (currDirPath.location === "remote") {
@@ -60,6 +59,7 @@ export const copyData = async ({
 
     return { ...copyRes, data: fileTree };
   } catch (err) {
+    console.log(err);
     return { err: true, data: err.message };
   }
 };

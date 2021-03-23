@@ -17,7 +17,7 @@ interface ContainerProps {
 
 const Container = (props: ContainerProps) => {
   const [selected, setSelected] = useState<number>(0);
-  const [tabs] = useState<any[]>(props.tabs);
+  const [tabs] = useState<TabType[]>(props.tabs);
 
   const setActive = (activeIndex: number) => {
     setSelected(activeIndex);

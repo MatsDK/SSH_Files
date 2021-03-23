@@ -1,8 +1,13 @@
+interface tabType {
+  name: string;
+  location: string;
+}
+
 interface TabContainerProps {
   children: JSX.Element | JSX.Element[];
   selected: number;
   setSelected: any;
-  tabs: Array<{ name: string; location: string }>;
+  tabs: tabType[];
 }
 
 const TabContainer = (props: TabContainerProps) => {
@@ -16,7 +21,7 @@ const TabContainer = (props: TabContainerProps) => {
       }}
     >
       <div style={{ display: "flex", height: "20px" }}>
-        {props.tabs.map((tab: any, i: number) => {
+        {props.tabs.map((tab: tabType, i: number) => {
           const active = i === props.selected ? "active" : "";
           return (
             <div key={i}>

@@ -57,7 +57,11 @@ const Files = ({
         }
       })
       .on("move", ({ store }) => {
-        if (store.selected !== selectedData) setSelectedData(store.selected);
+        if (store.selected !== selectedData) {
+          if (event!.ctrlKey)
+            setSelectedData([...store.selected, ...store.stored]);
+          else setSelectedData(store.selected);
+        }
         for (const el of store.changed.added) {
           el.classList.add("selected");
         }
@@ -76,8 +80,8 @@ const Files = ({
   const clearSelected = () => {
     const items = selection.getSelection();
     selection.clearSelection();
-
     items.forEach((x: Element) => {
+      selection.deselect(x);
       x.classList.remove("selected");
     });
   };
@@ -130,7 +134,6 @@ const Files = ({
     let data = e.dataTransfer.getData("path"),
       copy = JSON.parse(data);
     copy.to = location;
-
     if (child.type === "directory")
       copy.paths.forEach((path: any) => {
         path.to = `${drive || ""}${child.path}`;

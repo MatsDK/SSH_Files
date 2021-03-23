@@ -51,7 +51,7 @@ const SshConnect = () => {
   };
 
   return (
-    <div>
+    <div className="Page">
       {!isConnected ? (
         loading ? (
           <div>Loading...</div>

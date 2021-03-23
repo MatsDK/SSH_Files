@@ -49,7 +49,7 @@ export const copyFromRemote = async ({
           .getSSHConn()
           .getFile(dataPathName, dataItem.from);
 
-        if (sshRes.err) return { err: sshRes.err };
+        if (sshRes?.err) return { err: sshRes.err };
       }
     }
     return { err: false };
