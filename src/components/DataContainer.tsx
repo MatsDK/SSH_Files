@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import _ from "../parseData";
 import Files from "./Files";
 import SelectionArea from "@simonwep/selection-js";
+import SelectDrive from "./SelectDrive";
 
 interface dataContainerProps {
   data: { children: object[] };
@@ -48,7 +49,7 @@ const DataContainer = (props: dataContainerProps) => {
       .on("move", ({ store }) => {
         if (store.selected !== props.selected.selectedData) {
           const thisEvent = event as any;
-          if (thisEvent!.ctrlKey)
+          if (thisEvent && thisEvent?.ctrlKey)
             props.selected.setSelectedData([
               ...store.selected,
               ...store.stored,
@@ -66,11 +67,22 @@ const DataContainer = (props: dataContainerProps) => {
       .on("stop", () => {
         newSelection.keepSelection();
       });
-    console.log("new Selection Area");
     setSelection(newSelection);
   }, []);
 
+  const clearSelected = () => {
+    if (!selection) return;
+    const items = selection.getSelection();
+    selection.clearSelection();
+    items.forEach((x: Element) => {
+      selection.deselect(x);
+      x.classList.remove("selected");
+    });
+    props.selected.setSelectedData([]);
+  };
+
   useEffect(() => {
+    clearSelected();
     if (path === "/" && props.drives && activeDrive === props.drives?.[0].name)
       return setData(props.data.children);
 
@@ -136,17 +148,7 @@ const DataContainer = (props: dataContainerProps) => {
     <div className="Page" style={{ flex: 1 }}>
       <div style={{ display: "flex" }}>
         {props.drives && (
-          <div>
-            <select
-              onChange={(e) => setActiveDrive(e.target.value.split(" ")[0])}
-            >
-              {props.drives.map((x: any, i: number) => (
-                <option key={i} value={x._mounted}>
-                  {x.name} {x.label || x.physical}
-                </option>
-              ))}
-            </select>
-          </div>
+          <SelectDrive drives={props.drives} setActiveDrive={setActiveDrive} />
         )}
       </div>
       {loading ? (
@@ -155,7 +157,7 @@ const DataContainer = (props: dataContainerProps) => {
         <div className="Page" style={{ width: "45vw", marginRight: "20px" }}>
           <Files
             data={data}
-            selected={{ ...props.selected, selection }}
+            selected={{ ...props.selected, selection, clearSelected }}
             loc={{
               path,
               location: props.location,

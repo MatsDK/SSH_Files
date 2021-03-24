@@ -16,7 +16,12 @@ interface DataItem {
 }
 
 interface FilesProps {
-  selected: { selectedData: any[]; setSelectedData: any; selection: any };
+  selected: {
+    selectedData: any[];
+    setSelectedData: any;
+    selection: any;
+    clearSelected: any;
+  };
   data: object[];
   update: any;
   loc: any;
@@ -28,23 +33,13 @@ const Files = ({
   update,
   loc: { path, location, sshData, setPath },
   drive,
-  selected: { selectedData, setSelectedData, selection },
+  selected: { selectedData, clearSelected },
 }: FilesProps) => {
   const [items, setItems] = useState<object[]>(data);
 
   useEffect(() => {
     setItems(data);
   }, [data]);
-
-  const clearSelected = () => {
-    const items = selection.getSelection();
-    selection.clearSelection();
-    items.forEach((x: Element) => {
-      selection.deselect(x);
-      x.classList.remove("selected");
-    });
-    setSelectedData([]);
-  };
 
   const dragStart = (e: any, child: DataItem) => {
     let thisData: any[] = [];
@@ -127,9 +122,11 @@ const Files = ({
     });
   };
 
-  const dragOver = (e: any) => {
+  const dragOver = (e: any, child) => {
     e.preventDefault();
     e.stopPropagation();
+
+    // console.log(child, e.target);
   };
 
   const dragEnd = () => {
@@ -153,7 +150,7 @@ const Files = ({
             drop(e, { name: "/", size: 0, path: "/", type: "directory", id: 0 })
           }
           onClick={() => setPath("/")}
-          onDragOver={dragOver}
+          onDragOver={(e) => dragOver(e, "root")}
         >
           Root
         </div>
@@ -167,7 +164,7 @@ const Files = ({
               setPath(thisPath.join("/"));
             }}
             key={i}
-            onDragOver={dragOver}
+            onDragOver={(e) => dragOver(e, folder)}
             onDrop={(e) => {
               drop(e, {
                 name: folder,
@@ -198,7 +195,7 @@ const Files = ({
               className={"item"}
               onDragStart={(e) => dragStart(e, child)}
               draggable={true}
-              onDragOver={dragOver}
+              onDragOver={(e) => dragOver(e, child)}
               onDrop={(e) => drop(e, child)}
               onDoubleClick={() => update(child)}
               onDragEnd={dragEnd}
@@ -226,7 +223,7 @@ const Files = ({
         <div
           onClick={clearSelected}
           className="ContainerPlaceHolder"
-          onDragOver={dragOver}
+          onDragOver={(e) => dragOver(e, path)}
           onDrop={(e) =>
             drop(e, {
               name: path.split("/")[path.split("/").length - 1],

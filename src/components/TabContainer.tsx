@@ -15,7 +15,6 @@ const TabContainer = (props: TabContainerProps) => {
     <div
       style={{
         width: "50vw",
-        height: "100vh",
         display: "flex",
         flexDirection: "column",
       }}
@@ -32,10 +31,6 @@ const TabContainer = (props: TabContainerProps) => {
               }}
             >
               <p>{tab.name}</p>
-              {/* {active ? (
-                <p style={{ color: "blue", margin: "0" }}>{tab.name}</p>
-              ) : (
-              )} */}
             </div>
           );
         })}

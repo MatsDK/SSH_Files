@@ -2,6 +2,7 @@ import axios from "axios";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import _ from "../src/parseData";
 import Container from "../src/components/Container";
+import Layout from "src/components/Layout";
 
 interface indexProps {
   drives: object[];
@@ -10,26 +11,33 @@ interface indexProps {
 
 const Index = (props: indexProps): JSX.Element => {
   return (
-    <div className="Page" style={{ display: "flex" }}>
-      <Container
-        tabs={[
-          { name: "local1", location: "local" },
-          { name: "local2", location: "local" },
-        ]}
-        data={props.localData}
-        drives={props.drives}
-        location="local"
-      />
-      <Container
-        tabs={[
-          { name: "remote1", location: "remote" },
-          { name: "remote2", location: "remote" },
-        ]}
-        data={props.localData}
-        drives={props.drives}
-        location="local"
-      />
-    </div>
+    <Layout>
+      <div className="MainPage">
+        <div className="SideContainer">
+          <Container
+            tabs={[
+              { name: "local1", location: "local" },
+              { name: "local2", location: "local" },
+            ]}
+            data={props.localData}
+            drives={props.drives}
+            location="local"
+          />
+        </div>
+        <pre className="ContainersMiddle"></pre>
+        <div className="SideContainer">
+          <Container
+            tabs={[
+              { name: "remote1", location: "remote" },
+              { name: "remote2", location: "remote" },
+            ]}
+            data={props.localData}
+            drives={props.drives}
+            location="local"
+          />
+        </div>
+      </div>
+    </Layout>
   );
 };
 
