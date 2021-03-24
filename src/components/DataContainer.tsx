@@ -2,12 +2,14 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import _ from "../parseData";
 import Files from "./Files";
+import SelectionArea from "@simonwep/selection-js";
 
 interface dataContainerProps {
   data: { children: object[] };
   location: string;
   sshData?: object;
   drives?: any[];
+  selected: { selectedData: any; setSelectedData: any };
 }
 
 const DataContainer = (props: dataContainerProps) => {
@@ -18,10 +20,55 @@ const DataContainer = (props: dataContainerProps) => {
     props.drives?.[0].name || ""
   );
   const [data, setData] = useState<object[]>([]);
+  const [selection, setSelection] = useState<any>();
 
   useEffect(() => {
     setData(props.data.children);
   }, [props.data.children]);
+
+  useEffect(() => {
+    const newSelection = new SelectionArea({
+      selectables: [".item"],
+      startareas: [".rightDataItem", ".ContainerPlaceHolder"],
+      scrolling: {
+        speedDivider: 10,
+        manualSpeed: 750,
+      },
+      boundaries: [".Container"],
+    })
+      .on("start", ({ store, event }: { store: any; event: any }) => {
+        if (!event!.ctrlKey && !event!.metaKey) {
+          for (const el of store.stored) {
+            el.classList.remove("selected");
+          }
+
+          newSelection.clearSelection();
+        }
+      })
+      .on("move", ({ store }) => {
+        if (store.selected !== props.selected.selectedData) {
+          const thisEvent = event as any;
+          if (thisEvent!.ctrlKey)
+            props.selected.setSelectedData([
+              ...store.selected,
+              ...store.stored,
+            ]);
+          else props.selected.setSelectedData(store.selected);
+        }
+        for (const el of store.changed.added) {
+          el.classList.add("selected");
+        }
+
+        for (const el of store.changed.removed) {
+          el.classList.remove("selected");
+        }
+      })
+      .on("stop", () => {
+        newSelection.keepSelection();
+      });
+    console.log("new Selection Area");
+    setSelection(newSelection);
+  }, []);
 
   useEffect(() => {
     if (path === "/" && props.drives && activeDrive === props.drives?.[0].name)
@@ -108,6 +155,7 @@ const DataContainer = (props: dataContainerProps) => {
         <div className="Page" style={{ width: "45vw", marginRight: "20px" }}>
           <Files
             data={data}
+            selected={{ ...props.selected, selection }}
             loc={{
               path,
               location: props.location,

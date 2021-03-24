@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DataContainer from "./DataContainer";
 import SshConnect from "./SshConnect";
 import TabContainer from "./TabContainer";
@@ -17,11 +17,19 @@ interface ContainerProps {
 
 const Container = (props: ContainerProps) => {
   const [selected, setSelected] = useState<number>(0);
+  const [selectedData, setSelectedData] = useState<any[]>([]);
   const [tabs] = useState<TabType[]>(props.tabs);
 
   const setActive = (activeIndex: number) => {
     setSelected(activeIndex);
   };
+
+  useEffect(() => {
+    selectedData.forEach((x) => {
+      x.classList.remove("selected");
+    });
+    setSelectedData([]);
+  }, [selected]);
 
   return (
     <div>
@@ -34,9 +42,10 @@ const Container = (props: ContainerProps) => {
                   data={props.data}
                   drives={props.drives}
                   location="local"
+                  selected={{ selectedData, setSelectedData }}
                 />
               ) : (
-                <SshConnect />
+                <SshConnect selected={{ selectedData, setSelectedData }} />
               )}
             </Tab>
           </div>

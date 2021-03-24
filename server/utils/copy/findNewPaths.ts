@@ -81,7 +81,7 @@ export const findValidNewPath = (newPath: string, type: string): string => {
     }
   } else if (type === "file") {
     const ext = path.extname(newPath),
-      pathWithoutExt = newPath.replace(new RegExp(ext, "m"), "");
+      pathWithoutExt = newPath.slice(0, newPath.lastIndexOf(ext));
 
     while (!isValid) {
       let currentPath: string = pathWithoutExt + `${newExtension}` + ext;

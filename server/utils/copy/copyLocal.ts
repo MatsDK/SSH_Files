@@ -62,7 +62,6 @@ export const copyLocal = async ({
         let dataPathName: string = `${dataItem.to}/${
           dataItem.from.split("/")[dataItem.from.split("/").length - 1]
         }`;
-
         dataPathName = findValidNewPath(
           dataPathName,
           dataItem.fromType === "directory" ? "dir" : "file"

@@ -20,26 +20,26 @@ const TabContainer = (props: TabContainerProps) => {
         flexDirection: "column",
       }}
     >
-      <div style={{ display: "flex", height: "20px" }}>
+      <div className="TabsBar">
         {props.tabs.map((tab: tabType, i: number) => {
           const active = i === props.selected ? "active" : "";
           return (
-            <div key={i}>
-              {active ? (
+            <div
+              className={`TabsNavBarTab ${active && "ActiveTabsNavBarTab"}`}
+              key={i}
+              onClick={() => {
+                props.setSelected(i);
+              }}
+            >
+              <p>{tab.name}</p>
+              {/* {active ? (
                 <p style={{ color: "blue", margin: "0" }}>{tab.name}</p>
               ) : (
-                <p
-                  style={{ margin: "0" }}
-                  onClick={() => {
-                    props.setSelected(i);
-                  }}
-                >
-                  {tab.name}
-                </p>
-              )}
+              )} */}
             </div>
           );
         })}
+        <div className="TabsBarPlaceholder"></div>
       </div>
       <div className="PageWrapper">{props.children}</div>
     </div>

@@ -3,7 +3,6 @@ import filesize from "filesize";
 import mime from "mime";
 import { useEffect, useState } from "react";
 import _ from "../parseData";
-import SelectionArea from "@simonwep/selection-js";
 
 const order = ["directory", "file"];
 
@@ -17,6 +16,7 @@ interface DataItem {
 }
 
 interface FilesProps {
+  selected: { selectedData: any[]; setSelectedData: any; selection: any };
   data: object[];
   update: any;
   loc: any;
@@ -28,54 +28,13 @@ const Files = ({
   update,
   loc: { path, location, sshData, setPath },
   drive,
+  selected: { selectedData, setSelectedData, selection },
 }: FilesProps) => {
   const [items, setItems] = useState<object[]>(data);
-  const [selection, setSelection] = useState<any>();
 
-  const [selectedData, setSelectedData] = useState<any[]>([]);
   useEffect(() => {
     setItems(data);
   }, [data]);
-
-  useEffect(() => {
-    const newSelection = new SelectionArea({
-      selectables: [".item"],
-      startareas: [".rightDataItem", ".ContainerPlaceHolder"],
-      scrolling: {
-        speedDivider: 10,
-        manualSpeed: 750,
-      },
-      boundaries: [".Container"],
-    })
-      .on("start", ({ store, event }) => {
-        if (!event!.ctrlKey && !event!.metaKey) {
-          for (const el of store.stored) {
-            el.classList.remove("selected");
-          }
-
-          newSelection.clearSelection();
-        }
-      })
-      .on("move", ({ store }) => {
-        if (store.selected !== selectedData) {
-          if (event!.ctrlKey)
-            setSelectedData([...store.selected, ...store.stored]);
-          else setSelectedData(store.selected);
-        }
-        for (const el of store.changed.added) {
-          el.classList.add("selected");
-        }
-
-        for (const el of store.changed.removed) {
-          el.classList.remove("selected");
-        }
-      })
-      .on("stop", () => {
-        newSelection.keepSelection();
-      });
-
-    setSelection(newSelection);
-  }, []);
 
   const clearSelected = () => {
     const items = selection.getSelection();
@@ -84,6 +43,7 @@ const Files = ({
       selection.deselect(x);
       x.classList.remove("selected");
     });
+    setSelectedData([]);
   };
 
   const dragStart = (e: any, child: DataItem) => {

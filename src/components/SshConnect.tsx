@@ -3,7 +3,11 @@ import { useState } from "react";
 import _ from "../parseData";
 import DataContainer from "./DataContainer";
 
-const SshConnect = () => {
+interface sshConnectProps {
+  selected: { setSelectedData: any; selectedData: any };
+}
+
+const SshConnect = (props: sshConnectProps) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [isConnected, setIsConnected] = useState<boolean>(false);
   const [sshData, setSshData] = useState<object[]>([]);
@@ -83,6 +87,9 @@ const SshConnect = () => {
           data={{ children: sshData }}
           sshData={sshConnectionData}
           location="remote"
+          selected={{
+            ...props.selected,
+          }}
         />
       )}
     </div>
