@@ -117,6 +117,8 @@ body,
   width: 50vw;
   overflow-y: hidden;
   overflow-x: scroll;
+  position: relative;
+  overflow: visible;
 }
 
 .TabsBar::-webkit-scrollbar {
@@ -199,4 +201,66 @@ body,
 
 .Select {
   margin-left: 5px;
+}
+
+.NewTabButton {
+  background-color: transparent;
+  border: 0;
+  height: 100%;
+  border-bottom: 1px solid var(--secondaryBG);
+  outline: none;
+  display: grid;
+  cursor: pointer;
+  place-items: center;
+  padding-left: 4px;
+}
+
+.NewTabButton svg {
+  height: 18px;
+  padding: 1px;
+  border-radius: 3px;
+}
+.NewTabButton svg:hover g {
+  fill: var(--mainTextColor);
+}
+
+.NewTabButton svg g {
+  transition: 0.15s ease;
+  fill: var(--secondaryTextColor);
+}
+
+.NewTabDropDown {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--primaryBG);
+  padding: 2px;
+  border: 1px solid var(--secondaryBG);
+  border-radius: 4px;
+  transform: translateY(30px);
+  position: absolute;
+  z-index: 20000;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.NewTabDropDown.activeDropDown {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.NewTabDropDown button:first-child {
+  border-bottom: 1px solid var(--secondaryBG);
+}
+
+.NewTabDropDown button {
+  outline: none;
+  border: 0;
+  background-color: transparent;
+  color: var(--secondaryTextColor);
+  padding: 4px 10px;
+  cursor: pointer;
+}
+
+.NewTabDropDown button:hover {
+  background-color: var(--secondaryBG);
 }

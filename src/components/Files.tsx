@@ -1,10 +1,10 @@
 import axios from "axios";
-import filesize from "filesize";
-import mime from "mime";
+// import filesize from "filesize";
+// import mime from "mime";
+// const order = ["directory", "file"];
 import { useEffect, useState } from "react";
 import _ from "../parseData";
-
-const order = ["directory", "file"];
+import DataTable from "./DataTable";
 
 interface DataItem {
   name: string;
@@ -133,6 +133,7 @@ const Files = ({
     const dragIcon = document.querySelector(".TmpDragIcon");
     dragIcon?.remove();
   };
+
   return (
     <div
       style={{
@@ -185,41 +186,14 @@ const Files = ({
         ))}
       </div>
       <div className={"Container"}>
-        {items
-          .sort(
-            (a: any, b: any) => order.indexOf(a.type) - order.indexOf(b.type)
-          )
-          .map((child: any, i: number) => (
-            <div
-              id={`${child.id}`}
-              className={"item"}
-              onDragStart={(e) => dragStart(e, child)}
-              draggable={true}
-              onDragOver={(e) => dragOver(e, child)}
-              onDrop={(e) => drop(e, child)}
-              onDoubleClick={() => update(child)}
-              onDragEnd={dragEnd}
-              key={i}
-              style={{ display: "flex", justifyContent: "space-between" }}
-            >
-              <div className={"name"}>{child.name}</div>
-
-              <div
-                className={"rightDataItem"}
-                style={{
-                  flex: "1",
-                  display: "flex",
-                  justifyContent: "flex-end",
-                }}
-              >
-                {filesize(child.size)}{" "}
-                {child.type === "file"
-                  ? mime.getType(child.name) || "file"
-                  : "directory"}
-              </div>
-            </div>
-          ))}
-
+        <DataTable
+          items={items}
+          update={update}
+          dragStart={dragStart}
+          dragOver={dragOver}
+          drop={drop}
+          dragEnd={dragEnd}
+        />
         <div
           onClick={clearSelected}
           className="ContainerPlaceHolder"

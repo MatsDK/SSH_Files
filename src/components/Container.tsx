@@ -18,7 +18,8 @@ interface ContainerProps {
 const Container = (props: ContainerProps) => {
   const [selected, setSelected] = useState<number>(0);
   const [selectedData, setSelectedData] = useState<any[]>([]);
-  const [tabs] = useState<TabType[]>(props.tabs);
+  const [dropDownState, setDropDownState] = useState<boolean>(false);
+  const [tabs, setTabs] = useState<TabType[]>(props.tabs);
 
   const setActive = (activeIndex: number) => {
     setSelected(activeIndex);
@@ -31,9 +32,23 @@ const Container = (props: ContainerProps) => {
     setSelectedData([]);
   }, [selected]);
 
+  const newTab = (location: string) => {
+    const idx = tabs.length;
+    const newTab: TabType = { name: `${location}${idx}`, location };
+    setTabs((tabs) => [...tabs, newTab]);
+    setSelected(idx);
+    setDropDownState(false);
+  };
+
   return (
     <div>
-      <TabContainer tabs={tabs} setSelected={setActive} selected={selected}>
+      <TabContainer
+        newTab={newTab}
+        tabs={tabs}
+        setSelected={setActive}
+        selected={selected}
+        dropdown={{ dropDownState, setDropDownState }}
+      >
         {tabs.map((tab: TabType, i: number) => (
           <div className="Page" style={{ width: "50vw" }} key={i}>
             <Tab isSelected={selected === i}>
