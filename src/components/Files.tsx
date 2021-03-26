@@ -189,25 +189,13 @@ const Files = ({
         <DataTable
           items={items}
           update={update}
+          clearSelected={clearSelected}
           dragStart={dragStart}
           dragOver={dragOver}
           drop={drop}
           dragEnd={dragEnd}
+          path={path}
         />
-        <div
-          onClick={clearSelected}
-          className="ContainerPlaceHolder"
-          onDragOver={(e) => dragOver(e, path)}
-          onDrop={(e) =>
-            drop(e, {
-              name: path.split("/")[path.split("/").length - 1],
-              size: 0,
-              path,
-              type: "directory",
-              id: 0,
-            })
-          }
-        ></div>
       </div>
     </div>
   );

@@ -33,7 +33,10 @@ body,
 }
 
 .item {
-  height: 27px;
+  padding: 1px 10px;
+  height: 25px;
+  display: flex;
+  justify-content: space-between;
   border-bottom: 1px solid var(--secondaryBGLight);
   background-color: var(--primaryBG);
 }
@@ -57,21 +60,25 @@ body,
   display: flex;
   flex-direction: column;
   flex: 1;
-  overflow: auto;
-  padding-right: 10px;
+  overflow: hidden;
   margin-right: 4px;
 }
 
-.Container::-webkit-scrollbar {
+.dataScrollContainer {
+  overflow: auto;
+  height: 100%;
+}
+
+.dataScrollContainer::-webkit-scrollbar {
   width: 5px;
   transform: translateY(-4px);
 }
 
-.Container::-webkit-scrollbar-track {
+.dataScrollContainer::-webkit-scrollbar-track {
   background: transparent;
 }
 
-.Container::-webkit-scrollbar-thumb {
+.dataScrollContainer::-webkit-scrollbar-thumb {
   border-radius: 2px;
   background-color: var(--lightTextColor);
 }
@@ -115,10 +122,10 @@ body,
   display: flex;
   height: 35px;
   width: 50vw;
-  overflow-y: hidden;
+  overflow-y: visible;
   overflow-x: scroll;
   position: relative;
-  overflow: visible;
+  overflow-y: hidden;
 }
 
 .TabsBar::-webkit-scrollbar {
@@ -188,10 +195,19 @@ body,
 }
 
 .name {
-  max-width: 60%;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
+  width: 60%;
+}
+
+.item span {
+  flex: 1;
+  max-width: auto;
+  display: flex;
+  justify-content: center;
+  white-space: nowrap;
+  max-width: 100%;
 }
 
 .rightDataItem {
@@ -215,21 +231,23 @@ body,
   padding-left: 4px;
 }
 
-.NewTabButton svg {
-  height: 18px;
+.NewTabButton .NewTabIcon {
+  margin-top: 2px;
   padding: 1px;
   border-radius: 3px;
+  color: var(--secondaryTextColor);
+  transition: 0.15s ease;
 }
-.NewTabButton svg:hover g {
-  fill: var(--mainTextColor);
+.NewTabButton:hover .NewTabIcon {
+  color: var(--mainTextColor);
 }
 
-.NewTabButton svg g {
-  transition: 0.15s ease;
-  fill: var(--secondaryTextColor);
+.NewTabButton.ActiveNewTabButton .NewTabIcon {
+  color: var(--mainTextColor);
 }
 
 .NewTabDropDown {
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.397);
   display: flex;
   flex-direction: column;
   background-color: var(--primaryBG);
@@ -237,7 +255,7 @@ body,
   border: 1px solid var(--secondaryBG);
   border-radius: 4px;
   transform: translateY(30px);
-  position: absolute;
+  position: fixed;
   z-index: 20000;
   opacity: 0;
   pointer-events: none;
@@ -248,11 +266,11 @@ body,
   pointer-events: all;
 }
 
-.NewTabDropDown button:first-child {
+.NewTabDropDown span:first-child {
   border-bottom: 1px solid var(--secondaryBG);
 }
 
-.NewTabDropDown button {
+.NewTabDropDown span {
   outline: none;
   border: 0;
   background-color: transparent;
@@ -261,6 +279,50 @@ body,
   cursor: pointer;
 }
 
-.NewTabDropDown button:hover {
+.NewTabDropDown span:hover {
   background-color: var(--secondaryBG);
+}
+
+.dataTableHeading {
+  display: flex;
+  border-bottom: 1px solid var(--secondaryBG);
+  justify-content: space-between;
+}
+
+.HeadingButton {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  background-color: transparent;
+  border: 0;
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--mainTextColor);
+  height: 25px;
+  outline: none;
+}
+
+.HeadingArrow {
+  margin-left: 4px;
+  width: 18px;
+  height: 18px;
+}
+
+.HeadingArrow svg {
+  width: 18px !important;
+  height: 18px !important;
+}
+
+.HeadingArrow.HeadingArrowDown {
+  transform: rotate(90deg);
+}
+.HeadingArrow.HeadingArrowUp {
+  transform: rotate(-90deg);
+}
+
+.NameHeadingButton {
+  flex: 0;
+  justify-content: flex-start;
+  width: 60% !important;
+  min-width: 60%;
 }

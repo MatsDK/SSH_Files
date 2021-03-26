@@ -34,7 +34,7 @@ const Container = (props: ContainerProps) => {
 
   const newTab = (location: string) => {
     const idx = tabs.length;
-    const newTab: TabType = { name: `${location}${idx}`, location };
+    const newTab: TabType = { name: `${location}${idx + 1}`, location };
     setTabs((tabs) => [...tabs, newTab]);
     setSelected(idx);
     setDropDownState(false);

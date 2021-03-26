@@ -35,7 +35,7 @@ const DataContainer = (props: dataContainerProps) => {
         speedDivider: 10,
         manualSpeed: 750,
       },
-      boundaries: [".Container"],
+      boundaries: [".dataScrollContainer"],
     })
       .on("start", ({ store, event }: { store: any; event: any }) => {
         if (!event!.ctrlKey && !event!.metaKey) {
@@ -56,6 +56,7 @@ const DataContainer = (props: dataContainerProps) => {
             ]);
           else props.selected.setSelectedData(store.selected);
         }
+
         for (const el of store.changed.added) {
           el.classList.add("selected");
         }
