@@ -1,10 +1,8 @@
 import axios from "axios";
-// import filesize from "filesize";
-// import mime from "mime";
-// const order = ["directory", "file"];
 import { useEffect, useState } from "react";
 import _ from "../parseData";
 import DataTable from "./DataTable";
+import { ArrowRight } from "@material-ui/icons";
 
 interface DataItem {
   name: string;
@@ -82,6 +80,8 @@ const Files = ({
   };
 
   const drop = (e: any, child: DataItem) => {
+    e.target.classList.remove("dragOverPath");
+
     const dragIcon = document.querySelector(".TmpDragIcon");
     dragIcon?.remove();
 
@@ -125,13 +125,21 @@ const Files = ({
   const dragOver = (e: any, child) => {
     e.preventDefault();
     e.stopPropagation();
-
-    // console.log(child, e.target);
   };
 
   const dragEnd = () => {
     const dragIcon = document.querySelector(".TmpDragIcon");
     dragIcon?.remove();
+  };
+
+  const dragEnterPath = (e, child) => {
+    e.preventDefault();
+    e.stopPropagation();
+    e.target.classList.add("dragOverPath");
+  };
+
+  const dragLeavePath = (e) => {
+    e.target.classList.remove("dragOverPath");
   };
 
   return (
@@ -145,43 +153,55 @@ const Files = ({
       }}
       className=".Page"
     >
-      <div style={{ display: "flex" }}>
+      <div className="PathWrapper" style={{ display: "flex" }}>
         <div
+          className={path === "/" ? "CurrPathName" : "PathName"}
           onDrop={(e) =>
             drop(e, { name: "/", size: 0, path: "/", type: "directory", id: 0 })
           }
           onClick={() => setPath("/")}
-          onDragOver={(e) => dragOver(e, "root")}
+          onDragOver={(e) => dragEnterPath(e, "root")}
+          onDragLeave={dragLeavePath}
         >
           Root
         </div>
         {path.split("/").map((folder: any, i: number) => (
-          <div
-            onClick={() => {
-              if (path.split("/").length - 1 === i) return;
-              const thisPath = path.split("/"),
-                idx = path.split("/").indexOf(folder);
-              thisPath.length = idx + 1;
-              setPath(thisPath.join("/"));
-            }}
-            key={i}
-            onDragOver={(e) => dragOver(e, folder)}
-            onDrop={(e) => {
-              drop(e, {
-                name: folder,
-                size: 0,
-                path: path
-                  .split("/")
-                  .slice(0, path.split("/").lastIndexOf(folder) + 1)
-                  .join("/"),
-                type: "directory",
-                id: 0,
-              });
-            }}
-          >
-            {folder}
-
-            {path.split("/").length - 1 !== i && "/"}
+          <div key={i} style={{ display: "flex" }}>
+            <span
+              className={
+                path.split("/").length - 1 === i
+                  ? "CurrentPathName"
+                  : "PathName"
+              }
+              onClick={() => {
+                if (path.split("/").length - 1 === i) return;
+                const thisPath = path.split("/"),
+                  idx = path.split("/").indexOf(folder);
+                thisPath.length = idx + 1;
+                setPath(thisPath.join("/"));
+              }}
+              onDragOver={(e) => dragEnterPath(e, folder)}
+              onDragLeave={dragLeavePath}
+              onDrop={(e) => {
+                drop(e, {
+                  name: folder,
+                  size: 0,
+                  path: path
+                    .split("/")
+                    .slice(0, path.split("/").lastIndexOf(folder) + 1)
+                    .join("/"),
+                  type: "directory",
+                  id: 0,
+                });
+              }}
+            >
+              {folder}
+            </span>
+            <div className="PathArrow">
+              {path.split("/").length - 1 !== i &&
+                !!path.split("/")[1] &&
+                path.split("/").length >= 2 && <ArrowRight />}
+            </div>
           </div>
         ))}
       </div>

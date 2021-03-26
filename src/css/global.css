@@ -33,6 +33,7 @@ body,
 }
 
 .item {
+  margin-left: 4px;
   padding: 1px 10px;
   height: 25px;
   display: flex;
@@ -201,13 +202,16 @@ body,
   width: 60%;
 }
 
+.item.DragOver {
+  border: 2px solid red;
+}
+
 .item span {
   flex: 1;
   max-width: auto;
   display: flex;
   justify-content: center;
   white-space: nowrap;
-  max-width: 100%;
 }
 
 .rightDataItem {
@@ -325,4 +329,47 @@ body,
   justify-content: flex-start;
   width: 60% !important;
   min-width: 60%;
+  padding-left: 15px;
+}
+
+.dragOverPath {
+  background-color: var(--secondaryBGLight);
+}
+
+.PathName {
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 0 1px;
+  color: var(--secondaryTextColor);
+  transition: 0.15s ease;
+}
+
+.PathName:hover {
+  color: var(--mainTextColor);
+}
+
+.currentPathName {
+  padding: 0 1px;
+  border-radius: 4px;
+
+  cursor: inherit;
+  color: var(--mainTextColor);
+}
+
+.currentPathName:hover {
+  color: var(--mainTextColor);
+}
+
+.PathArrow {
+  height: 24px;
+  margin-top: 2px;
+  color: var(--secondaryTextColor);
+}
+
+.PathWrapper {
+  white-space: nowrap;
+  display: flex;
+  font-size: 18px;
+  margin: 0 5px 5px 5px;
+  align-items: center;
 }

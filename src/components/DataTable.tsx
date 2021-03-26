@@ -121,14 +121,7 @@ const DataTable = ({ items, path, ...funcs }: DataTableProps) => {
               style={{ display: "flex", justifyContent: "space-between" }}
             >
               <div className={"name"}>{child.name}</div>
-              {/* <div
-                className={"rightDataItem"}
-                style={{
-                  flex: "1",
-                  display: "flex",
-                  justifyContent: "flex-end",
-                }}
-              > */}
+
               <span>{filesize(child.size)} </span>
               <span>
                 {child.type === "file"
@@ -136,7 +129,6 @@ const DataTable = ({ items, path, ...funcs }: DataTableProps) => {
                   : "Folder"}
               </span>
             </div>
-            // </div>
           ))}
         <div
           onClick={funcs.clearSelected}

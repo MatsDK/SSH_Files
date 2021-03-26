@@ -30,7 +30,7 @@ const DataContainer = (props: dataContainerProps) => {
   useEffect(() => {
     const newSelection = new SelectionArea({
       selectables: [".item"],
-      startareas: [".rightDataItem", ".ContainerPlaceHolder"],
+      startareas: [".item span", ".ContainerPlaceHolder"],
       scrolling: {
         speedDivider: 10,
         manualSpeed: 750,
