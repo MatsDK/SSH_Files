@@ -4,6 +4,7 @@ import _ from "../parseData";
 import Files from "./Files";
 import SelectionArea from "@simonwep/selection-js";
 import SelectDrive from "./SelectDrive";
+import { RefreshOutlined } from "@material-ui/icons";
 
 interface dataContainerProps {
   data: { children: object[] };
@@ -123,13 +124,16 @@ const DataContainer = (props: dataContainerProps) => {
       return setPathChanged(true);
     }
     setPath("/");
-    setLoading(true);
+    fetchData(true);
+  }, [activeDrive]);
 
+  const fetchData = (driveChanged: boolean) => {
+    setLoading(true);
     axios({
       method: "POST",
       url: "http://localhost:3001/data",
       data: {
-        path: `${activeDrive}/`,
+        path: `${activeDrive}/${!driveChanged ? path : ""}`,
         location: props.location,
         sshData: props.sshData || undefined,
       },
@@ -143,7 +147,7 @@ const DataContainer = (props: dataContainerProps) => {
       if (props.location === "remote")
         setData(_.parseRemoteData(res.data.data[0].contents));
     });
-  }, [activeDrive]);
+  };
 
   return (
     <div className="Page" style={{ flex: 1 }}>
@@ -151,6 +155,9 @@ const DataContainer = (props: dataContainerProps) => {
         {props.drives && (
           <SelectDrive drives={props.drives} setActiveDrive={setActiveDrive} />
         )}
+        <div onClick={() => fetchData(false)} className="RefreshBtn">
+          <RefreshOutlined />
+        </div>
       </div>
       {loading ? (
         <div style={{ width: "45vw", marginRight: "20px" }}>Loading...</div>

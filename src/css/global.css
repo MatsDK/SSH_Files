@@ -233,6 +233,7 @@ body,
   cursor: pointer;
   place-items: center;
   padding-left: 4px;
+  padding-right: 30px;
 }
 
 .NewTabButton .NewTabIcon {
@@ -303,6 +304,7 @@ body,
   font-weight: 600;
   color: var(--mainTextColor);
   height: 25px;
+  cursor: pointer;
   outline: none;
 }
 
@@ -372,4 +374,21 @@ body,
   font-size: 18px;
   margin: 0 5px 5px 5px;
   align-items: center;
+}
+
+.RefreshBtn {
+  border: 1px solid var(--lightTextColor);
+  border-radius: 3px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  padding: 0 1px;
+  cursor: pointer;
+  color: var(--secondaryTextColor);
+  margin-left: 10px;
+  transition: 0.15s ease;
+}
+
+.RefreshBtn:hover {
+  color: var(--mainTextColor);
 }
