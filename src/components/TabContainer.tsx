@@ -1,4 +1,5 @@
 import { Add } from "@material-ui/icons";
+import Tab from "./Tab";
 
 interface tabType {
   name: string;
@@ -12,14 +13,10 @@ interface TabContainerProps {
   tabs: tabType[];
   newTab: any;
   dropdown: { dropDownState: any; setDropDownState: any };
+  closeTab: Function;
 }
 
 const TabContainer = (props: TabContainerProps) => {
-  const tabMenu = (e: any, tab: tabType) => {
-    e.preventDefault();
-    console.log(tab);
-  };
-
   return (
     <div
       style={{
@@ -29,33 +26,25 @@ const TabContainer = (props: TabContainerProps) => {
       }}
     >
       <div className="TabsBar">
-        {props.tabs.map((tab: tabType, i: number) => {
-          const active = i === props.selected ? "active" : "";
+        {props.tabs.map((tab: tabType, idx: number) => {
+          const active = idx === props.selected ? "active" : "";
           return (
-            <div
-              className={`TabsNavBarTab ${active && "ActiveTabsNavBarTab"}`}
-              key={i}
-              onContextMenu={(e) => tabMenu(e, tab)}
-              onClick={() => {
-                props.setSelected(i);
-              }}
-            >
-              <p
-                style={{
-                  color: active
-                    ? "var(--mainTextColor)"
-                    : "var(--secondaryTextColor)",
-                }}
-              >
-                {tab.name}
-              </p>
-            </div>
+            <Tab
+              key={idx}
+              idx={idx}
+              setSelected={props.setSelected}
+              tab={tab}
+              active={active}
+              closeTab={props.closeTab}
+            />
           );
         })}
         <button
-          onClick={() =>
-            props.dropdown.setDropDownState(!props.dropdown.dropDownState)
-          }
+          onClick={() => {
+            props.dropdown.setDropDownState(!props.dropdown.dropDownState);
+          }}
+          tabIndex={0}
+          onBlur={() => props.dropdown.setDropDownState(false)}
           className={`NewTabButton${
             props.dropdown.dropDownState ? " ActiveNewTabButton" : ""
           }`}

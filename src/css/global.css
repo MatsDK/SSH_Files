@@ -17,6 +17,8 @@ body,
   margin: 0;
   height: 100%;
   width: 100%;
+  outline: none !important;
+  border: 0;
   background-color: var(--primaryBG);
   overflow: hidden;
   color: var(--mainTextColor);
@@ -120,6 +122,7 @@ body,
 }
 
 .TabsBar {
+  outline: none;
   display: flex;
   height: 35px;
   width: 50vw;
@@ -196,6 +199,20 @@ body,
 }
 
 .name {
+  display: flex;
+  align-items: center;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 60%;
+}
+.name svg {
+  height: 20px;
+  fill: var(--secondaryTextColor);
+  margin-right: 4px;
+}
+
+.name .fileName {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
@@ -391,4 +408,45 @@ body,
 
 .RefreshBtn:hover {
   color: var(--mainTextColor);
+}
+
+.TabsNavBarTab:focus {
+  outline: none;
+}
+
+.tabWrapper {
+  outline: none;
+  position: relative;
+}
+
+.tabDropDown {
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.397);
+  display: flex;
+  flex-direction: column;
+  background-color: var(--primaryBG);
+  padding: 2px;
+  border: 1px solid var(--secondaryBG);
+  border-radius: 4px;
+  position: fixed;
+  z-index: 20000;
+  font-size: 14px;
+  margin-left: -4px;
+}
+.tabDropDown span:first-child {
+  border-bottom: 1px solid var(--secondaryBG);
+}
+
+.tabDropDown span {
+  margin: 0;
+  outline: none;
+  border: 0;
+  background-color: transparent;
+  color: var(--secondaryTextColor);
+  padding: 2px 10px;
+  cursor: pointer;
+  pointer-events: all;
+}
+
+.tabDropDown span:hover {
+  background-color: var(--secondaryBG);
 }

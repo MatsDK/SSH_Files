@@ -34,10 +34,15 @@ const Container = (props: ContainerProps) => {
 
   const newTab = (location: string) => {
     const idx = tabs.length;
-    const newTab: TabType = { name: `${location}${idx + 1}`, location };
+
+    const newTab: TabType = { name: `${location}`, location };
     setTabs((tabs) => [...tabs, newTab]);
     setSelected(idx);
     setDropDownState(false);
+  };
+
+  const closeTab = (idx: number) => {
+    setActive(0);
   };
 
   return (
@@ -47,11 +52,12 @@ const Container = (props: ContainerProps) => {
         tabs={tabs}
         setSelected={setActive}
         selected={selected}
+        closeTab={closeTab}
         dropdown={{ dropDownState, setDropDownState }}
       >
         {tabs.map((tab: TabType, i: number) => (
           <div className="Page" style={{ width: "50vw" }} key={i}>
-            <Tab isSelected={selected === i}>
+            <TabPage isSelected={selected === i}>
               {tab.location === "local" ? (
                 <DataContainer
                   data={props.data}
@@ -62,7 +68,7 @@ const Container = (props: ContainerProps) => {
               ) : (
                 <SshConnect selected={{ selectedData, setSelectedData }} />
               )}
-            </Tab>
+            </TabPage>
           </div>
         ))}
       </TabContainer>
@@ -75,7 +81,7 @@ interface TabProps {
   children: JSX.Element;
 }
 
-const Tab = (props: TabProps) => {
+const TabPage = (props: TabProps) => {
   return (
     <div className={props.isSelected ? "ActivePage" : "inActivePage"}>
       {props.children}

@@ -1,6 +1,6 @@
 import filesize from "filesize";
 import mime from "mime";
-import { ArrowForwardIos } from "@material-ui/icons";
+import { ArrowForwardIos, Folder, InsertDriveFile } from "@material-ui/icons";
 import { useEffect, useState } from "react";
 
 interface DataTableProps {
@@ -120,7 +120,10 @@ const DataTable = ({ items, path, ...funcs }: DataTableProps) => {
               key={i}
               style={{ display: "flex", justifyContent: "space-between" }}
             >
-              <div className={"name"}>{child.name}</div>
+              <div className={"name"}>
+                {child.type !== "file" ? <Folder /> : <InsertDriveFile />}
+                <p className="fileName">{child.name}</p>
+              </div>
 
               <span>{filesize(child.size)} </span>
               <span>
