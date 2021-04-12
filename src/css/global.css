@@ -450,3 +450,49 @@ body,
 .tabDropDown span:hover {
   background-color: var(--secondaryBG);
 }
+
+.sshConnectForm {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+}
+
+.sshConnectForm input {
+  background-color: var(--primaryBG);
+  border: 1px solid var(--secondaryBG);
+  border-radius: 5px;
+  color: var(--mainTextColor);
+  padding: 4px 6px;
+  font-size: 18px;
+  outline: none;
+  margin: 4px;
+  transition: 0.15s ease;
+}
+.sshConnectForm input:hover {
+  border-color: var(--secondaryTextColor);
+}
+
+.sshConnectForm label {
+  margin-top: 4px;
+  font-size: 15px;
+  margin-left: 5px;
+  color: var(--secondaryTextColor);
+}
+
+.sshConnectForm button {
+  width: fit-content;
+  padding: 5px 10px;
+  border-radius: 5px;
+  outline: none;
+  background-color: var(--secondaryBGLight);
+  border: 1px solid var(--secondaryBG);
+  cursor: pointer;
+  color: var(--mainTextColor);
+  margin-left: 4px;
+  margin-top: 5px;
+  transition: 0.15s ease;
+}
+
+.sshConnectForm button:hover {
+  background-color: var(--primaryBG);
+}

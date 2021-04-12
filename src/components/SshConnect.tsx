@@ -60,19 +60,22 @@ const SshConnect = (props: sshConnectProps) => {
         loading ? (
           <div>Loading...</div>
         ) : (
-          <form onSubmit={connect}>
+          <form onSubmit={connect} className="sshConnectForm">
+            <label>Host Name</label>
             <input
               type="text"
               placeholder="host"
               defaultValue={hostInput}
               onChange={(e: any) => setHostInput(e.target.value)}
             />
+            <label>UserName</label>
             <input
               type="text"
               placeholder="username"
               defaultValue={usernameInput}
               onChange={(e: any) => setUsernameInput(e.target.value)}
             />
+            <label>Password</label>
             <input
               type="password"
               placeholder="password"
