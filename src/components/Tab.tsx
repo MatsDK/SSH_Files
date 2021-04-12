@@ -6,6 +6,7 @@ interface TabProps {
   setSelected: Function;
   idx: number;
   closeTab: Function;
+  renameTab: Function;
 }
 
 const Tab = ({
@@ -14,11 +15,13 @@ const Tab = ({
   setSelected,
   idx,
   closeTab,
+  renameTab,
 }: TabProps): JSX.Element => {
   const [showDropDown, setShowDropDown] = useState<boolean>(false);
   const thisTab = useRef<HTMLDivElement>(null);
-  const renameTab = () => {
-    console.log(idx);
+
+  const renameThisTab = () => {
+    renameTab(idx);
     setShowDropDown(false);
   };
 
@@ -33,6 +36,7 @@ const Tab = ({
     closeTab(idx);
     setShowDropDown(false);
   };
+
   return (
     <div className="tabWrapper" ref={thisTab}>
       <div
@@ -58,7 +62,7 @@ const Tab = ({
         </p>
         {showDropDown && (
           <div className="tabDropDown">
-            <span onClick={() => renameTab()}>Rename Tab</span>
+            <span onClick={() => renameThisTab()}>Rename Tab</span>
             <span onClick={(e) => closeTabThis(e)}>Close Tab</span>
           </div>
         )}

@@ -5,7 +5,9 @@ import TabContainer from "./TabContainer";
 
 interface TabType {
   name: string;
+
   location: string;
+  isClosed?: boolean;
 }
 
 interface ContainerProps {
@@ -16,12 +18,12 @@ interface ContainerProps {
 }
 
 const Container = (props: ContainerProps) => {
-  const [selected, setSelected] = useState<number>(0);
+  const [selected, setSelected] = useState<number | null>(0);
   const [selectedData, setSelectedData] = useState<any[]>([]);
   const [dropDownState, setDropDownState] = useState<boolean>(false);
   const [tabs, setTabs] = useState<TabType[]>(props.tabs);
 
-  const setActive = (activeIndex: number) => {
+  const setActive = (activeIndex: number | null) => {
     setSelected(activeIndex);
   };
 
@@ -42,7 +44,22 @@ const Container = (props: ContainerProps) => {
   };
 
   const closeTab = (idx: number) => {
-    setActive(0);
+    tabs[idx].isClosed = true;
+    setTabs(tabs);
+
+    const newOpenTabIdx: number = tabs.findIndex((_: TabType) => !_.isClosed);
+
+    if (newOpenTabIdx == -1) setActive(null);
+    else setActive(newOpenTabIdx);
+  };
+
+  const renameTab = (idx: number) => {
+    const thisTab: TabType = tabs[idx];
+    const newName: string | null = prompt("Enter a new Name", thisTab.name);
+    if (!newName || !newName.replace(/\s/g, "").length) return;
+
+    tabs[idx].name = newName;
+    setTabs(tabs);
   };
 
   return (
@@ -53,6 +70,7 @@ const Container = (props: ContainerProps) => {
         setSelected={setActive}
         selected={selected}
         closeTab={closeTab}
+        renameTab={renameTab}
         dropdown={{ dropDownState, setDropDownState }}
       >
         {tabs.map((tab: TabType, i: number) => (

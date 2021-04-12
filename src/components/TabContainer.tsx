@@ -8,12 +8,14 @@ interface tabType {
 
 interface TabContainerProps {
   children: JSX.Element | JSX.Element[];
-  selected: number;
+  selected: number | null;
   setSelected: any;
+
   tabs: tabType[];
   newTab: any;
   dropdown: { dropDownState: any; setDropDownState: any };
   closeTab: Function;
+  renameTab: Function;
 }
 
 const TabContainer = (props: TabContainerProps) => {
@@ -36,6 +38,7 @@ const TabContainer = (props: TabContainerProps) => {
               tab={tab}
               active={active}
               closeTab={props.closeTab}
+              renameTab={props.renameTab}
             />
           );
         })}
