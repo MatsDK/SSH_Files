@@ -1,0 +1,498 @@
+:root {
+  --primaryBG: #0b0e11;
+  --secondaryBG: #161b20;
+  --secondaryBGLight: #101418;
+  --lightSelectBorder: #1c2229;
+  --mainTextColor: #ededed;
+  --secondaryTextColor: #b3b3b3;
+  --lightTextColor: #2c343b;
+}
+
+html,
+body,
+#__next,
+.app {
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  margin: 0;
+  height: 100%;
+  width: 100%;
+  outline: none !important;
+  border: 0;
+  background-color: var(--primaryBG);
+  overflow: hidden;
+  color: var(--mainTextColor);
+}
+
+.selection-area {
+  background-color: var(--primaryBG);
+  opacity: 0.4;
+  border: 1px solid var(--lightSelectBorder);
+}
+
+.selected {
+  background-color: var(--secondaryBGLight) !important;
+}
+
+.item {
+  margin-left: 4px;
+  padding: 1px 10px;
+  height: 25px;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--secondaryBGLight);
+  background-color: var(--primaryBG);
+}
+
+.dragIconTemplate {
+  display: flex;
+  width: fit-content;
+  padding: 0 30px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.322);
+  background-color: var(--primaryBG);
+  height: 30px;
+  position: absolute;
+  width: 50vw;
+}
+
+.dragIconTemplate p {
+  margin: 0 5px;
+}
+
+.Container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+  margin-right: 4px;
+}
+
+.dataScrollContainer {
+  overflow: auto;
+  height: 100%;
+}
+
+.dataScrollContainer::-webkit-scrollbar {
+  width: 5px;
+  transform: translateY(-4px);
+}
+
+.dataScrollContainer::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.dataScrollContainer::-webkit-scrollbar-thumb {
+  border-radius: 2px;
+  background-color: var(--lightTextColor);
+}
+
+.PageWrapper {
+  height: 100%;
+}
+
+.PageWrapper .inActivePage {
+  height: 0;
+  overflow: hidden;
+  position: absolute;
+  top: 35px;
+  opacity: 0;
+  display: none;
+  pointer-events: none;
+  padding-top: 10px;
+}
+
+.PageWrapper .ActivePage {
+  height: calc(100vh - 45px - 20px) !important;
+  overflow: hidden;
+  pointer-events: all;
+  opacity: 1;
+  display: block;
+  position: absolute;
+  top: 35px;
+  padding-top: 10px;
+  width: 50vw;
+}
+.PageWrapper .ActivePage .Page {
+  height: 100% !important;
+}
+
+.ContainerPlaceHolder {
+  flex: 1;
+  min-height: 200px;
+}
+
+.TabsBar {
+  outline: none;
+  display: flex;
+  height: 35px;
+  width: 50vw;
+  overflow-y: visible;
+  overflow-x: scroll;
+  position: relative;
+  overflow-y: hidden;
+}
+
+.TabsBar::-webkit-scrollbar {
+  height: 3px;
+  transform: translateY(-4px);
+}
+
+.TabsBar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.TabsBar::-webkit-scrollbar-thumb {
+  background: var(--secondaryBGLight);
+}
+
+.TabsBar::-webkit-scrollbar-thumb:hover,
+.TabsBar:hover::-webkit-scrollbar-thumb {
+  background: var(--lightSelectBorder);
+}
+
+.TabsNavBarTab {
+  padding: 5px 10px;
+  border-right: 1px solid var(--secondaryBG);
+  border-bottom: 1px solid var(--secondaryBG);
+  font-size: 18px;
+  cursor: pointer;
+  margin: 0;
+}
+
+.TabsNavBarTab p {
+  margin: 0;
+}
+
+.ActiveTabsNavBarTab {
+  border-bottom: 0;
+}
+.TabsBarPlaceholder {
+  border-bottom: 1px solid var(--secondaryBG);
+  flex: 1;
+}
+.ContainersMiddle {
+  width: 5px;
+  margin: 0;
+  background-color: var(--secondaryBGLight);
+}
+
+.MainPage {
+  display: flex;
+  height: calc(100vh - 10px);
+  overflow: hidden !important;
+}
+
+.SideContainer {
+  padding-right: 3px;
+  flex: 1;
+  overflow: hidden;
+}
+
+.BottomBar {
+  position: absolute;
+  bottom: 0;
+  z-index: 1000;
+  width: 100%;
+  height: 20px;
+  background-color: var(--secondaryBGLight);
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.377);
+}
+
+.name {
+  display: flex;
+  align-items: center;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 60%;
+}
+.name svg {
+  height: 20px;
+  fill: var(--secondaryTextColor);
+  margin-right: 4px;
+}
+
+.name .fileName {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 60%;
+}
+
+.item.DragOver {
+  border: 2px solid red;
+}
+
+.item span {
+  flex: 1;
+  max-width: auto;
+  display: flex;
+  justify-content: center;
+  white-space: nowrap;
+}
+
+.rightDataItem {
+  white-space: nowrap;
+  flex: 1;
+}
+
+.Select {
+  margin-left: 5px;
+}
+
+.NewTabButton {
+  background-color: transparent;
+  border: 0;
+  height: 100%;
+  border-bottom: 1px solid var(--secondaryBG);
+  outline: none;
+  display: grid;
+  cursor: pointer;
+  place-items: center;
+  padding-left: 4px;
+  padding-right: 30px;
+}
+
+.NewTabButton .NewTabIcon {
+  margin-top: 2px;
+  padding: 1px;
+  border-radius: 3px;
+  color: var(--secondaryTextColor);
+  transition: 0.15s ease;
+}
+.NewTabButton:hover .NewTabIcon {
+  color: var(--mainTextColor);
+}
+
+.NewTabButton.ActiveNewTabButton .NewTabIcon {
+  color: var(--mainTextColor);
+}
+
+.NewTabDropDown {
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.397);
+  display: flex;
+  flex-direction: column;
+  background-color: var(--primaryBG);
+  padding: 2px;
+  border: 1px solid var(--secondaryBG);
+  border-radius: 4px;
+  transform: translateY(30px);
+  position: fixed;
+  z-index: 20000;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.NewTabDropDown.activeDropDown {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.NewTabDropDown span:first-child {
+  border-bottom: 1px solid var(--secondaryBG);
+}
+
+.NewTabDropDown span {
+  outline: none;
+  border: 0;
+  background-color: transparent;
+  color: var(--secondaryTextColor);
+  padding: 4px 10px;
+  cursor: pointer;
+}
+
+.NewTabDropDown span:hover {
+  background-color: var(--secondaryBG);
+}
+
+.dataTableHeading {
+  display: flex;
+  border-bottom: 1px solid var(--secondaryBG);
+  justify-content: space-between;
+}
+
+.HeadingButton {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  background-color: transparent;
+  border: 0;
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--mainTextColor);
+  height: 25px;
+  cursor: pointer;
+  outline: none;
+}
+
+.HeadingArrow {
+  margin-left: 4px;
+  width: 18px;
+  height: 18px;
+}
+
+.HeadingArrow svg {
+  width: 18px !important;
+  height: 18px !important;
+}
+
+.HeadingArrow.HeadingArrowDown {
+  transform: rotate(90deg);
+}
+.HeadingArrow.HeadingArrowUp {
+  transform: rotate(-90deg);
+}
+
+.NameHeadingButton {
+  flex: 0;
+  justify-content: flex-start;
+  width: 60% !important;
+  min-width: 60%;
+  padding-left: 15px;
+}
+
+.dragOverPath {
+  background-color: var(--secondaryBGLight);
+}
+
+.PathName {
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 0 1px;
+  color: var(--secondaryTextColor);
+  transition: 0.15s ease;
+}
+
+.PathName:hover {
+  color: var(--mainTextColor);
+}
+
+.currentPathName {
+  padding: 0 1px;
+  border-radius: 4px;
+
+  cursor: inherit;
+  color: var(--mainTextColor);
+}
+
+.currentPathName:hover {
+  color: var(--mainTextColor);
+}
+
+.PathArrow {
+  height: 24px;
+  margin-top: 2px;
+  color: var(--secondaryTextColor);
+}
+
+.PathWrapper {
+  white-space: nowrap;
+  display: flex;
+  font-size: 18px;
+  margin: 0 5px 5px 5px;
+  align-items: center;
+}
+
+.RefreshBtn {
+  border: 1px solid var(--lightTextColor);
+  border-radius: 3px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  padding: 0 1px;
+  cursor: pointer;
+  color: var(--secondaryTextColor);
+  margin-left: 10px;
+  transition: 0.15s ease;
+}
+
+.RefreshBtn:hover {
+  color: var(--mainTextColor);
+}
+
+.TabsNavBarTab:focus {
+  outline: none;
+}
+
+.tabWrapper {
+  outline: none;
+  position: relative;
+}
+
+.tabDropDown {
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.397);
+  display: flex;
+  flex-direction: column;
+  background-color: var(--primaryBG);
+  padding: 2px;
+  border: 1px solid var(--secondaryBG);
+  border-radius: 4px;
+  position: fixed;
+  z-index: 20000;
+  font-size: 14px;
+  margin-left: -4px;
+}
+.tabDropDown span:first-child {
+  border-bottom: 1px solid var(--secondaryBG);
+}
+
+.tabDropDown span {
+  margin: 0;
+  outline: none;
+  border: 0;
+  background-color: transparent;
+  color: var(--secondaryTextColor);
+  padding: 2px 10px;
+  cursor: pointer;
+  pointer-events: all;
+}
+
+.tabDropDown span:hover {
+  background-color: var(--secondaryBG);
+}
+
+.sshConnectForm {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+}
+
+.sshConnectForm input {
+  background-color: var(--primaryBG);
+  border: 1px solid var(--secondaryBG);
+  border-radius: 5px;
+  color: var(--mainTextColor);
+  padding: 4px 6px;
+  font-size: 18px;
+  outline: none;
+  margin: 4px;
+  transition: 0.15s ease;
+}
+.sshConnectForm input:hover {
+  border-color: var(--secondaryTextColor);
+}
+
+.sshConnectForm label {
+  margin-top: 4px;
+  font-size: 15px;
+  margin-left: 5px;
+  color: var(--secondaryTextColor);
+}
+
+.sshConnectForm button {
+  width: fit-content;
+  padding: 5px 10px;
+  border-radius: 5px;
+  outline: none;
+  background-color: var(--secondaryBGLight);
+  border: 1px solid var(--secondaryBG);
+  cursor: pointer;
+  color: var(--mainTextColor);
+  margin-left: 4px;
+  margin-top: 5px;
+  transition: 0.15s ease;
+}
+
+.sshConnectForm button:hover {
+  background-color: var(--primaryBG);
+}

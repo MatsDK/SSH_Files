@@ -1,0 +1,9 @@
+{
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "cd packages/web/ && npm run dev"
+  }
+}
