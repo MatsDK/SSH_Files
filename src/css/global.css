@@ -496,3 +496,16 @@ body,
 .sshConnectForm button:hover {
   background-color: var(--primaryBG);
 }
+
+.shellContainer {
+  width: 100vw;
+  height: 100vh;
+}
+
+.xterm .xterm-viewport::-webkit-scrollbar {
+  display: none !important;
+}
+
+.xterm {
+  height: 100vh;
+}

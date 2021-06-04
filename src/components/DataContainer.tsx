@@ -2,7 +2,6 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import _ from "../parseData";
 import Files from "./Files";
-import SelectionArea from "@simonwep/selection-js";
 import SelectDrive from "./SelectDrive";
 import { RefreshOutlined } from "@material-ui/icons";
 
@@ -29,47 +28,48 @@ const DataContainer = (props: dataContainerProps) => {
   }, [props.data.children]);
 
   useEffect(() => {
-    const newSelection = new SelectionArea({
-      selectables: [".item"],
-      startareas: [".item span", ".ContainerPlaceHolder"],
-      scrolling: {
-        speedDivider: 10,
-        manualSpeed: 750,
-      },
-      boundaries: [".dataScrollContainer"],
-    })
-      .on("start", ({ store, event }: { store: any; event: any }) => {
-        if (!event!.ctrlKey && !event!.metaKey) {
-          for (const el of store.stored) {
-            el.classList.remove("selected");
-          }
-
-          newSelection.clearSelection();
-        }
-      })
-      .on("move", ({ store }) => {
-        if (store.selected !== props.selected.selectedData) {
-          const thisEvent = event as any;
-          if (thisEvent && thisEvent?.ctrlKey)
-            props.selected.setSelectedData([
-              ...store.selected,
-              ...store.stored,
-            ]);
-          else props.selected.setSelectedData(store.selected);
-        }
-
-        for (const el of store.changed.added) {
-          el.classList.add("selected");
-        }
-
-        for (const el of store.changed.removed) {
-          el.classList.remove("selected");
-        }
-      })
-      .on("stop", () => {
-        newSelection.keepSelection();
+    if (typeof window !== "undefined") {
+      import("@simonwep/selection-js").then((selectionArea) => {
+        const newSelection = new selectionArea.default({
+          selectables: [".item"],
+          startareas: [".item span", ".ContainerPlaceHolder"],
+          scrolling: {
+            speedDivider: 10,
+            manualSpeed: 750,
+          },
+          boundaries: [".dataScrollContainer"],
+        })
+          .on("start", ({ store, event }: { store: any; event: any }) => {
+            if (!event!.ctrlKey && !event!.metaKey) {
+              for (const el of store.stored) {
+                el.classList.remove("selected");
+              }
+              newSelection.clearSelection();
+            }
+          })
+          .on("move", ({ store }) => {
+            if (store.selected !== props.selected.selectedData) {
+              const thisEvent = event as any;
+              if (thisEvent && thisEvent?.ctrlKey)
+                props.selected.setSelectedData([
+                  ...store.selected,
+                  ...store.stored,
+                ]);
+              else props.selected.setSelectedData(store.selected);
+            }
+            for (const el of store.changed.added) {
+              el.classList.add("selected");
+            }
+            for (const el of store.changed.removed) {
+              el.classList.remove("selected");
+            }
+          })
+          .on("stop", () => {
+            newSelection.keepSelection();
+          });
+        setSelection(newSelection);
       });
-    setSelection(newSelection);
+    }
   }, []);
 
   const clearSelected = () => {
