@@ -4,6 +4,8 @@
     "packages/*"
   ],
   "scripts": {
-    "dev": "cd packages/web/ && npm run dev"
+    "web": "cd packages/web && npm run dev",
+    "server": "cd packages/server/ && npm run dev",
+    "server:electron": "cd packages/electron/ && npm run dev"
   }
 }

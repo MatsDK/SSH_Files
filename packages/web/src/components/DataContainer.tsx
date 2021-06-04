@@ -3,10 +3,7 @@ import { useEffect, useState } from "react";
 import _ from "../parseData";
 import Files from "./Files";
 import SelectDrive from "./SelectDrive";
-import dynamic from "next/dynamic";
 import { RefreshOutlined } from "@material-ui/icons";
-
-
 
 interface dataContainerProps {
   data: { children: object[] };
@@ -14,15 +11,6 @@ interface dataContainerProps {
   sshData?: object;
   drives?: any[];
   selected: { selectedData: any; setSelectedData: any };
-}
-function isConstructor(f) {
-  try {
-    new f();
-  } catch (err) {
-    // verify err is the expected error and then
-    return false;
-  }
-  return true;
 }
 
 const DataContainer = (props: dataContainerProps) => {
@@ -40,51 +28,47 @@ const DataContainer = (props: dataContainerProps) => {
   }, [props.data.children]);
 
   useEffect(() => {
-    if(typeof window !== "undefined" ){
-
-const SelectionArea: any = dynamic((): any => import("@simonwep/selection-js"), { ssr: false });
-      if(!isConstructor(SelectionArea)) return 
-    const newSelection = new SelectionArea({
-      selectables: [".item"],
-      startareas: [".item span", ".ContainerPlaceHolder"],
-      scrolling: {
-        speedDivider: 10,
-        manualSpeed: 750,
-      },
-      boundaries: [".dataScrollContainer"],
-    })
-      .on("start", ({ store, event }: { store: any; event: any }) => {
-        if (!event!.ctrlKey && !event!.metaKey) {
-          for (const el of store.stored) {
-            el.classList.remove("selected");
-          }
-
-          newSelection.clearSelection();
-        }
-      })
-      .on("move", ({ store }) => {
-        if (store.selected !== props.selected.selectedData) {
-          const thisEvent = event as any;
-          if (thisEvent && thisEvent?.ctrlKey)
-            props.selected.setSelectedData([
-              ...store.selected,
-              ...store.stored,
-            ]);
-          else props.selected.setSelectedData(store.selected);
-        }
-
-        for (const el of store.changed.added) {
-          el.classList.add("selected");
-        }
-
-        for (const el of store.changed.removed) {
-          el.classList.remove("selected");
-        }
-      })
-      .on("stop", () => {
-        newSelection.keepSelection();
+    if (typeof window !== "undefined") {
+      import("@simonwep/selection-js").then((selectionArea) => {
+        const newSelection = new selectionArea.default({
+          selectables: [".item"],
+          startareas: [".item span", ".ContainerPlaceHolder"],
+          scrolling: {
+            speedDivider: 10,
+            manualSpeed: 750,
+          },
+          boundaries: [".dataScrollContainer"],
+        })
+          .on("start", ({ store, event }: { store: any; event: any }) => {
+            if (!event!.ctrlKey && !event!.metaKey) {
+              for (const el of store.stored) {
+                el.classList.remove("selected");
+              }
+              newSelection.clearSelection();
+            }
+          })
+          .on("move", ({ store }) => {
+            if (store.selected !== props.selected.selectedData) {
+              const thisEvent = event as any;
+              if (thisEvent && thisEvent?.ctrlKey)
+                props.selected.setSelectedData([
+                  ...store.selected,
+                  ...store.stored,
+                ]);
+              else props.selected.setSelectedData(store.selected);
+            }
+            for (const el of store.changed.added) {
+              el.classList.add("selected");
+            }
+            for (const el of store.changed.removed) {
+              el.classList.remove("selected");
+            }
+          })
+          .on("stop", () => {
+            newSelection.keepSelection();
+          });
+        setSelection(newSelection);
       });
-    setSelection(newSelection);
     }
   }, []);
 

@@ -1,11 +1,13 @@
 {
   "name": "@ssh/server",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "src/index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "nodemon index.ts",
-    "build": "tsc --project tsconfig.json",
-    "start": "node ./dist/index.js"
+    "dev": "nodemon src/index.ts",
+    "build": "tsc --project tsconfig.json"
+  },
+  "dependencies": {
+    "@ssh/common": "1.0.0"
   }
 }
