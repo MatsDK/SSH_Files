@@ -2,7 +2,7 @@ import express, { Application } from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
 import indexRouter from "@ssh/common/indexRouter";
-import "./socket";
+import "@ssh/common/socket";
 
 const server: Application = express();
 server.use(cors());

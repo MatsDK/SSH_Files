@@ -1,7 +1,6 @@
-import { Server } from "socket.io";
 import { Client } from "ssh2";
 
-const io: Server = require("socket.io")(8001, {
+const io = require("socket.io")(8001, {
   cors: {
     origin: "http://localhost:8000",
   },

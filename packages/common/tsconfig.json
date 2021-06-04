@@ -1,8 +1,15 @@
 {
   "extends": "../../tsconfig.json"
+,  "compilerOptions": {
+
+  "outDir": "./dist",
+  "declaration": true
+  ,"module": "CommonJS",
+  "moduleResolution": "node"
+  }
   ,"include": [
     "**/*.ts",
-    "**/*.tsx",
+    "**/*.tsx", "../server/socket.ts",
   ],
   "exclude": [
     "node_modules"

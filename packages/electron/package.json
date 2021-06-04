@@ -1,9 +1,13 @@
 {
   "name": "@ssh/electron",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "dist/index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "nodemon index.ts"
+    "build": "tsc",
+    "start": "npm run build && electron ."
+  },
+  "dependencies": {
+    "@ssh/common": "1.0.0"
   }
 }
