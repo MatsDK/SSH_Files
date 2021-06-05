@@ -1,16 +1,32 @@
-import { useEffect, useRef, useContext } from "react";
+import { useEffect, useRef, useContext, useState } from "react";
 import { SocketContext } from "../context/socket";
-import "../../node_modules/xterm/css/xterm.css"
+import "../../node_modules/xterm/css/xterm.css";
+import { useRouter } from "next/router";
 
 const TerminalComponent = () => {
+  const router = useRouter();
+  const { u = "", h = "" }: { u?: string; h?: string } = router.query;
   const container = useRef<any>();
+  const [isStarted, setIsStarted] = useState<boolean>(false);
+  const [shellOptions, setShellOptions] = useState<{
+    cols: number;
+    rows: number;
+  }>({ rows: 0, cols: 0 });
+  const [hostnameInput, setHostnameInput] = useState<string>(h);
+  const [usernameInput, setUsernameInput] = useState<string>(u);
+  const [passwordInput, setPasswordInput] = useState<string>("");
   const socket = useContext(SocketContext);
+
+  useEffect(() => {
+    setHostnameInput((router.query.h as string) || "");
+    setUsernameInput((router.query.u as string) || "");
+  }, [router]);
 
   useEffect(() => {
     if (container.current) {
       import("xterm").then(({ Terminal }: any) => {
         import("xterm-addon-fit").then(({ FitAddon }: any) => {
-          const term: any = new Terminal();
+          const term = new Terminal();
           term.open(container.current);
 
           const fitAddon = new FitAddon();
@@ -24,19 +40,22 @@ const TerminalComponent = () => {
             prompt(term);
 
             term.onData((data) => {
-              socket.emit("data", data);
+              socket.emit("data", data.toString());
             });
           };
           fitAddon.fit();
 
-          const prompt = (term: any) => term.write("\r\n$ ");
+          const prompt = (term: any) => term.write("\r\n$");
           runTerminal();
 
           socket.on("data", (data: any) => {
+            setIsStarted(true);
             term.write(data);
             term.focus();
+            fitAddon.fit();
           });
-          socket.emit("start", { cols: term.cols, rows: term.rows });
+
+          setShellOptions({ cols: term.cols, rows: term.rows });
 
           window.addEventListener(
             "resize",
@@ -55,9 +74,50 @@ const TerminalComponent = () => {
     };
   }, [container, socket]);
 
+  const connect = (e: any) => {
+    e.preventDefault();
+
+    socket.emit("start", {
+      shell: shellOptions,
+      connectData: {
+        password: passwordInput,
+        hostname: hostnameInput,
+        username: usernameInput,
+      },
+    });
+  };
+
   return (
     <>
-      <div style={{ width: "100%", height: "100%" }} ref={container}></div>
+      {!isStarted && (
+        <form onSubmit={connect}>
+          <input
+            value={hostnameInput}
+            placeholder="hostname"
+            onChange={(e) => setHostnameInput(e.target.value)}
+          />
+          <input
+            value={usernameInput}
+            placeholder="username"
+            onChange={(e) => setUsernameInput(e.target.value)}
+          />
+          <input
+            type="password"
+            value={passwordInput}
+            placeholder="password"
+            onChange={(e) => setPasswordInput(e.target.value)}
+          />
+          <button type="submit">connect</button>
+        </form>
+      )}
+      <div
+        style={{
+          width: "100%",
+          height: "100%",
+          display: isStarted ? "block" : "none",
+        }}
+        ref={container}
+      ></div>
     </>
   );
 };

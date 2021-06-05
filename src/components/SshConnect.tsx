@@ -7,13 +7,18 @@ interface sshConnectProps {
   selected: { setSelectedData: any; selectedData: any };
 }
 
+interface sshDataType {
+  host: string;
+  username: string;
+  password: string;
+}
+
 const SshConnect = (props: sshConnectProps) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [isConnected, setIsConnected] = useState<boolean>(false);
   const [sshData, setSshData] = useState<object[]>([]);
-  const [sshConnectionData, setSshConnectionData] = useState<
-    object | undefined
-  >();
+  const [sshConnectionData, setSshConnectionData] =
+    useState<sshDataType | undefined>();
   const [hostInput, setHostInput] = useState<string>("192.168.0.214");
   const [usernameInput, setUsernameInput] = useState<string>("mats");
   const [passwordInput, setPasswordInput] = useState<string>("mats");

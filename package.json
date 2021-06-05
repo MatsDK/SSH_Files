@@ -1,5 +1,5 @@
 {
-  "name": "app",
+  "name": "ssh-files",
   "version": "1.0.0",
   "description": "",
   "main": "server/server.ts",
@@ -47,10 +47,10 @@
   },
   "scripts": {
     "dev": "nodemon ./server/server.ts",
-    "dev:electron": "nodemon ./server/server.ts",
+    "dev:electron": "nodemon ./server/lib/electron.ts",
     "build": "next build && tsc --project tsconfig.server.json",
     "start": "node .next/production-server/server/server.js",
-    "start:electron": "npm run build && electron .next/production-server/server/electron.js"
+    "start:electron": "electron .next/production-server/server/lib/electron.js"
   },
   "keywords": [],
   "author": "matsdekort <matsdekort257@gmail.com>",

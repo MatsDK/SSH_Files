@@ -4,11 +4,18 @@ import _ from "../parseData";
 import Files from "./Files";
 import SelectDrive from "./SelectDrive";
 import { RefreshOutlined } from "@material-ui/icons";
+import Link from "next/link";
+
+interface sshDataType {
+  host: string;
+  username: string;
+  password: string;
+}
 
 interface dataContainerProps {
   data: { children: object[] };
   location: string;
-  sshData?: object;
+  sshData?: sshDataType;
   drives?: any[];
   selected: { selectedData: any; setSelectedData: any };
 }
@@ -149,6 +156,15 @@ const DataContainer = (props: dataContainerProps) => {
     });
   };
 
+  const createShellLink = () => {
+    let link: string = "";
+
+    if (props.sshData?.host) link += `h=${props.sshData.host}&`;
+    if (props.sshData?.username) link += `u=${props.sshData.username}`;
+
+    return link;
+  };
+
   return (
     <div className="Page" style={{ flex: 1 }}>
       <div style={{ display: "flex" }}>
@@ -158,6 +174,15 @@ const DataContainer = (props: dataContainerProps) => {
         <div onClick={() => fetchData(false)} className="RefreshBtn">
           <RefreshOutlined />
         </div>
+        {props.location == "remote" && (
+          <div>
+            <Link href={`/shell?${createShellLink()}`}>
+              <a target="_blank" rel="noopener noreferrer">
+                Open in shell
+              </a>
+            </Link>
+          </div>
+        )}
       </div>
       {loading ? (
         <div style={{ width: "45vw", marginRight: "20px" }}>Loading...</div>

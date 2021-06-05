@@ -1,8 +1,8 @@
 import express, { Request, Response } from "express";
-import ssh from "./utils/ssh";
-import { copyData } from "./utils/copyData";
+import ssh from "../utils/ssh";
+import { copyData } from "../utils/copyData";
 import si from "systeminformation";
-import { copyDataProps, currDirPathProp } from "./utils/copyDataInterfaces";
+import { copyDataProps, currDirPathProp } from "../utils/copyDataInterfaces";
 const dree = require("dree");
 
 const router = express.Router();
