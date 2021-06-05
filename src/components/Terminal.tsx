@@ -90,17 +90,20 @@ const TerminalComponent = () => {
   return (
     <>
       {!isStarted && (
-        <form onSubmit={connect}>
+        <form onSubmit={connect} className="sshShellForm">
+          <label>Hostname</label>
           <input
             value={hostnameInput}
             placeholder="hostname"
             onChange={(e) => setHostnameInput(e.target.value)}
           />
+          <label>Username</label>
           <input
             value={usernameInput}
             placeholder="username"
             onChange={(e) => setUsernameInput(e.target.value)}
           />
+          <label>Password</label>
           <input
             type="password"
             value={passwordInput}

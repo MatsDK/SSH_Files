@@ -457,7 +457,15 @@ body,
   width: 50%;
 }
 
-.sshConnectForm input {
+.sshShellForm {
+  display: flex;
+  flex-direction: column;
+  min-width: 200px;
+  max-width: 500px;
+}
+
+.sshConnectForm input,
+.sshShellForm input {
   background-color: var(--primaryBG);
   border: 1px solid var(--secondaryBG);
   border-radius: 5px;
@@ -468,18 +476,21 @@ body,
   margin: 4px;
   transition: 0.15s ease;
 }
-.sshConnectForm input:hover {
+.sshConnectForm input:hover,
+.sshShellForm input:hover {
   border-color: var(--secondaryTextColor);
 }
 
-.sshConnectForm label {
+.sshConnectForm label,
+.sshShellForm label {
   margin-top: 4px;
   font-size: 15px;
   margin-left: 5px;
   color: var(--secondaryTextColor);
 }
 
-.sshConnectForm button {
+.sshConnectForm button,
+.sshShellForm button {
   width: fit-content;
   padding: 5px 10px;
   border-radius: 5px;
@@ -493,7 +504,8 @@ body,
   transition: 0.15s ease;
 }
 
-.sshConnectForm button:hover {
+.sshConnectForm button:hover,
+.sshShellForm button:hover {
   background-color: var(--primaryBG);
 }
 
@@ -508,4 +520,39 @@ body,
 
 .xterm {
   height: 100vh;
+}
+
+.openShellButton {
+  border: 1px solid var(--lightTextColor);
+  border-radius: 3px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  cursor: pointer;
+  color: var(--secondaryTextColor);
+  margin-left: 10px;
+  transition: 0.15s ease;
+}
+
+.openShellButton a {
+  transition: 0.15s ease;
+  color: var(--secondaryTextColor);
+  text-decoration: none;
+}
+
+.openShellButton svg {
+  margin-right: 10px;
+  transform: scale(1.4);
+}
+.openShellButton svg rect {
+  transition: 0.15s ease;
+}
+
+.openShellButton:hover a {
+  color: var(--mainTextColor);
+}
+
+.openShellButton:hover svg rect.iconBG {
+  fill: var(--mainTextColor) !important;
 }
