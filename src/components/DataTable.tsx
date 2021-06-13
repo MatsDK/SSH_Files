@@ -12,6 +12,7 @@ interface DataTableProps {
   update: any;
   dragEnd: any;
   clearSelected: any;
+  loading: boolean;
 }
 
 const SortArrow = ({ dir }) => {
@@ -56,7 +57,7 @@ const orderDataBy = (data: any, value: any, dir: any) => {
   return data;
 };
 
-const DataTable = ({ items, path, ...funcs }: DataTableProps) => {
+const DataTable = ({ items, path, loading, ...funcs }: DataTableProps) => {
   const [data, setData] = useState<any[]>();
   const [dir, setDir] = useState<string>("asc");
   const [value, setValue] = useState<string>("type");
@@ -106,33 +107,40 @@ const DataTable = ({ items, path, ...funcs }: DataTableProps) => {
         </button>
       </div>
       <div className="dataScrollContainer">
-        {data &&
-          data.map((child: any, i: number) => (
-            <div
-              id={`${child.id}`}
-              className={"item"}
-              onDragStart={(e) => funcs.dragStart(e, child)}
-              draggable={true}
-              onDragOver={(e) => funcs.dragOver(e, child)}
-              onDrop={(e) => funcs.drop(e, child)}
-              onDoubleClick={() => funcs.update(child)}
-              onDragEnd={funcs.dragEnd}
-              key={i}
-              style={{ display: "flex", justifyContent: "space-between" }}
-            >
-              <div className={"name"}>
-                {child.type !== "file" ? <Folder /> : <InsertDriveFile />}
-                <p className="fileName">{child.name}</p>
-              </div>
+        {loading
+          ? "Loading..."
+          : data &&
+            data.map((child: any, i: number) => (
+              <div
+                id={`${child.id}`}
+                className={"item"}
+                onDragStart={(e) => funcs.dragStart(e, child)}
+                draggable={true}
+                onDragOver={(e) => funcs.dragOver(e, child)}
+                onDrop={(e) => funcs.drop(e, child)}
+                onDoubleClick={() => funcs.update(child)}
+                onDragEnd={funcs.dragEnd}
+                key={i}
+                style={{ cursor: "auto" }}
+              >
+                <div
+                  style={{
+                    cursor: child.type !== "file" ? "pointer" : undefined,
+                  }}
+                  className={"name"}
+                >
+                  {child.type !== "file" ? <Folder /> : <InsertDriveFile />}
+                  <p className="fileName">{child.name}</p>
+                </div>
 
-              <span>{filesize(child.size)} </span>
-              <span>
-                {child.type === "file"
-                  ? mime.getType(child.name) || "File"
-                  : "Folder"}
-              </span>
-            </div>
-          ))}
+                <span>{filesize(child.size)} </span>
+                <span>
+                  {child.type === "file"
+                    ? mime.getType(child.name) || "File"
+                    : "Folder"}
+                </span>
+              </div>
+            ))}
         <div
           onClick={funcs.clearSelected}
           className="ContainerPlaceHolder"

@@ -387,10 +387,21 @@ body,
 
 .PathWrapper {
   white-space: nowrap;
+  max-width: 100%;
+  overflow-x: auto;
   display: flex;
   font-size: 18px;
   margin: 0 5px 5px 5px;
   align-items: center;
+}
+
+.PathWrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.PathWrapper {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
 .RefreshBtn {
@@ -465,7 +476,8 @@ body,
 }
 
 .sshConnectForm input,
-.sshShellForm input {
+.sshShellForm input,
+.renameTabInput {
   background-color: var(--primaryBG);
   border: 1px solid var(--secondaryBG);
   border-radius: 5px;
@@ -477,7 +489,8 @@ body,
   transition: 0.15s ease;
 }
 .sshConnectForm input:hover,
-.sshShellForm input:hover {
+.sshShellForm input:hover,
+.renameTabInput:hover {
   border-color: var(--secondaryTextColor);
 }
 
@@ -555,4 +568,12 @@ body,
 
 .openShellButton:hover svg rect.iconBG {
   fill: var(--mainTextColor) !important;
+}
+
+.renameTabInput {
+  background-color: var(--primaryBG);
+  font-size: 16px;
+  color: var(--mainTextColor);
+  outline: none;
+  padding: 0;
 }

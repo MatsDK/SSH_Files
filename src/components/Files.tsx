@@ -24,6 +24,7 @@ interface FilesProps {
   update: any;
   loc: any;
   drive: string;
+  loading: boolean;
 }
 
 const Files = ({
@@ -32,6 +33,7 @@ const Files = ({
   loc: { path, location, sshData, setPath },
   drive,
   selected: { selectedData, clearSelected },
+  loading,
 }: FilesProps) => {
   const [items, setItems] = useState<object[]>(data);
 
@@ -208,6 +210,7 @@ const Files = ({
       <div className={"Container"}>
         <DataTable
           items={items}
+          loading={loading}
           update={update}
           clearSelected={clearSelected}
           dragStart={dragStart}

@@ -15,7 +15,7 @@ const Index = (props: indexProps): JSX.Element => {
       <div className="MainPage">
         <div className="SideContainer">
           <Container
-            tabs={[{ name: "local1", location: "local" }]}
+            tabs={[{ name: "local", location: "local" }]}
             data={props.localData}
             drives={props.drives}
             location="local"
@@ -24,7 +24,7 @@ const Index = (props: indexProps): JSX.Element => {
         <pre className="ContainersMiddle"></pre>
         <div className="SideContainer">
           <Container
-            tabs={[{ name: "remote1", location: "remote" }]}
+            tabs={[{ name: "remote", location: "remote" }]}
             data={props.localData}
             drives={props.drives}
             location="local"

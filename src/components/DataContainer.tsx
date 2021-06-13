@@ -185,24 +185,21 @@ const DataContainer = (props: dataContainerProps) => {
           </div>
         )}
       </div>
-      {loading ? (
-        <div style={{ width: "45vw", marginRight: "20px" }}>Loading...</div>
-      ) : (
-        <div className="Page" style={{ width: "45vw", marginRight: "20px" }}>
-          <Files
-            data={data}
-            selected={{ ...props.selected, selection, clearSelected }}
-            loc={{
-              path,
-              location: props.location,
-              sshData: props.sshData,
-              setPath,
-            }}
-            drive={activeDrive}
-            update={updatePath}
-          />
-        </div>
-      )}
+      <div className="Page" style={{ width: "45vw", marginRight: "20px" }}>
+        <Files
+          loading={loading}
+          data={data}
+          selected={{ ...props.selected, selection, clearSelected }}
+          loc={{
+            path,
+            location: props.location,
+            sshData: props.sshData,
+            setPath,
+          }}
+          drive={activeDrive}
+          update={updatePath}
+        />
+      </div>
     </div>
   );
 };

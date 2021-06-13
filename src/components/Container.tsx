@@ -53,9 +53,8 @@ const Container = (props: ContainerProps) => {
     else setActive(newOpenTabIdx);
   };
 
-  const renameTab = (idx: number) => {
-    const thisTab: TabType = tabs[idx];
-    const newName: string | null = prompt("Enter a new Name", thisTab.name);
+  const renameTab = (idx: number, newName: string) => {
+    // const thisTab: TabType = tabs[idx];
     if (!newName || !newName.replace(/\s/g, "").length) return;
 
     tabs[idx].name = newName;
