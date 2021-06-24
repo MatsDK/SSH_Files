@@ -360,7 +360,7 @@ body,
   cursor: pointer;
   padding: 0 1px;
   color: var(--secondaryTextColor);
-  transition: 0.15s ease;
+  transition: color 0.15s ease;
 }
 
 .PathName:hover {
@@ -500,6 +500,11 @@ body,
   font-size: 15px;
   margin-left: 5px;
   color: var(--secondaryTextColor);
+}
+
+.sshConnectForm label span,
+.sshShellForm label span {
+  color: var(--lightTextColor);
 }
 
 .sshConnectForm button,

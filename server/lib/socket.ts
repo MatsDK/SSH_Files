@@ -7,16 +7,20 @@ export const io = require("socket.io")(8001, {
 });
 
 type shellType = { rows: number; cols: number };
-type connectDataType = { username: string; password: string; hostname: string };
+type connectDataType = {
+  username: string;
+  password: string;
+  hostname: string;
+  port: number;
+};
 type conf = { shell: shellType; connectData: connectDataType };
 
 io.on("connection", (socket) => {
   try {
     const connect = (
       { rows, cols }: shellType,
-      { password, username, hostname }: connectDataType
+      { password, username, hostname, port }: connectDataType
     ) => {
-      console.log(password, username, hostname);
       const conn = new Client();
 
       conn.on("timeout", () => {
@@ -73,6 +77,7 @@ io.on("connection", (socket) => {
         })
         .connect({
           username,
+          port,
           host: hostname,
           password: password,
         });

@@ -8,10 +8,15 @@ const dree = require("dree");
 const router = express.Router();
 let sshConn = ssh.sshConn;
 
-const connect = async (host: string, username: string, password: string) => {
+const connect = async (
+  host: string,
+  username: string,
+  password: string,
+  port: number
+) => {
   try {
     if (sshConn.connection) return ssh;
-    sshConn = await ssh.connect(host, username, password);
+    sshConn = await ssh.connect(host, username, password, port);
     if (sshConn.connection) return ssh;
   } catch (err) {
     console.log(err);
@@ -38,22 +43,30 @@ interface sshConnectionProps {
   host: string;
   username: string;
   password: string;
+  port: number;
 }
 
 interface getDataBody {
   location: string;
   path: string;
   sshData: sshConnectionProps | undefined;
+  port: number;
 }
 
 router.post("/data", async (req: Request, res: Response) => {
   const { location, path, sshData }: getDataBody = req.body;
+  console.log(sshData);
   let fileTree: any;
 
   if (location === "local") {
     fileTree = dree.scan(path, options);
   } else if (location === "remote") {
-    await connect(sshData!.host, sshData!.username, sshData!.password);
+    await connect(
+      sshData!.host,
+      sshData!.username,
+      sshData!.password,
+      sshData!.port
+    );
     if (!sshConn.connection)
       return res.json({ err: true, data: "failed to connect" });
 
@@ -71,10 +84,11 @@ interface ConnectSSHBody {
   host: string;
   password: string;
   username: string;
+  port: number;
 }
 
 router.post("/connectSSH", async (req: Request, res: Response) => {
-  const { host, password, username }: ConnectSSHBody = req.body;
+  const { host, password, username, port }: ConnectSSHBody = req.body;
 
   if (!host || !password || !username)
     return res.json({
@@ -83,13 +97,13 @@ router.post("/connectSSH", async (req: Request, res: Response) => {
       data: "invalid connection data",
     });
 
-  await connect(host, username, password);
+  await connect(host, username, password, port);
 
   if (!sshConn.connection)
     return res.json({
       connected: false,
       err: true,
-      data: `can't connect to ${host} as ${username}`,
+      data: `can't connect to ${host} as ${username} on port ${port}`,
     });
 
   const sshRes = await ssh.execCommand(`tree -J -L 2 -f -s `, {

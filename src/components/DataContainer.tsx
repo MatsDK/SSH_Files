@@ -10,6 +10,7 @@ interface sshDataType {
   host: string;
   username: string;
   password: string;
+  port: number;
 }
 
 interface dataContainerProps {

@@ -5,7 +5,11 @@ import { useRouter } from "next/router";
 
 const TerminalComponent = () => {
   const router = useRouter();
-  const { u = "", h = "" }: { u?: string; h?: string } = router.query;
+  const {
+    u = "",
+    h = "",
+    p = 22,
+  }: { u?: string; h?: string; p?: number } = router.query;
   const container = useRef<any>();
   const [isStarted, setIsStarted] = useState<boolean>(false);
   const [shellOptions, setShellOptions] = useState<{
@@ -15,6 +19,7 @@ const TerminalComponent = () => {
   const [hostnameInput, setHostnameInput] = useState<string>(h);
   const [usernameInput, setUsernameInput] = useState<string>(u);
   const [passwordInput, setPasswordInput] = useState<string>("");
+  const [portInput, setPortInput] = useState<number | null>(p);
   const socket = useContext(SocketContext);
 
   useEffect(() => {
@@ -83,6 +88,7 @@ const TerminalComponent = () => {
         password: passwordInput,
         hostname: hostnameInput,
         username: usernameInput,
+        port: portInput || 22,
       },
     });
   };
@@ -109,6 +115,15 @@ const TerminalComponent = () => {
             value={passwordInput}
             placeholder="password"
             onChange={(e) => setPasswordInput(e.target.value)}
+          />
+          <label>
+            Port <span>(default: 22)</span>
+          </label>
+          <input
+            type="number"
+            value={portInput || ""}
+            placeholder="port"
+            onChange={(e) => setPortInput(parseInt(e.target.value || ""))}
           />
           <button type="submit">connect</button>
         </form>

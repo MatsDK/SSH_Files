@@ -11,17 +11,20 @@ interface sshDataType {
   host: string;
   username: string;
   password: string;
+  port: number;
 }
 
 const SshConnect = (props: sshConnectProps) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [isConnected, setIsConnected] = useState<boolean>(false);
   const [sshData, setSshData] = useState<object[]>([]);
-  const [sshConnectionData, setSshConnectionData] =
-    useState<sshDataType | undefined>();
+  const [sshConnectionData, setSshConnectionData] = useState<
+    sshDataType | undefined
+  >();
   const [hostInput, setHostInput] = useState<string>("192.168.0.214");
   const [usernameInput, setUsernameInput] = useState<string>("mats");
   const [passwordInput, setPasswordInput] = useState<string>("mats");
+  const [portInput, setPortInput] = useState<number>(22);
 
   const connect = (e: any) => {
     try {
@@ -38,6 +41,7 @@ const SshConnect = (props: sshConnectProps) => {
         host: hostInput,
         password: passwordInput,
         username: usernameInput,
+        port: portInput || 22,
       };
 
       setLoading(true);
@@ -86,6 +90,15 @@ const SshConnect = (props: sshConnectProps) => {
               placeholder="password"
               defaultValue={passwordInput}
               onChange={(e: any) => setPasswordInput(e.target.value)}
+            />
+            <label>
+              Port <span>(default: 22)</span>
+            </label>
+            <input
+              type="number"
+              value={portInput || ""}
+              placeholder="port"
+              onChange={(e) => setPortInput(parseInt(e.target.value || ""))}
             />
             <button type="submit">Connect</button>
           </form>

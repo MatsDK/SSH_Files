@@ -1,11 +1,12 @@
-import "../server";
 import { app, BrowserWindow } from "electron";
+import "../server";
 
+let mainWindow: null | BrowserWindow;
 app.on("ready", () => {
-  const mainWindow = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: 1300,
-    titleBarStyle: "hidden",
     height: 800,
+    frame: false,
   });
 
   mainWindow.loadURL("http://localhost:3001");
