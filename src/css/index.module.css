@@ -1,0 +1,26 @@
+.presetHeader {
+  font-size: 25px;
+}
+
+.presetContainer {
+  border: 2px solid var(--secondaryBGLight);
+  padding: 10px;
+  width: 300px;
+}
+
+.presetContainer div {
+  display: flex;
+  margin: 15px 0px;
+}
+
+.presetContainer div p {
+  margin: 0px;
+  font-weight: 600;
+  font-size: 18px;
+  margin-left: 10px;
+}
+
+.presetContainer .label {
+  color: var(--secondaryTextColor);
+  font-weight: 400;
+}

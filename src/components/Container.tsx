@@ -3,17 +3,22 @@ import DataContainer from "./DataContainer";
 import SshConnect from "./SshConnect";
 import TabContainer from "./TabContainer";
 
+export interface sshConnectionData {
+  host: string | null;
+  port: number | null;
+  userName: string | null;
+}
+
 interface TabType {
   name: string;
-
-  location: string;
   isClosed?: boolean;
+  sshConnectionData?: sshConnectionData;
+  location: "remote" | "local";
 }
 
 interface ContainerProps {
   data: { children: object[] };
   drives: any[];
-  location: string;
   tabs: TabType[];
 }
 
@@ -34,7 +39,7 @@ const Container = (props: ContainerProps) => {
     setSelectedData([]);
   }, [selected]);
 
-  const newTab = (location: string) => {
+  const newTab = (location: "remote" | "local") => {
     const idx = tabs.length;
 
     const newTab: TabType = { name: `${location}`, location };
@@ -54,7 +59,6 @@ const Container = (props: ContainerProps) => {
   };
 
   const renameTab = (idx: number, newName: string) => {
-    // const thisTab: TabType = tabs[idx];
     if (!newName || !newName.replace(/\s/g, "").length) return;
 
     tabs[idx].name = newName;
@@ -83,7 +87,16 @@ const Container = (props: ContainerProps) => {
                   selected={{ selectedData, setSelectedData }}
                 />
               ) : (
-                <SshConnect selected={{ selectedData, setSelectedData }} />
+                <SshConnect
+                  selected={{ selectedData, setSelectedData }}
+                  sshConnectionData={
+                    tab.sshConnectionData || {
+                      userName: null,
+                      host: null,
+                      port: null,
+                    }
+                  }
+                />
               )}
             </TabPage>
           </div>

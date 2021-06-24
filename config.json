@@ -4,7 +4,8 @@
       "id": "1",
       "name": "preset1",
       "hostIp": "192.168.0.0",
-      "userName": "mats"
+      "userName": "mats",
+      "port": 212
     }
   ]
 }

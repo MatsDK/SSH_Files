@@ -1,25 +1,22 @@
-import Layout from "src/components/Layout";
+import Layout from "../src/components/Layout";
 import data from "../config.json";
+import PresentContainer from "src/components/PresetContainer";
 
 interface ConnectionPreset {
   id: string;
   name: string;
   hostIp: string;
   userName: string;
+  port: number;
 }
+
 const Index = () => {
   return (
     <Layout>
       <>
-        {data.connectionPresets.map((_: ConnectionPreset, idx: number) => {
-          return (
-            <div key={idx}>
-              <p>{_.name}</p>
-              <p>{_.hostIp}</p>
-              <p>{_.userName}</p>
-            </div>
-          );
-        })}
+        {data.connectionPresets.map((_: ConnectionPreset, idx: number) => (
+          <PresentContainer preset={_} key={idx} />
+        ))}
       </>
     </Layout>
   );

@@ -19,10 +19,11 @@ const TerminalComponent = () => {
   const [hostnameInput, setHostnameInput] = useState<string>(h);
   const [usernameInput, setUsernameInput] = useState<string>(u);
   const [passwordInput, setPasswordInput] = useState<string>("");
-  const [portInput, setPortInput] = useState<number | null>(p);
+  const [portInput, setPortInput] = useState<number | null>(Number(p));
   const socket = useContext(SocketContext);
 
   useEffect(() => {
+    setPortInput(Number(p));
     setHostnameInput((router.query.h as string) || "");
     setUsernameInput((router.query.u as string) || "");
   }, [router]);

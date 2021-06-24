@@ -1,10 +1,12 @@
 import axios from "axios";
 import { useState } from "react";
 import _ from "../parseData";
+import { sshConnectionData } from "./Container";
 import DataContainer from "./DataContainer";
 
 interface sshConnectProps {
   selected: { setSelectedData: any; selectedData: any };
+  sshConnectionData: sshConnectionData;
 }
 
 interface sshDataType {
@@ -21,10 +23,16 @@ const SshConnect = (props: sshConnectProps) => {
   const [sshConnectionData, setSshConnectionData] = useState<
     sshDataType | undefined
   >();
-  const [hostInput, setHostInput] = useState<string>("192.168.0.214");
-  const [usernameInput, setUsernameInput] = useState<string>("mats");
-  const [passwordInput, setPasswordInput] = useState<string>("mats");
-  const [portInput, setPortInput] = useState<number>(22);
+  const [hostInput, setHostInput] = useState<string>(
+    props.sshConnectionData.host || ""
+  );
+  const [usernameInput, setUsernameInput] = useState<string>(
+    props.sshConnectionData.userName || ""
+  );
+  const [passwordInput, setPasswordInput] = useState<string>("");
+  const [portInput, setPortInput] = useState<number>(
+    props.sshConnectionData.port == null ? 22 : props.sshConnectionData.port
+  );
 
   const connect = (e: any) => {
     try {
