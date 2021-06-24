@@ -2,7 +2,7 @@ import { NodeSSH } from "node-ssh";
 
 const ssh: NodeSSH = new NodeSSH();
 
-let sshConn: any = { connection: false };
+let sshConn: NodeSSH | { connection: boolean } = { connection: false };
 
 const connect = async (
   host: string,
@@ -10,7 +10,7 @@ const connect = async (
   password: string,
   port: number
 ) => {
-  const sshClient = await ssh.connect({
+  const sshClient: NodeSSH = await ssh.connect({
     port,
     host,
     username,
@@ -20,24 +20,33 @@ const connect = async (
   return { connection: true };
 };
 
-const timeout = (cb: any, interval: number) => () =>
-  new Promise((resolve) => setTimeout(() => cb(resolve), interval));
+const timeout =
+  (cb: any, interval: number): any =>
+  (): Promise<any> =>
+    new Promise((resolve) => setTimeout(() => cb(resolve), interval));
 
-const onTimeout = timeout(
-  (resolve: any) => resolve({ connection: false }),
+type x = ({ connection: boolean }) => any;
+const onTimeout: Promise<{ connection: boolean }> = timeout(
+  (resolve: x) => resolve({ connection: false }),
   3000
 );
 
 export default {
-  connect: (host: any, username: any, password: any, port: number) =>
+  connect: (
+    host: any,
+    username: any,
+    password: any,
+    port: number
+  ): Promise<{ connection: any }> =>
     Promise.race(
-      [connect, onTimeout].map((f) => f(host, username, password, port))
+      [connect, onTimeout].map((f: any) => f(host, username, password, port))
     ).then((res) => {
       return res;
     }),
   getSSHConn: () => {
     return sshConn;
   },
-  execCommand: (text: string, params: any) => sshConn.execCommand(text, params),
+  execCommand: (text: string, params: any) =>
+    (sshConn as NodeSSH).execCommand(text, params),
   sshConn,
 };

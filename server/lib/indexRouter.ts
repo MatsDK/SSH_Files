@@ -3,10 +3,12 @@ import ssh from "../utils/ssh";
 import { copyData } from "../utils/copyData";
 import si from "systeminformation";
 import { copyDataProps, currDirPathProp } from "../utils/copyDataInterfaces";
+import { ScanOptions } from "dree";
+import { NodeSSH } from "node-ssh";
 const dree = require("dree");
 
 const router = express.Router();
-let sshConn = ssh.sshConn;
+let sshConn: NodeSSH | { connection: boolean } = ssh.sshConn;
 
 const connect = async (
   host: string,
@@ -15,7 +17,18 @@ const connect = async (
   port: number
 ) => {
   try {
-    if (sshConn.connection) return ssh;
+    if (sshConn.connection) {
+      const connData = (ssh.getSSHConn().connection as any).config;
+      if (
+        connData.host == host &&
+        connData.port == port &&
+        connData.username == username &&
+        connData.password == password
+      )
+        return sshConn;
+
+      (ssh.getSSHConn() as NodeSSH).dispose();
+    }
     sshConn = await ssh.connect(host, username, password, port);
     if (sshConn.connection) return ssh;
   } catch (err) {
@@ -23,7 +36,7 @@ const connect = async (
   }
 };
 
-const options = {
+const options: ScanOptions = {
   stat: true,
   normalize: true,
   followLinks: false,
@@ -55,7 +68,6 @@ interface getDataBody {
 
 router.post("/data", async (req: Request, res: Response) => {
   const { location, path, sshData }: getDataBody = req.body;
-  console.log(sshData);
   let fileTree: any;
 
   if (location === "local") {

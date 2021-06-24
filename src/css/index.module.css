@@ -3,7 +3,8 @@
 }
 
 .presetContainer {
-  border: 2px solid var(--secondaryBGLight);
+  border: 1px solid var(--lightTextColor);
+  border-radius: 4px;
   padding: 10px;
   width: 300px;
 }
