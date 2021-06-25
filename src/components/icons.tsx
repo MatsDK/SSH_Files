@@ -24,3 +24,46 @@ export const ShellIcon = () => {
     </svg>
   );
 };
+
+export const ClosePopupIcon = () => {
+  return (
+    <svg
+      width="21"
+      height="21"
+      viewBox="0 0 21 21"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <rect
+        width="26.2791"
+        height="3"
+        transform="matrix(0.707106 -0.707108 0.707106 0.707108 0 18.5822)"
+      />
+      <rect
+        width="26.2791"
+        height="3"
+        transform="matrix(0.707106 -0.707108 0.707106 0.707108 0 18.5822)"
+      />
+      <rect
+        width="26.2791"
+        height="3"
+        transform="matrix(0.707106 -0.707108 0.707106 0.707108 0 18.5822)"
+      />
+      <rect
+        width="26.2791"
+        height="3"
+        transform="matrix(0.707106 0.707108 -0.707106 0.707108 2.41772 7.62939e-06)"
+      />
+      <rect
+        width="26.2791"
+        height="3"
+        transform="matrix(0.707106 0.707108 -0.707106 0.707108 2.41772 7.62939e-06)"
+      />
+      <rect
+        width="26.2791"
+        height="3"
+        transform="matrix(0.707106 0.707108 -0.707106 0.707108 2.41772 7.62939e-06)"
+      />
+    </svg>
+  );
+};

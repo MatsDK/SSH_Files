@@ -582,3 +582,54 @@ body,
   outline: none;
   padding: 0;
 }
+
+.alertPopup {
+  background-color: var(--secondaryBGLight);
+  position: absolute;
+  z-index: 1000;
+  right: 0;
+  top: 0;
+  margin: 10px;
+  padding: 15px;
+  padding-top: 7px;
+  height: fit-content;
+  min-width: 200px;
+  border-radius: 6px;
+  box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.452);
+}
+
+.alertPopup div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.alertPopup h3,
+.alertPopup p {
+  margin: 0;
+}
+
+.alertPopup h3 {
+  color: var(--secondaryTextColor);
+}
+
+.alertPopup div div {
+  cursor: pointer;
+  width: 15px;
+  height: 15px;
+  margin-top: 3px;
+}
+
+.alertPopup div div svg {
+  width: 15px;
+  height: 15px;
+}
+
+.alertPopup div div svg rect {
+  fill: var(--secondaryTextColor);
+  transition: fill 0.15s ease;
+}
+
+.alertPopup div div:hover svg rect {
+  fill: var(--mainTextColor);
+}

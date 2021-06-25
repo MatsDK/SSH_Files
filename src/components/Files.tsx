@@ -1,8 +1,9 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import _ from "../parseData";
 import DataTable from "./DataTable";
 import { ArrowRight } from "@material-ui/icons";
+import { AlertProvider } from "src/context/alert";
 
 interface DataItem {
   name: string;
@@ -35,6 +36,7 @@ const Files = ({
   selected: { selectedData, clearSelected },
   loading,
 }: FilesProps) => {
+  const { setAlert } = useContext(AlertProvider);
   const [items, setItems] = useState<object[]>(data);
 
   useEffect(() => {
@@ -114,7 +116,8 @@ const Files = ({
         currDirPath: { path: `${drive}${path}`, location },
       },
     }).then((res) => {
-      if (res.data.err) return alert(res.data.data);
+      if (res.data.err)
+        return setAlert({ text: res.data.data || "", show: true });
       if (res.data.data) {
         if (location === "local")
           setItems(_.parseLocalData(res.data.data.children));

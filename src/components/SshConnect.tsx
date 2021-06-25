@@ -1,5 +1,6 @@
 import axios from "axios";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { AlertProvider } from "src/context/alert";
 import _ from "../parseData";
 import { sshConnectionData } from "./Container";
 import DataContainer from "./DataContainer";
@@ -17,6 +18,7 @@ interface sshDataType {
 }
 
 const SshConnect = (props: sshConnectProps) => {
+  const { setAlert } = useContext(AlertProvider);
   const [loading, setLoading] = useState<boolean>(false);
   const [isConnected, setIsConnected] = useState<boolean>(false);
   const [sshData, setSshData] = useState<object[]>([]);
@@ -43,7 +45,7 @@ const SshConnect = (props: sshConnectProps) => {
         !passwordInput.replace(/\s/g, "").length ||
         !usernameInput.replace(/\s/g, "").length
       )
-        return alert("invalid input");
+        return setAlert({ text: "invalid input", show: true });
 
       const connectionData = {
         host: hostInput,
@@ -59,7 +61,7 @@ const SshConnect = (props: sshConnectProps) => {
         data: connectionData,
       }).then((res) => {
         setLoading(false);
-        if (res.data.err) return alert(res.data.data);
+        if (res.data.err) return setAlert({ text: res.data.data, show: true });
         setIsConnected(res.data.connected);
         if (res.data.connected) {
           setSshConnectionData(connectionData);
@@ -68,6 +70,7 @@ const SshConnect = (props: sshConnectProps) => {
       });
     } catch (err) {
       console.log(err);
+      setAlert({ text: "error", show: true });
     }
   };
 

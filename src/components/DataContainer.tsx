@@ -1,11 +1,12 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import _ from "../parseData";
 import Files from "./Files";
 import SelectDrive from "./SelectDrive";
 import { RefreshOutlined } from "@material-ui/icons";
 import Link from "next/link";
 import { ShellIcon } from "./icons";
+import { AlertProvider } from "src/context/alert";
 
 interface sshDataType {
   host: string;
@@ -23,6 +24,7 @@ interface dataContainerProps {
 }
 
 const DataContainer = (props: dataContainerProps) => {
+  const { setAlert } = useContext(AlertProvider);
   const [path, setPath] = useState<string>("/");
   const [loading, setLoading] = useState<boolean>(false);
   const [pathChanged, setPathChanged] = useState<boolean>(false);
@@ -111,7 +113,11 @@ const DataContainer = (props: dataContainerProps) => {
       },
     }).then((res) => {
       setLoading(false);
-      if (res.data.err) return alert(res.data.data);
+      if (res.data.err)
+        return setAlert({
+          text: res.data.data || ("error" as string),
+          show: true,
+        });
 
       if (props.location === "local")
         setData(_.parseLocalData(res.data.data.children));
@@ -148,7 +154,8 @@ const DataContainer = (props: dataContainerProps) => {
       },
     }).then((res) => {
       setLoading(false);
-      if (res.data.err) return alert(res.data.data);
+      if (res.data.err)
+        return setAlert({ text: res.data.data || "error", show: true });
 
       if (props.location === "local")
         setData(_.parseLocalData(res.data.data.children));

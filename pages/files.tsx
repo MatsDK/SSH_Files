@@ -1,5 +1,4 @@
 import axios from "axios";
-// import { GetServerSideProps } from "next";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import Layout from "src/components/Layout";
@@ -17,7 +16,7 @@ interface queryProps {
   port: number | null;
 }
 
-const Files = ({ drives, localData }: indexProps): JSX.Element => {
+const Files: React.FC<indexProps> = ({ drives, localData }) => {
   const router = useRouter();
   const sshConnectionData: queryProps = {
     host: (router.query.h as string) || null,
@@ -38,7 +37,11 @@ const Files = ({ drives, localData }: indexProps): JSX.Element => {
         <pre className="ContainersMiddle"></pre>
         <div className="SideContainer">
           <Container
-            tabs={[{ name: "remote", location: "remote", sshConnectionData }]}
+            tabs={
+              Object.values(sshConnectionData).filter((_) => !!_).length
+                ? [{ name: "remote", location: "remote", sshConnectionData }]
+                : []
+            }
             data={localData}
             drives={drives}
           />
