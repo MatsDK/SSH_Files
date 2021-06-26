@@ -4,4 +4,10 @@ module.exports = {
     SSH_USERNAME: "mats",
     SSH_SSH_PASSWORDHOST: "mats",
   },
+  webpack: (config, options) => {
+    config.node = {
+      fs: "empty",
+    };
+    return config;
+  },
 };

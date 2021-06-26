@@ -1,12 +1,20 @@
 .presetHeader {
+  margin: 0;
   font-size: 25px;
+  font-weight: bold;
+  margin-left: 10px;
 }
 
 .presetContainer {
   border: 1px solid var(--lightTextColor);
-  border-radius: 4px;
+  border-radius: 7px;
   padding: 10px;
-  width: 300px;
+  width: 100%;
+  max-width: 450px;
+  min-width: 300px;
+  flex: 1;
+  margin: 10px 20px;
+  height: 200px;
 }
 
 .presetContainer div {
@@ -24,4 +32,140 @@
 .presetContainer .label {
   color: var(--secondaryTextColor);
   font-weight: 400;
+}
+
+.bottomBar {
+  display: flex;
+  /* justify-content: space-; */
+  align-items: center;
+  padding: 0 10px;
+}
+
+.bottomBar div {
+  margin: 0;
+}
+
+.link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: var(--mainTextColor);
+  cursor: pointer;
+  margin: 0 !important;
+  margin-right: 20px !important;
+}
+.link svg {
+  width: 22px;
+  height: 22px;
+}
+
+.container {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  overflow-y: auto;
+}
+
+.newContainer {
+  border: 0;
+  padding: 0;
+  height: 221px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-width: 350px;
+}
+
+.newContainer .newContainerItem {
+  padding: 10px;
+  height: 80px;
+  border: 1px solid var(--lightTextColor);
+  border-radius: 7px;
+  margin: 0;
+  min-width: 350px;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+.newContainerItem h3 {
+  margin: 0;
+}
+
+.newContainerItem p {
+  color: var(--secondaryTextColor);
+}
+
+.newContainer svg {
+  width: 26px;
+  height: 26px;
+}
+
+.newPresetForm {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.newPresetForm div {
+  margin: 0;
+}
+
+.newPresetsInput {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  margin: 0;
+  height: 100%;
+}
+
+.newPresetsInput div input {
+  font-size: 18px;
+  margin-left: 10px;
+  background-color: var(--primaryBG);
+  border: 1px solid var(--secondaryBG);
+  /* border: 0; */
+  border-radius: 5px;
+  color: var(--mainTextColor);
+  padding: 4px 6px;
+  width: 100%;
+  font-size: 18px;
+  outline: none;
+  margin: 4px;
+  transition: 0.15s ease;
+}
+
+.newPresetsInput div {
+  display: flex;
+  align-items: center;
+}
+
+.newPresetsInput div p {
+  font-size: 18px;
+  color: var(--secondaryTextColor);
+}
+
+.newPresetsInput div input:hover {
+  /* border: 1px solid var(--secondaryTextColor); */
+  border-color: var(--secondaryTextColor);
+}
+
+.newPresetsInput button {
+  width: fit-content;
+  padding: 5px 10px;
+  border-radius: 5px;
+  outline: none;
+  background-color: var(--secondaryBGLight);
+  border: 1px solid var(--secondaryBG);
+  cursor: pointer;
+  color: var(--mainTextColor);
+  margin-left: 4px;
+  margin-top: 5px;
+  transition: 0.15s ease;
+}
+
+.newPresetsInput button:hover {
+  background-color: var(--primaryBG);
 }

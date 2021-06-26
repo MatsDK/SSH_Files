@@ -1,3 +1,4 @@
+import { Folder } from "@material-ui/icons";
 import Link from "next/link";
 import styles from "../css/index.module.css";
 import { ShellIcon } from "./icons";
@@ -14,7 +15,7 @@ interface Props {
   preset: ConnectionPreset;
 }
 
-const PresentContainer: React.FC<Props> = ({ preset }) => {
+const PresetContainer: React.FC<Props> = ({ preset }) => {
   const createShellLink = () =>
     `h=${preset.hostIp}&u=${preset.userName}&p=${preset.port}`;
 
@@ -34,16 +35,29 @@ const PresentContainer: React.FC<Props> = ({ preset }) => {
         <p className={styles.label}>Port:</p>
         <p>{preset.port}</p>
       </div>
+      <div className={styles.bottomBar}>
+        <div>
+          <Link href={`/shell?${createShellLink()}`}>
+            <a
+              className={styles.link}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <ShellIcon color={"#fff"} />
+              <p>Shell</p>
+            </a>
+          </Link>
 
-      <Link href={`/shell?${createShellLink()}`}>
-        <a target="_blank" rel="noopener noreferrer">
-          <ShellIcon />
-        </a>
-      </Link>
-
-      <Link href={`/files?${createShellLink()}`}>Files</Link>
+          <Link href={`/files?${createShellLink()}`}>
+            <div className={styles.link}>
+              <Folder />
+              <p>Files</p>
+            </div>
+          </Link>
+        </div>
+      </div>
     </div>
   );
 };
 
-export default PresentContainer;
+export default PresetContainer;

@@ -25,14 +25,17 @@ io.on("connection", (socket) => {
 
       conn.on("timeout", () => {
         console.log("connection timed out");
+        socket.emit("error", "Connection timed out");
       });
 
       conn.on("err", (err) => {
         console.log(err);
+        socket.emit("error", "error");
       });
 
       conn.on("error", (err) => {
         console.log("wrong credentials");
+        socket.emit("error", "Wrong credentials");
       });
 
       conn.on("end", () => {

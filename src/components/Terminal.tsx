@@ -2,6 +2,7 @@ import { useEffect, useRef, useContext, useState } from "react";
 import { SocketContext } from "../context/socket";
 import "../../node_modules/xterm/css/xterm.css";
 import { useRouter } from "next/router";
+import { AlertProvider } from "src/context/alert";
 
 const TerminalComponent = () => {
   const router = useRouter();
@@ -10,6 +11,7 @@ const TerminalComponent = () => {
     h = "",
     p = 22,
   }: { u?: string; h?: string; p?: number } = router.query;
+  const { setAlert } = useContext(AlertProvider);
   const container = useRef<any>();
   const [isStarted, setIsStarted] = useState<boolean>(false);
   const [shellOptions, setShellOptions] = useState<{
@@ -93,6 +95,8 @@ const TerminalComponent = () => {
       },
     });
   };
+
+  socket.on("error", (data: string) => setAlert({ text: data, show: true }));
 
   return (
     <>

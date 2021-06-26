@@ -1,4 +1,7 @@
-export const ShellIcon = () => {
+interface Props {
+  color?: string;
+}
+export const ShellIcon: React.FC<Props> = ({ color = "#b3b3b3" }) => {
   return (
     <svg
       width="19"
@@ -7,7 +10,7 @@ export const ShellIcon = () => {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <rect width="19" height="13" rx="3" className="iconBG" fill="#B3B3B3" />
+      <rect width="19" height="13" rx="3" fill={color} />
       <rect
         width="0.779272"
         height="4.01366"
