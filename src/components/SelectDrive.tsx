@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Select from "react-select";
+import { styles } from "./ui/selectStyles";
 
 const SelectDrive = (props) => {
   const [drives, setDrives] = useState<any[]>(props.drives);
@@ -15,55 +16,6 @@ const SelectDrive = (props) => {
     );
   }, []);
 
-  const colourStyles = {
-    control: (styles: any) => ({
-      ...styles,
-      color: "#000",
-      backgroundColor: "var(--primaryBG)",
-      width: "120px",
-      padding: "0",
-      fontSize: "14px",
-      height: "30px",
-      boxShadow: "none",
-      marginBottom: "10px",
-      minHeight: "24px",
-      borderColor: "var(--lightTextColor) !important",
-    }),
-    option: (styles: any, { isFocused }) => ({
-      ...styles,
-      margin: "0",
-      fontSize: "14px",
-      padding: "2px 6px",
-      height: "26px",
-      borderBottom: "1px solid var(--secondaryBG)",
-      backgroundColor: "var(--primaryBG)",
-      color: isFocused ? "var(--mainTextColor)" : "var(--secondaryTextColor)",
-      width: "150px",
-      overflow: "hidden !important",
-    }),
-    menuList: (provided: any) => ({
-      ...provided,
-      paddingTop: 0,
-      paddingBottom: 0,
-      border: "1px solid var(--lightTextColor)",
-      overflow: "hidden",
-      marginTop: "-5px",
-      boxShadow: "2px 2px 10px rgba(0, 0, 0, 0.3)",
-      borderRadius: "4px",
-      backgroundColor: "var(--primaryBG)",
-    }),
-    singleValue: (provided: any) => ({
-      ...provided,
-      fontSize: "14px",
-      color: "var(--mainTextColor)",
-    }),
-    dropdownIndicator: (provided: any) => ({ ...provided, padding: "0" }),
-    indicatorSeparator: (provided: any) => ({
-      ...provided,
-      backgroundColor: "transparent",
-    }),
-  };
-
   return SelectId !== undefined ? (
     <div>
       <Select
@@ -78,7 +30,7 @@ const SelectDrive = (props) => {
           }))[0]
         }
         clearable={false}
-        styles={colourStyles}
+        styles={styles}
         onChange={(e: any) => props.setActiveDrive(e.value)}
       />
     </div>

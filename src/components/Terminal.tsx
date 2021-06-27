@@ -3,6 +3,21 @@ import { SocketContext } from "../context/socket";
 import "../../node_modules/xterm/css/xterm.css";
 import { useRouter } from "next/router";
 import { AlertProvider } from "src/context/alert";
+import Select from "react-select";
+import { styles } from "./ui/selectStyles";
+
+interface PresetOption {
+  value: string;
+  label: string;
+}
+
+interface ConnectionPreset {
+  id: string;
+  name: string;
+  hostIp: string;
+  userName: string;
+  port: number;
+}
 
 const TerminalComponent = () => {
   const router = useRouter();
@@ -24,11 +39,43 @@ const TerminalComponent = () => {
   const [portInput, setPortInput] = useState<number | null>(Number(p));
   const socket = useContext(SocketContext);
 
+  const [sshPresets, setSshPresets] = useState<ConnectionPreset[]>([]);
+  const [sshPresetOptions, setSshPresetOptions] = useState<PresetOption[]>([]);
+
+  useEffect(() => {
+    try {
+      if (localStorage) {
+        setSshPresets(
+          JSON.parse(localStorage.getItem("data") || "").connectionPresets || []
+        );
+
+        setSshPresetOptions(
+          (
+            JSON.parse(localStorage.getItem("data") || "").connectionPresets ||
+            []
+          ).map((_) => ({ value: _.id, label: _.name }))
+        );
+      }
+    } catch {}
+    return () => {};
+  }, []);
+
   useEffect(() => {
     setPortInput(Number(p));
     setHostnameInput((router.query.h as string) || "");
     setUsernameInput((router.query.u as string) || "");
   }, [router]);
+
+  const selectPreset = (e: PresetOption) => {
+    const thisOption: ConnectionPreset | undefined = sshPresets.find(
+      (_: ConnectionPreset) => _.id == e.value
+    );
+    if (!thisOption) return;
+
+    setUsernameInput(() => thisOption.userName);
+    setHostnameInput(() => thisOption.hostIp);
+    setPortInput(() => thisOption.port);
+  };
 
   useEffect(() => {
     if (container.current) {
@@ -102,6 +149,18 @@ const TerminalComponent = () => {
     <>
       {!isStarted && (
         <form onSubmit={connect} className="sshShellForm">
+          <label>Connection Presets</label>
+          <div style={{ width: 225, height: 40, marginBottom: 10 }}>
+            <Select
+              clearable={true}
+              instanceId={`select${1}`}
+              className="Select"
+              isSearchable={true}
+              options={sshPresetOptions}
+              styles={styles}
+              onChange={(e: any) => selectPreset(e)}
+            />
+          </div>
           <label>Hostname</label>
           <input
             value={hostnameInput}

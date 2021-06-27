@@ -15,8 +15,10 @@ interface ConnectionPreset {
   port: number;
 }
 
+type PresetData = { connectionPresets: ConnectionPreset[] };
+
 const Index = () => {
-  const [data, setData] = useState<{ connectionPresets: ConnectionPreset[] }>({
+  const [data, setData] = useState<PresetData>({
     connectionPresets: [],
   });
   const [nameInput, setNameInput] = useState<string>("");
@@ -35,7 +37,7 @@ const Index = () => {
   const createPreset = (e: FormEvent) => {
     e.preventDefault();
 
-    const newConnectionPresets = [
+    const newConnectionPresets: ConnectionPreset[] = [
       {
         id: nanoid(),
         userName: usernameInput,

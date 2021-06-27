@@ -1,9 +1,11 @@
 import axios from "axios";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AlertProvider } from "src/context/alert";
 import _ from "../parseData";
 import { sshConnectionData } from "./Container";
 import DataContainer from "./DataContainer";
+import Select from "react-select";
+import { styles } from "./ui/selectStyles";
 
 interface sshConnectProps {
   selected: { setSelectedData: any; selectedData: any };
@@ -14,6 +16,19 @@ interface sshDataType {
   host: string;
   username: string;
   password: string;
+  port: number;
+}
+
+interface PresetOption {
+  value: string;
+  label: string;
+}
+
+interface ConnectionPreset {
+  id: string;
+  name: string;
+  hostIp: string;
+  userName: string;
   port: number;
 }
 
@@ -35,6 +50,26 @@ const SshConnect = (props: sshConnectProps) => {
   const [portInput, setPortInput] = useState<number>(
     props.sshConnectionData.port == null ? 22 : props.sshConnectionData.port
   );
+  const [sshPresets, setSshPresets] = useState<ConnectionPreset[]>([]);
+  const [sshPresetOptions, setSshPresetOptions] = useState<PresetOption[]>([]);
+
+  useEffect(() => {
+    try {
+      if (localStorage) {
+        setSshPresets(
+          JSON.parse(localStorage.getItem("data") || "").connectionPresets || []
+        );
+
+        setSshPresetOptions(
+          (
+            JSON.parse(localStorage.getItem("data") || "").connectionPresets ||
+            []
+          ).map((_) => ({ value: _.id, label: _.name }))
+        );
+      }
+    } catch {}
+    return () => {};
+  }, []);
 
   const connect = (e: any) => {
     try {
@@ -74,6 +109,17 @@ const SshConnect = (props: sshConnectProps) => {
     }
   };
 
+  const selectPreset = (e: PresetOption) => {
+    const thisOption: ConnectionPreset | undefined = sshPresets.find(
+      (_: ConnectionPreset) => _.id == e.value
+    );
+    if (!thisOption) return;
+
+    setUsernameInput(() => thisOption.userName);
+    setHostInput(() => thisOption.hostIp);
+    setPortInput(() => thisOption.port);
+  };
+
   return (
     <div className="Page">
       {!isConnected ? (
@@ -81,25 +127,37 @@ const SshConnect = (props: sshConnectProps) => {
           <div>Loading...</div>
         ) : (
           <form onSubmit={connect} className="sshConnectForm">
+            <label>Connection Presets</label>
+            <div style={{ width: 225, height: 40, marginBottom: 10 }}>
+              <Select
+                clearable={true}
+                instanceId={`select${1}`}
+                className="Select"
+                isSearchable={true}
+                options={sshPresetOptions}
+                styles={styles}
+                onChange={(e: any) => selectPreset(e)}
+              />
+            </div>
             <label>Host Name</label>
             <input
               type="text"
               placeholder="host"
-              defaultValue={hostInput}
+              value={hostInput}
               onChange={(e: any) => setHostInput(e.target.value)}
             />
             <label>UserName</label>
             <input
               type="text"
               placeholder="username"
-              defaultValue={usernameInput}
+              value={usernameInput}
               onChange={(e: any) => setUsernameInput(e.target.value)}
             />
             <label>Password</label>
             <input
               type="password"
               placeholder="password"
-              defaultValue={passwordInput}
+              value={passwordInput}
               onChange={(e: any) => setPasswordInput(e.target.value)}
             />
             <label>
