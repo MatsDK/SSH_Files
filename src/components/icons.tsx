@@ -70,3 +70,27 @@ export const ClosePopupIcon = () => {
     </svg>
   );
 };
+
+export const EditIcon = () => {
+  return (
+    <svg
+      width="26"
+      height="26"
+      viewBox="0 0 26 26"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <rect y="20" width="5.98603" height="6" />
+      <rect
+        width="8.47541"
+        height="24.0481"
+        transform="matrix(0.706282 0.70793 -0.706282 0.70793 16.9847 2.97562)"
+      />
+      <rect
+        width="8.47541"
+        height="2.91084"
+        transform="matrix(0.706282 0.70793 -0.706282 0.70793 20.0139 0)"
+      />
+    </svg>
+  );
+};

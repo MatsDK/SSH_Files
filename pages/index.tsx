@@ -121,7 +121,14 @@ const Index = () => {
           </form>
         </div>
         {data.connectionPresets.map((_: ConnectionPreset, idx: number) => (
-          <PresetContainer preset={_} key={idx} />
+          <PresetContainer
+            data={data.connectionPresets}
+            setData={(data) => {
+              setData(data);
+            }}
+            preset={_}
+            key={idx}
+          />
         ))}
       </div>
     </Layout>
