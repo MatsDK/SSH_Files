@@ -77,7 +77,11 @@ const Container = (props: ContainerProps) => {
         dropdown={{ dropDownState, setDropDownState }}
       >
         {tabs.map((tab: TabType, i: number) => (
-          <div className="Page" style={{ width: "50vw" }} key={i}>
+          <div
+            className="Page"
+            // style={{ width: "calc((100vw - 65px)/2)" }}
+            key={i}
+          >
             <TabPage isSelected={selected === i}>
               {tab.location === "local" ? (
                 <DataContainer

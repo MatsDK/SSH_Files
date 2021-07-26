@@ -20,7 +20,7 @@ interface ConnectionPreset {
   port: number;
 }
 
-const TerminalComponent = () => {
+const TerminalComponent: React.FC<{}> = () => {
   const router = useRouter();
   const {
     u = "",
@@ -104,12 +104,13 @@ const TerminalComponent = () => {
           const prompt = (term: any) => term.write("\r\n$");
           runTerminal();
 
-          socket.on("data", (data: any) => {
-            setIsStarted(true);
-            term.write(data);
-            term.focus();
-            fitAddon.fit();
-          });
+          socket &&
+            socket.on("data", (data: any) => {
+              setIsStarted(true);
+              term.write(data);
+              term.focus();
+              fitAddon.fit();
+            });
 
           setShellOptions({ cols: term.cols, rows: term.rows });
 
@@ -117,7 +118,8 @@ const TerminalComponent = () => {
             "resize",
             () => {
               fitAddon.fit();
-              socket.emit("resize", { cols: term.cols, rows: term.rows });
+              socket &&
+                socket.emit("resize", { cols: term.cols, rows: term.rows });
             },
             false
           );
@@ -133,18 +135,20 @@ const TerminalComponent = () => {
   const connect = (e: any) => {
     e.preventDefault();
 
-    socket.emit("start", {
-      shell: shellOptions,
-      connectData: {
-        password: passwordInput,
-        hostname: hostnameInput,
-        username: usernameInput,
-        port: portInput || 22,
-      },
-    });
+    socket &&
+      socket.emit("start", {
+        shell: shellOptions,
+        connectData: {
+          password: passwordInput,
+          hostname: hostnameInput,
+          username: usernameInput,
+          port: portInput || 22,
+        },
+      });
   };
 
-  socket.on("error", (data: string) => setAlert({ text: data, show: true }));
+  socket &&
+    socket.on("error", (data: string) => setAlert({ text: data, show: true }));
 
   return (
     <>
@@ -195,14 +199,16 @@ const TerminalComponent = () => {
           </form>
         </Layout>
       )}
-      <div
-        style={{
-          width: "100%",
-          height: "100%",
-          display: isStarted ? "block" : "none",
-        }}
-        ref={container}
-      ></div>
+      <Layout>
+        <div
+          style={{
+            width: "100%",
+            height: "calc(100% - 20px)",
+            display: isStarted ? "block" : "none",
+          }}
+          ref={container}
+        />
+      </Layout>
     </>
   );
 };

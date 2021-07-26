@@ -94,3 +94,28 @@ export const EditIcon = () => {
     </svg>
   );
 };
+
+export const DevicesIcon: React.FC<Props> = ({ color = "#c4c4c4" }) => {
+  return (
+    <svg
+      width="43"
+      height="29"
+      viewBox="0 0 43 29"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <rect y="16" width="42" height="13" rx="4" fill={color} />
+      <circle cx="33.5" cy="22.5" r="2.5" fill="black" />
+      <rect x="6" y="19" width="2" height="7" rx="1" fill="black" />
+      <rect x="18" y="19" width="2" height="7" rx="1" fill="black" />
+      <rect x="24" y="19" width="2" height="7" rx="1" fill="black" />
+      <rect x="12" y="19" width="2" height="7" rx="1" fill="black" />
+      <rect x="1" width="42" height="13" rx="4" fill={color} />
+      <circle cx="34.5" cy="6.5" r="2.5" fill="black" />
+      <rect x="7" y="3" width="2" height="7" fill="black" />
+      <rect x="19" y="3" width="2" height="7" fill="black" />
+      <rect x="25" y="3" width="2" height="7" fill="black" />
+      <rect x="13" y="3" width="2" height="7" fill="black" />
+    </svg>
+  );
+};

@@ -22,7 +22,7 @@ const TabContainer = (props: TabContainerProps) => {
   return (
     <div
       style={{
-        width: "50vw",
+        width: "calc((100vw - 65px) / 2)",
         display: "flex",
         flexDirection: "column",
       }}

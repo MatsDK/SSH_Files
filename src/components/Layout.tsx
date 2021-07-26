@@ -1,6 +1,7 @@
 import { useContext, useEffect } from "react";
 import { AlertProvider } from "src/context/alert";
 import { ClosePopupIcon } from "./icons";
+import Sidebar from "./Sidebar";
 
 interface LayoutProps {
   children: JSX.Element;
@@ -23,20 +24,30 @@ const Layout = (props: LayoutProps): JSX.Element => {
   }, [alert]);
 
   return (
-    <div style={{ height: "100vh", display: "flex", flexDirection: "column" }}>
-      {alert.show && (
-        <div className={"alertPopup"}>
-          <div>
-            <h3>Alert</h3>
-            <div onClick={() => setAlert({ ...alert, show: false })}>
-              <ClosePopupIcon />
+    <div style={{ height: "100vh", display: "flex" }}>
+      <Sidebar />
+      <div
+        style={{
+          height: "100vh",
+          display: "flex",
+          flexDirection: "column",
+          width: "calc(100vw - 65px)",
+        }}
+      >
+        {alert.show && (
+          <div className={"alertPopup"}>
+            <div>
+              <h3>Alert</h3>
+              <div onClick={() => setAlert({ ...alert, show: false })}>
+                <ClosePopupIcon />
+              </div>
             </div>
+            <p>{alert.text}</p>
           </div>
-          <p>{alert.text}</p>
-        </div>
-      )}
-      {props.children}
-      <div className="BottomBar"></div>
+        )}
+        {props.children}
+        <div className="BottomBar"></div>
+      </div>
     </div>
   );
 };
