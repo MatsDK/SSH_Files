@@ -57,7 +57,12 @@ const orderDataBy = (data: any, value: any, dir: any) => {
   return data;
 };
 
-const DataTable = ({ items, path, loading, ...funcs }: DataTableProps) => {
+const DataTable: React.FC<DataTableProps> = ({
+  items,
+  path,
+  loading,
+  ...funcs
+}) => {
   const [data, setData] = useState<any[]>();
   const [dir, setDir] = useState<string>("asc");
   const [value, setValue] = useState<string>("type");

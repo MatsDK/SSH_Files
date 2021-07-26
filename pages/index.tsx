@@ -1,11 +1,8 @@
-import Layout from "../src/components/Layout";
-import Link from "next/link";
-import PresetContainer from "src/components/PresetContainer";
-import styles from "../src/css/index.module.css";
-import { ShellIcon } from "src/components/icons";
-import { Folder } from "@material-ui/icons";
-import { FormEvent, useEffect, useState } from "react";
 import { nanoid } from "nanoid";
+import { FormEvent, useEffect, useState } from "react";
+import styles from "../src/css/index.module.css";
+import Layout from "../src/components/Layout";
+import PresetContainer from "../src/components/PresetContainer";
 
 interface ConnectionPreset {
   id: string;
@@ -57,8 +54,16 @@ const Index = () => {
 
   return (
     <Layout>
-      <div className={styles.container}>
-        <div className={styles.presetContainer + " " + styles.newContainer}>
+      <div className={styles.hostsContainer}>
+        {/* <div className={styles.container}> */}
+        <h2>Hosts</h2>
+
+        <div className={styles.lastConnectionsSection}>
+          <span>Last connections</span>
+        </div>
+        <div className={styles.hostsSection}>
+          <span>Hosts</span>
+          {/* <div className={styles.presetContainer + " " + styles.newContainer}>
           <Link href="/files">
             <div className={styles.newContainerItem}>
               <div style={{ display: "flex", alignItems: "center" }}>
@@ -120,16 +125,18 @@ const Index = () => {
             </div>
           </form>
         </div>
-        {data.connectionPresets.map((_: ConnectionPreset, idx: number) => (
-          <PresetContainer
-            data={data.connectionPresets}
-            setData={(data) => {
-              setData(data);
-            }}
-            preset={_}
-            key={idx}
-          />
-        ))}
+*/}
+          {data.connectionPresets.map((_: ConnectionPreset, idx: number) => (
+            <PresetContainer
+              data={data.connectionPresets}
+              setData={(data) => {
+                setData(data);
+              }}
+              preset={_}
+              key={idx}
+            />
+          ))}
+        </div>
       </div>
     </Layout>
   );

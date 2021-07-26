@@ -18,7 +18,7 @@ interface TabContainerProps {
   renameTab: Function;
 }
 
-const TabContainer = (props: TabContainerProps) => {
+const TabContainer: React.SFC<TabContainerProps> = (props) => {
   return (
     <div
       style={{
@@ -30,6 +30,7 @@ const TabContainer = (props: TabContainerProps) => {
       <div className="TabsBar">
         {props.tabs.map((tab: tabType, idx: number) => {
           const active = idx === props.selected ? "active" : "";
+
           return (
             <Tab
               key={idx}

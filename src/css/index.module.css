@@ -1,32 +1,59 @@
-.presetHeader {
-  margin: 0;
-  font-size: 25px;
-  font-weight: bold;
-  margin-left: 10px;
-}
-
 .presetContainer {
-  border: 1px solid var(--lightTextColor);
   border-radius: 7px;
   padding: 10px;
-  width: 100%;
   max-width: 450px;
   min-width: 300px;
   flex: 1;
-  margin: 10px 20px;
-  height: 200px;
+  margin: 20px 20px 20px 0;
+  background-color: var(--secondaryBG);
+  height: 70px;
+  box-shadow: 8px 5px 24px 10px rgba(0, 0, 0, 0.233);
+  display: flex;
 }
 
-.presetContainer div {
+.presetContainerLeft {
+  justify-content: space-around;
+  flex: 1;
   display: flex;
-  margin: 15px 0px;
+  flex-direction: column;
+}
+
+.presetContainerRight {
+  justify-content: space-between;
+  flex-direction: column;
+  display: flex;
+  align-items: flex-end;
+}
+
+.presetContainer:hover .presetContainerRight > div > svg {
+  opacity: 1;
+}
+
+.presetContainerRight > div > svg {
+  width: 14px;
+  height: 14px;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 50%;
+  transition: 0.15s ease;
+  margin-right: -5px;
+  opacity: 0;
+}
+
+.presetContainerRight > div > svg:hover {
+  background-color: var(--primaryBG);
+}
+
+.presetContainerRight > div > svg circle {
+  fill: var(--secondaryTextColor);
+}
+
+.presetContainerRight div {
+  display: flex;
 }
 
 .presetContainer div p {
   margin: 0px;
-  font-weight: 600;
-  font-size: 18px;
-  margin-left: 10px;
 }
 
 .presetContainer .label {
@@ -51,10 +78,11 @@
   text-decoration: none;
   color: var(--mainTextColor);
   cursor: pointer;
-  margin: 0 !important;
-  margin-right: 20px !important;
+  padding: 0 3px;
 }
+
 .link svg {
+  fill: var(--secondaryTextColor) !important;
   width: 22px;
   height: 22px;
 }
@@ -138,9 +166,9 @@
 }
 
 .presetContainer input {
-  height: 18px;
+  height: 23px;
   margin: 0;
-  padding: 1px;
+  padding: 2px 4px;
 }
 
 .newPresetsInput div {
@@ -233,6 +261,7 @@ p.presetHeader {
   margin-left: 85px;
   z-index: 4000;
   padding: 3px 8px;
+  border-radius: 4px;
   font-size: 17px;
   background-color: black;
   box-shadow: 0px 0px 30px 7px rgb(0, 0, 0);
@@ -267,4 +296,84 @@ p.presetHeader {
   width: 70%;
   height: 70%;
   fill: var(--secondaryTextColor) !important;
+}
+
+.hostsSection,
+.lastConnectionsSection {
+  padding: 20px 0;
+}
+
+.hostsSection > span,
+.lastConnectionsSection > span {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.hostsContainer {
+  overflow-y: auto;
+  padding-left: 20px;
+}
+
+.hostsContainer::-webkit-scrollbar {
+  width: 5px;
+  transform: translateY(-4px);
+}
+
+.hostsContainer::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.hostsContainer::-webkit-scrollbar-thumb {
+  border-radius: 2px;
+  background-color: var(--lightTextColor);
+}
+
+.dropDownMenu {
+  position: absolute;
+  margin-top: 29px !important;
+  display: flex;
+  flex-direction: column;
+  margin-right: -100px;
+  padding: 5px;
+  width: 70px;
+  background-color: var(--primaryBG);
+  box-shadow: 8px 5px 24px 10px rgba(0, 0, 0, 0.233);
+  border: 1px solid var(--secondaryBGLight);
+  border-radius: 5px;
+}
+
+.dropDownMenu button {
+  text-align: start;
+  background-color: transparent;
+  border: 0;
+  cursor: pointer;
+  color: var(--secondaryTextColor);
+  padding: 3px 6px;
+  font-size: 15px;
+  transition: 0.15s ease;
+}
+
+.dropDownMenu button:first-child {
+  border-bottom: 1px solid var(--secondaryBGLight);
+}
+
+.dropDownMenu button:hover {
+  background-color: var(--secondaryBGLight);
+}
+
+.saveButton {
+  color: var(--secondaryTextColor);
+  border: 0;
+  background-color: var(--primaryBG);
+  padding: 2px 8px;
+  font-size: 18px;
+  border-radius: 3px;
+  margin-bottom: 3px;
+  margin-left: 6px;
+  cursor: pointer;
+  transition: 0.1s ease;
+}
+
+.saveButton:hover {
+  color: var(--mainTextColor);
 }

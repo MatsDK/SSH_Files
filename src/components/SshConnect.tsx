@@ -32,7 +32,7 @@ interface ConnectionPreset {
   port: number;
 }
 
-const SshConnect = (props: sshConnectProps) => {
+const SshConnect: React.FC<sshConnectProps> = (props) => {
   const { setAlert } = useContext(AlertProvider);
   const [loading, setLoading] = useState<boolean>(false);
   const [isConnected, setIsConnected] = useState<boolean>(false);

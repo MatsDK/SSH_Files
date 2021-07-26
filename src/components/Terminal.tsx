@@ -154,49 +154,52 @@ const TerminalComponent: React.FC<{}> = () => {
     <>
       {!isStarted && (
         <Layout>
-          <form onSubmit={connect} className="sshShellForm">
-            <label>Connection Presets</label>
-            <div style={{ width: 225, height: 40, marginBottom: 10 }}>
-              <Select
-                clearable={true}
-                instanceId={`select${1}`}
-                className="Select"
-                isSearchable={true}
-                options={sshPresetOptions}
-                styles={styles}
-                onChange={(e: any) => selectPreset(e)}
+          <div className="sshFormWrapper">
+            <form onSubmit={connect} className="sshShellForm">
+              <h2>Shell</h2>
+              <label>Connection Presets</label>
+              <div style={{ width: 225, height: 40, marginBottom: 10 }}>
+                <Select
+                  clearable={true}
+                  instanceId={`select${1}`}
+                  className="Select"
+                  isSearchable={true}
+                  options={sshPresetOptions}
+                  styles={styles}
+                  onChange={(e: any) => selectPreset(e)}
+                />
+              </div>
+              <label>Hostname</label>
+              <input
+                value={hostnameInput}
+                placeholder="hostname"
+                onChange={(e) => setHostnameInput(e.target.value)}
               />
-            </div>
-            <label>Hostname</label>
-            <input
-              value={hostnameInput}
-              placeholder="hostname"
-              onChange={(e) => setHostnameInput(e.target.value)}
-            />
-            <label>Username</label>
-            <input
-              value={usernameInput}
-              placeholder="username"
-              onChange={(e) => setUsernameInput(e.target.value)}
-            />
-            <label>Password</label>
-            <input
-              type="password"
-              value={passwordInput}
-              placeholder="password"
-              onChange={(e) => setPasswordInput(e.target.value)}
-            />
-            <label>
-              Port <span>(default: 22)</span>
-            </label>
-            <input
-              type="number"
-              value={portInput || ""}
-              placeholder="port"
-              onChange={(e) => setPortInput(parseInt(e.target.value || ""))}
-            />
-            <button type="submit">connect</button>
-          </form>
+              <label>Username</label>
+              <input
+                value={usernameInput}
+                placeholder="username"
+                onChange={(e) => setUsernameInput(e.target.value)}
+              />
+              <label>Password</label>
+              <input
+                type="password"
+                value={passwordInput}
+                placeholder="password"
+                onChange={(e) => setPasswordInput(e.target.value)}
+              />
+              <label>
+                Port <span>(default: 22)</span>
+              </label>
+              <input
+                type="number"
+                value={portInput || ""}
+                placeholder="port"
+                onChange={(e) => setPortInput(parseInt(e.target.value || ""))}
+              />
+              <button type="submit">connect</button>
+            </form>
+          </div>
         </Layout>
       )}
       <Layout>

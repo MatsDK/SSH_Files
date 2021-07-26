@@ -23,7 +23,7 @@ interface dataContainerProps {
   selected: { selectedData: any; setSelectedData: any };
 }
 
-const DataContainer = (props: dataContainerProps) => {
+const DataContainer: React.FC<dataContainerProps> = (props) => {
   const { setAlert } = useContext(AlertProvider);
   const [path, setPath] = useState<string>("/");
   const [loading, setLoading] = useState<boolean>(false);

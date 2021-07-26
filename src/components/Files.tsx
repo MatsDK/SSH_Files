@@ -28,14 +28,14 @@ interface FilesProps {
   loading: boolean;
 }
 
-const Files = ({
+const Files: React.FC<FilesProps> = ({
   data,
   update,
   loc: { path, location, sshData, setPath },
   drive,
   selected: { selectedData, clearSelected },
   loading,
-}: FilesProps) => {
+}) => {
   const { setAlert } = useContext(AlertProvider);
   const [items, setItems] = useState<object[]>(data);
 
@@ -150,8 +150,6 @@ const Files = ({
   return (
     <div
       style={{
-        width: "50vw",
-        marginRight: "20px",
         height: "100%",
         display: "flex",
         flexDirection: "column",

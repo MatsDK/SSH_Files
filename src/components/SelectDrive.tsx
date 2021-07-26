@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Select from "react-select";
 import { styles } from "./ui/selectStyles";
 
-const SelectDrive = (props) => {
+const SelectDrive: React.FC<{ [key: string]: any }> = (props) => {
   const [drives, setDrives] = useState<any[]>(props.drives);
   const [SelectId, setSelectId] = useState<number | undefined>(undefined);
 

@@ -22,7 +22,7 @@ interface ContainerProps {
   tabs: TabType[];
 }
 
-const Container = (props: ContainerProps) => {
+const Container: React.FC<ContainerProps> = (props) => {
   const [selected, setSelected] = useState<number | null>(0);
   const [selectedData, setSelectedData] = useState<any[]>([]);
   const [dropDownState, setDropDownState] = useState<boolean>(false);

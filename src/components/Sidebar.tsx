@@ -3,7 +3,7 @@ import Link from "next/link";
 import styles from "../css/index.module.css";
 import { DevicesIcon, ShellIcon } from "./icons";
 
-const Sidebar = () => {
+const Sidebar: React.FC<{}> = () => {
   return (
     <div className={styles.Sidebar}>
       <div className={styles.SidebarTop} />
@@ -12,7 +12,7 @@ const Sidebar = () => {
           <div className={styles.SidebarButtonInner}>
             <DevicesIcon />
           </div>
-          <span>Devices</span>
+          <span>Hosts</span>
         </button>
       </Link>
       <Link href={"/shell"}>

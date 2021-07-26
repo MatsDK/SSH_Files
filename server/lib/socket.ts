@@ -28,7 +28,7 @@ io.on("connection", (socket) => {
         socket.emit("error", "Connection timed out");
       });
 
-      conn.on("err", (err) => {
+      conn.on("err", (err: any) => {
         console.log(err);
         socket.emit("error", "error");
       });

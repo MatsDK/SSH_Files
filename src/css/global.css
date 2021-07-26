@@ -114,6 +114,7 @@ body,
 }
 .PageWrapper .ActivePage .Page {
   height: 100% !important;
+  width: calc((100vw - 65px) / 2);
 }
 
 .ContainerPlaceHolder {
@@ -475,6 +476,11 @@ body,
   flex-direction: column;
   min-width: 200px;
   max-width: 500px;
+  padding: 0 20px;
+}
+
+.sshShellForm h2 {
+  margin-bottom: 40px;
 }
 
 .sshConnectForm input,
@@ -634,4 +640,24 @@ body,
 
 .alertPopup div div:hover svg rect {
   fill: var(--mainTextColor);
+}
+
+.sshFormWrapper {
+  width: 100%;
+  padding-bottom: 40px;
+  overflow-y: auto;
+}
+
+.sshFormWrapper::-webkit-scrollbar {
+  width: 5px;
+  transform: translateY(-4px);
+}
+
+.sshFormWrapper::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sshFormWrapper::-webkit-scrollbar-thumb {
+  border-radius: 2px;
+  background-color: var(--lightTextColor);
 }

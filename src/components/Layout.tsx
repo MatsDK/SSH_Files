@@ -9,7 +9,7 @@ interface LayoutProps {
 
 let timeout: null | NodeJS.Timeout;
 
-const Layout = (props: LayoutProps): JSX.Element => {
+const Layout: React.FC<LayoutProps> = (props) => {
   const { alert, setAlert } = useContext(AlertProvider);
 
   useEffect(() => {

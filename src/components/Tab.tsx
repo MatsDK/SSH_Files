@@ -9,14 +9,14 @@ interface TabProps {
   renameTab: Function;
 }
 
-const Tab = ({
+const Tab: React.FC<TabProps> = ({
   active,
   tab,
   setSelected,
   idx,
   closeTab,
   renameTab,
-}: TabProps): JSX.Element => {
+}) => {
   const [showDropDown, setShowDropDown] = useState<boolean>(false);
   const [showRenameInput, setShowRenameInput] = useState<boolean>(false);
   const [renameInputValue, setRenameInputValue] = useState<string>(tab.name);
