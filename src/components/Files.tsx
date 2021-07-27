@@ -156,7 +156,13 @@ const Files: React.FC<FilesProps> = ({
       }}
       className=".Page"
     >
-      <div className="PathWrapper" style={{ display: "flex" }}>
+      <div
+        className="PathWrapper"
+        style={{
+          display: "flex",
+          overflow: "scroll !important",
+        }}
+      >
         <div
           className={path === "/" ? "CurrPathName" : "PathName"}
           onDrop={(e) =>

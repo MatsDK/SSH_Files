@@ -390,7 +390,7 @@ body,
 
 .PathWrapper {
   white-space: nowrap;
-  max-width: 100%;
+  width: 100%;
   overflow-x: auto;
   display: flex;
   font-size: 18px;
@@ -399,12 +399,18 @@ body,
 }
 
 .PathWrapper::-webkit-scrollbar {
-  display: none;
+  width: 5px;
+  height: 5px;
+  transform: translateY(-4px);
 }
 
-.PathWrapper {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+.PathWrapper::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.PathWrapper::-webkit-scrollbar-thumb {
+  border-radius: 2px;
+  background-color: var(--lightTextColor);
 }
 
 .RefreshBtn {

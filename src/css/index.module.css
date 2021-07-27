@@ -377,3 +377,43 @@ p.presetHeader {
 .saveButton:hover {
   color: var(--mainTextColor);
 }
+
+.lastConnectionWrapper {
+  height: 50px;
+  background-color: var(--secondaryBG);
+  box-shadow: 8px 5px 24px 10px rgba(0, 0, 0, 0.233);
+  border-radius: 7px;
+  padding: 10px;
+  max-width: 450px;
+  min-width: 300px;
+  flex: 1;
+  margin: 20px 20px 20px 0;
+  background-color: var(--secondaryBG);
+  display: flex;
+}
+
+.lastConnnectionLeft {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.lastConnnectionLeft span:first-child {
+  font-size: 20px;
+}
+
+.lastConnnectionLeft span:last-child {
+  color: var(--secondaryTextColor);
+  font-size: 16px;
+}
+
+.lastConnectionWrapper > div:last-child {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.lastConnectionWrapper > div:last-child > div {
+  display: flex;
+}

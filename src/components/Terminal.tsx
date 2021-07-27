@@ -121,15 +121,16 @@ const TerminalComponent: React.FC<{}> = () => {
               fitAddon.fit();
             });
 
-          console.log(term.cols, term.rows);
           setShellOptions({ cols: term.cols, rows: term.rows });
 
           window.addEventListener(
             "resize",
             () => {
-              fitAddon.fit();
-              socket &&
-                socket.emit("resize", { cols: term.cols, rows: term.rows });
+              if (isStarted) {
+                fitAddon.fit();
+                socket &&
+                  socket.emit("resize", { cols: term.cols, rows: term.rows });
+              }
             },
             false
           );
@@ -223,7 +224,7 @@ const TerminalComponent: React.FC<{}> = () => {
           style={{
             width: "100%",
             height: "calc(100% - 20px)",
-            display: isStarted ? "block" : "none",
+            visibility: isStarted ? "visible" : "hidden",
           }}
           ref={container}
         />

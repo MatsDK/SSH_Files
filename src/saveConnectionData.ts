@@ -8,7 +8,7 @@ export const saveConnectionData = (data: LastConnectionData) => {
   );
 
   if (
-    !configData.lastConnections.find(
+    !(configData.lastConnections || []).find(
       (_) =>
         _.hostIp == data.hostIp &&
         _.port == data.port &&
@@ -20,7 +20,7 @@ export const saveConnectionData = (data: LastConnectionData) => {
       lastConnections: [data, ...(configData.lastConnections || [])],
     };
 
-  if (configData.lastConnections.length > 5) {
+  if ((configData.lastConnections || []).length > 5) {
     configData.lastConnections.length = 5;
     configData.lastConnections.filter((_) => !!_);
   }
