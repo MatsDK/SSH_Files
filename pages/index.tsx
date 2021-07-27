@@ -1,8 +1,8 @@
-import { nanoid } from "nanoid";
-import { FormEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "../src/css/index.module.css";
 import Layout from "../src/components/Layout";
 import PresetContainer from "../src/components/PresetContainer";
+import { LastConnectionData } from "../src/components/SshConnect";
 
 interface ConnectionPreset {
   id: string;
@@ -12,54 +12,72 @@ interface ConnectionPreset {
   port: number;
 }
 
-type PresetData = { connectionPresets: ConnectionPreset[] };
+export type PresetData = {
+  lastConnections: LastConnectionData[];
+  connectionPresets: ConnectionPreset[];
+};
 
 const Index = () => {
   const [data, setData] = useState<PresetData>({
+    lastConnections: [],
     connectionPresets: [],
   });
-  const [nameInput, setNameInput] = useState<string>("");
-  const [hostInput, setHostInput] = useState<string>("");
-  const [usernameInput, setUsernameInput] = useState<string>("");
-  const [portInput, setPortInput] = useState<number>(22);
+  // const [nameInput, setNameInput] = useState<string>("");
+  // const [hostInput, setHostInput] = useState<string>("");
+  // const [usernameInput, setUsernameInput] = useState<string>("");
+  // const [portInput, setPortInput] = useState<number>(22);
 
   useEffect(() => {
     try {
       setData(
-        JSON.parse(localStorage.getItem("data") || "{connectionPresents: []}")
+        JSON.parse(
+          localStorage.getItem("data") ||
+            "{connectionPresents: [], lastConnecetions: []}"
+        )
       );
     } catch {}
   }, []);
 
-  const createPreset = (e: FormEvent) => {
-    e.preventDefault();
+  // const createPreset = (e: FormEvent) => {
+  //   e.preventDefault();
 
-    const newConnectionPresets: ConnectionPreset[] = [
-      {
-        id: nanoid(),
-        userName: usernameInput,
-        hostIp: hostInput,
-        name: nameInput,
-        port: portInput,
-      },
-      ...data.connectionPresets,
-    ];
+  //   const newConnectionPresets: ConnectionPreset[] = [
+  //     {
+  //       id: nanoid(),
+  //       userName: usernameInput,
+  //       hostIp: hostInput,
+  //       name: nameInput,
+  //       port: portInput,
+  //     },
+  //     ...data.connectionPresets,
+  //   ];
 
-    setData((data) => ({ ...data, connectionPresets: newConnectionPresets }));
-    localStorage.setItem(
-      "data",
-      JSON.stringify({ ...data, connectionPresets: newConnectionPresets })
-    );
-  };
+  //   setData((data) => ({ ...data, connectionPresets: newConnectionPresets }));
+  //   localStorage.setItem(
+  //     "data",
+  //     JSON.stringify({ ...data, connectionPresets: newConnectionPresets })
+  //   );
+  // };
 
   return (
     <Layout>
       <div className={styles.hostsContainer}>
-        {/* <div className={styles.container}> */}
         <h2>Hosts</h2>
 
         <div className={styles.lastConnectionsSection}>
           <span>Last connections</span>
+          {data.lastConnections.map((connection, idx) => {
+            if (idx > 1) return null;
+
+            return (
+              <div key={idx}>
+                <span>
+                  {connection.username}@{connection.hostIp}
+                </span>
+                <span>Port: {connection.port}</span>
+              </div>
+            );
+          })}
         </div>
         <div className={styles.hostsSection}>
           <span>Hosts</span>
@@ -128,7 +146,7 @@ const Index = () => {
 */}
           {data.connectionPresets.map((_: ConnectionPreset, idx: number) => (
             <PresetContainer
-              data={data.connectionPresets}
+              data={data}
               setData={(data) => {
                 setData(data);
               }}

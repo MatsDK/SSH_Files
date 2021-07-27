@@ -6,6 +6,8 @@ import { AlertProvider } from "src/context/alert";
 import Select from "react-select";
 import { styles } from "./ui/selectStyles";
 import Layout from "./Layout";
+import { LastConnectionData } from "./SshConnect";
+import { saveConnectionData } from "../saveConnectionData";
 
 interface PresetOption {
   value: string;
@@ -38,6 +40,8 @@ const TerminalComponent: React.FC<{}> = () => {
   const [usernameInput, setUsernameInput] = useState<string>(u);
   const [passwordInput, setPasswordInput] = useState<string>("");
   const [portInput, setPortInput] = useState<number | null>(Number(p));
+  const [connectionData, setConnectionData] =
+    useState<LastConnectionData | null>(null);
   const socket = useContext(SocketContext);
 
   const [sshPresets, setSshPresets] = useState<ConnectionPreset[]>([]);
@@ -58,6 +62,7 @@ const TerminalComponent: React.FC<{}> = () => {
         );
       }
     } catch {}
+
     return () => {};
   }, []);
 
@@ -77,6 +82,10 @@ const TerminalComponent: React.FC<{}> = () => {
     setHostnameInput(() => thisOption.hostIp);
     setPortInput(() => thisOption.port);
   };
+
+  useEffect(() => {
+    if (isStarted && connectionData) saveConnectionData(connectionData);
+  }, [connectionData, isStarted]);
 
   useEffect(() => {
     if (container.current) {
@@ -112,6 +121,7 @@ const TerminalComponent: React.FC<{}> = () => {
               fitAddon.fit();
             });
 
+          console.log(term.cols, term.rows);
           setShellOptions({ cols: term.cols, rows: term.rows });
 
           window.addEventListener(
@@ -134,6 +144,12 @@ const TerminalComponent: React.FC<{}> = () => {
 
   const connect = (e: any) => {
     e.preventDefault();
+
+    setConnectionData({
+      hostIp: hostnameInput,
+      username: usernameInput,
+      port: portInput || 22,
+    });
 
     socket &&
       socket.emit("start", {

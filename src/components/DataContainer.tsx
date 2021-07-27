@@ -194,7 +194,7 @@ const DataContainer: React.FC<dataContainerProps> = (props) => {
           </div>
         )}
       </div>
-      <div className="Page" style={{ width: "45vw", marginRight: "20px" }}>
+      <div className="Page" style={{ marginRight: "0" }}>
         <Files
           loading={loading}
           data={data}

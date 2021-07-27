@@ -6,6 +6,7 @@ import { sshConnectionData } from "./Container";
 import DataContainer from "./DataContainer";
 import Select from "react-select";
 import { styles } from "./ui/selectStyles";
+import { saveConnectionData } from "../saveConnectionData";
 
 interface sshConnectProps {
   selected: { setSelectedData: any; selectedData: any };
@@ -32,11 +33,20 @@ interface ConnectionPreset {
   port: number;
 }
 
+export interface LastConnectionData {
+  port: number;
+  hostIp: string;
+  username: string;
+}
+
 const SshConnect: React.FC<sshConnectProps> = (props) => {
   const { setAlert } = useContext(AlertProvider);
   const [loading, setLoading] = useState<boolean>(false);
   const [isConnected, setIsConnected] = useState<boolean>(false);
   const [sshData, setSshData] = useState<object[]>([]);
+  const [passwordInput, setPasswordInput] = useState<string>("");
+  const [sshPresets, setSshPresets] = useState<ConnectionPreset[]>([]);
+  const [sshPresetOptions, setSshPresetOptions] = useState<PresetOption[]>([]);
   const [sshConnectionData, setSshConnectionData] = useState<
     sshDataType | undefined
   >();
@@ -46,12 +56,9 @@ const SshConnect: React.FC<sshConnectProps> = (props) => {
   const [usernameInput, setUsernameInput] = useState<string>(
     props.sshConnectionData.userName || ""
   );
-  const [passwordInput, setPasswordInput] = useState<string>("");
   const [portInput, setPortInput] = useState<number>(
     props.sshConnectionData.port == null ? 22 : props.sshConnectionData.port
   );
-  const [sshPresets, setSshPresets] = useState<ConnectionPreset[]>([]);
-  const [sshPresetOptions, setSshPresetOptions] = useState<PresetOption[]>([]);
 
   useEffect(() => {
     try {
@@ -98,7 +105,14 @@ const SshConnect: React.FC<sshConnectProps> = (props) => {
         setLoading(false);
         if (res.data.err) return setAlert({ text: res.data.data, show: true });
         setIsConnected(res.data.connected);
+
         if (res.data.connected) {
+          saveConnectionData({
+            hostIp: connectionData.host,
+            username: connectionData.username,
+            port: connectionData.port,
+          });
+
           setSshConnectionData(connectionData);
           setSshData(_.parseRemoteData(JSON.parse(res.data.data)[0].contents));
         }

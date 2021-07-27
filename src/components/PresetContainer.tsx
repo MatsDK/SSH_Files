@@ -1,5 +1,6 @@
 import { Folder } from "@material-ui/icons";
 import Link from "next/link";
+import { PresetData } from "pages";
 import { useState } from "react";
 import styles from "../css/index.module.css";
 import { MenuDots, ShellIcon } from "./icons";
@@ -15,7 +16,7 @@ interface ConnectionPreset {
 interface Props {
   preset: ConnectionPreset;
   setData: any;
-  data: ConnectionPreset[];
+  data: PresetData;
 }
 
 const PresetContainer: React.FC<Props> = ({ preset, setData, data }) => {
@@ -41,10 +42,11 @@ const PresetContainer: React.FC<Props> = ({ preset, setData, data }) => {
     localStorage.setItem(
       "data",
       JSON.stringify({
+        ...data,
         connectionPresets: (
           JSON.parse(localStorage.getItem("data") || "").connectionPresets || []
         ).filter((_: ConnectionPreset) => _.id != preset.id),
-      })
+      } as PresetData)
     );
   };
 
@@ -57,11 +59,20 @@ const PresetContainer: React.FC<Props> = ({ preset, setData, data }) => {
       id: preset.id,
     };
 
-    data[data.findIndex((_: ConnectionPreset) => _.id == updatedPreset.id)] =
-      updatedPreset;
+    data.connectionPresets[
+      data.connectionPresets.findIndex(
+        (_: ConnectionPreset) => _.id == updatedPreset.id
+      )
+    ] = updatedPreset;
 
     setData({ connectionPresets: data });
-    localStorage.setItem("data", JSON.stringify({ connectionPresets: data }));
+    localStorage.setItem(
+      "data",
+      JSON.stringify({
+        ...data,
+        connectionPresets: data.connectionPresets,
+      } as PresetData)
+    );
     setShowEditInputs(false);
   };
 
