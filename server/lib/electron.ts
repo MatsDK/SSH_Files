@@ -6,6 +6,9 @@ app.on("ready", () => {
   mainWindow = new BrowserWindow({
     width: 1300,
     height: 800,
+    minWidth: 300,
+    minHeight: 500,
+
     // frame: false,
   });
 

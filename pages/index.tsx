@@ -4,8 +4,9 @@ import Layout from "../src/components/Layout";
 import PresetContainer from "../src/components/PresetContainer";
 import LastConnection from "../src/components/LastConnection";
 import { LastConnectionData } from "../src/components/SshConnect";
+import AddHostForm from "src/components/AddHostForm";
 
-interface ConnectionPreset {
+export interface ConnectionPreset {
   id: string;
   name: string;
   hostIp: string;
@@ -19,14 +20,11 @@ export type PresetData = {
 };
 
 const Index = () => {
+  const [showNewHostForm, setShowNewHostForm] = useState(false);
   const [data, setData] = useState<PresetData>({
     lastConnections: [],
     connectionPresets: [],
   });
-  // const [nameInput, setNameInput] = useState<string>("");
-  // const [hostInput, setHostInput] = useState<string>("");
-  // const [usernameInput, setUsernameInput] = useState<string>("");
-  // const [portInput, setPortInput] = useState<number>(22);
 
   useEffect(() => {
     try {
@@ -39,31 +37,20 @@ const Index = () => {
     } catch {}
   }, []);
 
-  // const createPreset = (e: FormEvent) => {
-  //   e.preventDefault();
-
-  //   const newConnectionPresets: ConnectionPreset[] = [
-  //     {
-  //       id: nanoid(),
-  //       userName: usernameInput,
-  //       hostIp: hostInput,
-  //       name: nameInput,
-  //       port: portInput,
-  //     },
-  //     ...data.connectionPresets,
-  //   ];
-
-  //   setData((data) => ({ ...data, connectionPresets: newConnectionPresets }));
-  //   localStorage.setItem(
-  //     "data",
-  //     JSON.stringify({ ...data, connectionPresets: newConnectionPresets })
-  //   );
-  // };
-
   return (
     <Layout>
       <div className={styles.hostsContainer}>
-        <h2>Hosts</h2>
+        <div className={styles.hostsPageHeader}>
+          <h2>Hosts</h2>
+          <span onClick={() => setShowNewHostForm(true)}>New Host</span>
+        </div>
+        {showNewHostForm && (
+          <AddHostForm
+            closeForm={() => setShowNewHostForm(false)}
+            data={data}
+            setData={setData}
+          />
+        )}
 
         {(data.lastConnections || []).length ? (
           <div className={styles.lastConnectionsSection}>

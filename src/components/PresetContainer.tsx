@@ -33,7 +33,8 @@ const PresetContainer: React.FC<Props> = ({ preset, setData, data }) => {
     `h=${preset.hostIp}&u=${preset.userName}&p=${preset.port}`;
 
   const removePreset = () => {
-    setData((data) => ({
+    setData((data: PresetData) => ({
+      ...data,
       connectionPresets: data.connectionPresets.filter(
         (_: ConnectionPreset) => _.id != preset.id
       ),
@@ -65,7 +66,7 @@ const PresetContainer: React.FC<Props> = ({ preset, setData, data }) => {
       )
     ] = updatedPreset;
 
-    setData({ connectionPresets: data });
+    setData({ ...data, connectionPresets: data.connectionPresets });
     localStorage.setItem(
       "data",
       JSON.stringify({

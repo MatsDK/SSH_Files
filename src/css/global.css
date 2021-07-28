@@ -73,6 +73,7 @@ body,
 }
 
 .dataScrollContainer::-webkit-scrollbar {
+  height: 5px;
   width: 5px;
   transform: translateY(-4px);
 }
@@ -656,6 +657,7 @@ body,
 
 .sshFormWrapper::-webkit-scrollbar {
   width: 5px;
+  height: 5px;
   transform: translateY(-4px);
 }
 
