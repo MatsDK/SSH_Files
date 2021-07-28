@@ -22,6 +22,22 @@ interface ConnectionPreset {
   port: number;
 }
 
+type ShellType = {
+  cols: number;
+  rows: number;
+};
+
+interface ConnectParams {
+  type: "SSH" | "local";
+  shell: ShellType;
+  connectData?: {
+    hostname: string;
+    username: string;
+    port: number;
+    password: string;
+  };
+}
+
 const TerminalComponent: React.FC<{}> = () => {
   const router = useRouter();
   const {
@@ -32,10 +48,11 @@ const TerminalComponent: React.FC<{}> = () => {
   const { setAlert } = useContext(AlertProvider);
   const container = useRef<any>();
   const [isStarted, setIsStarted] = useState<boolean>(false);
-  const [shellOptions, setShellOptions] = useState<{
-    cols: number;
-    rows: number;
-  }>({ rows: 0, cols: 0 });
+  const [connType, setConnType] = useState<"SSH" | "local" | null>(null);
+  const [shellOptions, setShellOptions] = useState<ShellType>({
+    rows: 0,
+    cols: 0,
+  });
   const [hostnameInput, setHostnameInput] = useState<string>(h);
   const [usernameInput, setUsernameInput] = useState<string>(u);
   const [passwordInput, setPasswordInput] = useState<string>("");
@@ -84,67 +101,68 @@ const TerminalComponent: React.FC<{}> = () => {
   };
 
   useEffect(() => {
-    if (isStarted && connectionData) saveConnectionData(connectionData);
-  }, [connectionData, isStarted]);
+    if (isStarted && connectionData && connType === "SSH")
+      saveConnectionData(connectionData);
+  }, [connectionData, isStarted, connType]);
 
   useEffect(() => {
-    if (container.current) {
-      import("xterm").then(({ Terminal }: any) => {
-        import("xterm-addon-fit").then(({ FitAddon }: any) => {
-          const term = new Terminal();
-          term.open(container.current);
+    if (!container.current) return;
 
-          const fitAddon = new FitAddon();
-          term.loadAddon(fitAddon);
-          fitAddon.fit();
+    import("xterm").then(({ Terminal }: any) => {
+      import("xterm-addon-fit").then(({ FitAddon }: any) => {
+        const term = new Terminal();
+        term.open(container.current);
 
-          const runTerminal = () => {
-            if (term._initialized) return;
+        const fitAddon = new FitAddon();
+        term.loadAddon(fitAddon);
+        fitAddon.fit();
 
-            term._initialized = true;
-            prompt(term);
+        const runTerminal = () => {
+          if (term._initialized) return;
 
-            term.onData((data) => {
-              socket.emit("data", data.toString());
-            });
-          };
-          fitAddon.fit();
+          term._initialized = true;
+          prompt(term);
 
-          const prompt = (term: any) => term.write("\r\n$");
-          runTerminal();
+          term.onData((data: string) => {
+            socket.emit("data", data.toString());
+          });
+        };
+        fitAddon.fit();
 
-          socket &&
-            socket.on("data", (data: any) => {
-              setIsStarted(true);
-              term.write(data);
-              term.focus();
+        const prompt = (term: any) => term.write("\r\n$");
+        runTerminal();
+
+        socket &&
+          socket.on("data", (data: any) => {
+            setIsStarted(true);
+            term.write(data);
+            term.focus();
+            fitAddon.fit();
+          });
+
+        setShellOptions({ cols: term.cols, rows: term.rows });
+
+        window.addEventListener(
+          "resize",
+          () => {
+            if (isStarted) {
               fitAddon.fit();
-            });
-
-          setShellOptions({ cols: term.cols, rows: term.rows });
-
-          window.addEventListener(
-            "resize",
-            () => {
-              if (isStarted) {
-                fitAddon.fit();
-                socket &&
-                  socket.emit("resize", { cols: term.cols, rows: term.rows });
-              }
-            },
-            false
-          );
-        });
+              socket &&
+                socket.emit("resize", { cols: term.cols, rows: term.rows });
+            }
+          },
+          false
+        );
       });
-    }
+    });
 
     return () => {
       container.current = undefined;
     };
   }, [container, socket]);
 
-  const connect = (e: any) => {
-    e.preventDefault();
+  const connect = (type: "SSH" | "local", e?: any) => {
+    e && e.preventDefault();
 
     setConnectionData({
       hostIp: hostnameInput,
@@ -152,16 +170,21 @@ const TerminalComponent: React.FC<{}> = () => {
       port: portInput || 22,
     });
 
-    socket &&
-      socket.emit("start", {
-        shell: shellOptions,
-        connectData: {
-          password: passwordInput,
-          hostname: hostnameInput,
-          username: usernameInput,
-          port: portInput || 22,
-        },
-      });
+    const connectParams: ConnectParams = {
+      type,
+      shell: shellOptions,
+    };
+    if (type === "SSH") {
+      setConnType("SSH");
+      connectParams.connectData = {
+        password: passwordInput,
+        hostname: hostnameInput,
+        username: usernameInput,
+        port: portInput || 22,
+      };
+    } else setConnType("local");
+
+    socket && socket.emit("start", connectParams);
   };
 
   socket &&
@@ -172,8 +195,11 @@ const TerminalComponent: React.FC<{}> = () => {
       {!isStarted && (
         <Layout>
           <div className="sshFormWrapper">
-            <form onSubmit={connect} className="sshShellForm">
+            <form onSubmit={(e) => connect("SSH", e)} className="sshShellForm">
               <h2>Shell</h2>
+              <button type={"button"} onClick={() => connect("local")}>
+                Open local shell
+              </button>
               <label>Connection Presets</label>
               <div style={{ width: 225, height: 40, marginBottom: 10 }}>
                 <Select
