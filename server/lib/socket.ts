@@ -1,5 +1,6 @@
+import { Socket } from "socket.io";
 import { Client } from "ssh2";
-var pty = require("node-pty");
+const pty = require("node-pty");
 
 export const io = require("socket.io")(8001, {
   cors: {
@@ -18,7 +19,7 @@ type conf =
   | { type: "local"; shell: shellType; connectData?: connectDataType }
   | { type: "SSH"; shell: shellType; connectData: connectDataType };
 
-io.on("connection", (socket) => {
+io.on("connection", (socket: Socket) => {
   try {
     const connect = ({ type, shell: { rows, cols }, ...rest }: conf) => {
       if (type === "SSH") {

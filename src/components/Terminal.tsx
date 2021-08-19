@@ -115,7 +115,7 @@ const TerminalComponent: React.FC<{}> = () => {
 
         const fitAddon = new FitAddon();
         term.loadAddon(fitAddon);
-        fitAddon.fit();
+        // fitAddon.fit();
 
         const runTerminal = () => {
           if (term._initialized) return;
@@ -127,7 +127,7 @@ const TerminalComponent: React.FC<{}> = () => {
             socket.emit("data", data.toString());
           });
         };
-        fitAddon.fit();
+        // fitAddon.fit();
 
         const prompt = (term: any) => term.write("\r\n$");
         runTerminal();
